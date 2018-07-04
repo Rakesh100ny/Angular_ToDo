@@ -1,0 +1,67 @@
+
+
+<div layout="column" layout-align="center center">
+    <span style="color:red;"><p>{{result}}</p></span>
+            <img src="../assert/keep.png" width="80" height="80" style="margin-top: 20px;">
+
+            <h4 style="font-family: Arial;">Sign in to FundooNote !</h4>
+        <md-card flex-gt-md='45' flex-md='60' flex-sm='45' class="md-whiteframe-9dp card-login layout-padding">
+           <form name="myForm" style="margin-top: 10px">
+               <md-list layout="column" >
+                   <md-list-item class="md-3-line">
+                       <div class="md-list-item-text">
+
+                           <h3>Username or email address</h3>
+                           <md-input-container class="md-block">
+                               <md-icon><i class="material-icons">email</i></md-icon>
+                               <input  name="email" type="email" ng-model="email" value="" required>
+                               <div ng-messages="myForm.email.$error">
+                                   <div ng-message="required">Email is required...!</div>
+                                   <div ng-message="email">Invalid email address...!</div>
+                               </div>
+                           </md-input-container>
+                       </div>
+                   </md-list-item>
+               </md-list>
+               <span flex="15000"></span>
+
+
+               <md-list layout="column">
+                   <md-list-item class="md-3-line">
+                       <div class="md-list-item-text">
+
+                           <h3>Password</h3>
+                           <md-input-container  class="md-block">
+                               <md-icon><i class="material-icons">lock</i></md-icon>
+                               <input ng-model="password" type="password" ng-model="password" name="password" value="" required   minlength="5" md-maxlength="15">
+                               <div ng-messages="myForm.password.$error">
+                                   <div ng-message="required">Password is required...!</div>
+                                   <div ng-message="md-maxlength">Password is too Long...!</div>
+                                   <div ng-message="minlength">Password is too short...!</div>
+                               </div>
+                           </md-input-container>
+                       </div>
+                   </md-list-item>
+               </md-list>
+                <a href="forgotpassword.html"><span style="float:right;color: blue">Forgot password?</span></a>
+               <br>
+               <md-divider ></md-divider>
+                <div layout="row" layout-align='center center' layout-xs="column" ng-cloak="">
+                    <md-button ng-click="login(email,password);" ng-disabled="myForm.$invalid" style="background-color: #28a745" class="card-button">Login</md-button>
+                   <!-- <a ui-sref="register" target="_self"><md-button  class="md-primary md-raised button" >Register</md-button></a>-->
+                </div>
+
+            </form>
+
+        </md-card>
+    <div layout="row" layout-align='center center' layout-xs="column">
+        <md-card class="md-whiteframe-24dp md-padding layout-padding">
+            <div class="text-center">
+                <span>New to GitHub?</span><span><a ui-sref="register" target="_self"> &nbsp;Create an account.</a></span>
+            </div>
+
+        </md-card>
+
+    </div>
+
+</div>

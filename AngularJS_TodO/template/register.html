@@ -1,0 +1,65 @@
+<div layout="column" layout-align="center center">
+    <span style="color:red;"><p>{{result}}</p></span>
+    <img src="../assert/keep.png" width="80" height="80">
+
+    <h4 style="font-family: Arial;">Welcome in the FundooNote !<md-icon><i style="color: coral" class="material-icons">sentiment_satisfied_alt</i></md-icon></h4>
+    <md-card  flex-gt-md='35' flex-md='35' flex-sm='35' class="md-whiteframe-9dp md-padding layout-padding card-register">
+           <form name="myForm" style="margin-top: 10px">
+               <label>Enter First Name</label>
+            <md-input-container  class="md-block">
+
+                <md-icon><i class="material-icons">person</i></md-icon>
+                <input type="text" ng-model="firstName" name="firstName" required/>
+                <div ng-messages="myForm.firstName.$error">
+                    <div ng-message="required">First Name is required...!</div>
+                </div>
+            </md-input-container>
+               <label>Enter Last Name</label>
+            <md-input-container  class="md-block">
+                <md-icon><i class="material-icons">person_outline</i></md-icon>
+                <input type="text" ng-model="lastName" name="lastName"  required>
+                <div ng-messages="myForm.lastName.$error">
+                    <div ng-message="required">Last Name is required...!</div>
+                </div>
+            </md-input-container>
+               <label>Email Address</label>
+            <md-input-container class="md-block">
+                <md-icon ><i class="material-icons" >email</i></md-icon>
+                <input name="email" type="email" ng-model="email" value="" required>
+                <div ng-messages="myForm.email.$error">
+                    <div ng-message="required">Email is required...!</div>
+                    <div ng-message="email">Invalid email address...!</div>
+                </div>
+            </md-input-container>
+               <label>Password</label>
+            <md-input-container  class="md-block">
+                <md-icon><i class="material-icons">lock</i></md-icon>
+                <input  type="password" ng-model="password" name="password" value=""  required   minlength="5" md-maxlength="15">
+                <div ng-messages="myForm.password.$error">
+                    <div ng-message="required">Password is required...!</div>
+                    <div ng-message="md-maxlength">Password is too Long...!</div>
+                    <div ng-message="minlength">Password is too short...!</div>
+                </div>
+
+            </md-input-container>
+               <label>Mobile Number</label>
+
+               <md-input-container class="md-block">
+                   <md-icon><i class="material-icons">phone_iphone</i></md-icon>
+                   <input name="phone" ng-model="phone" name="phone" required md-maxlength="10"  />
+
+                    <div ng-messages="myForm.phone.$error">
+                        <div ng-message="required">Mobile Number is required...!</div>
+<!--                       <div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>-->
+                   </div>
+               </md-input-container>
+
+               <div layout="row" layout-align='center center' layout-xs="column">
+                <md-button ng-click="register(email,password)" ng-disabled="myForm.$invalid" style="background-color: #28a745" class="card-button">Submit</md-button>
+                <a ui-sref="login" target="_self"><md-button  class="md-primary md-raised button" >Login</md-button></a>
+            </div>
+        </form>
+
+</div>
+
+</div>

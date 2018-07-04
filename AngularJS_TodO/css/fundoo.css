@@ -1,0 +1,27 @@
+body{
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    line-height: 0.5;
+    letter-spacing: 0.5px;
+}
+
+.card-login
+{
+ width: 350px;
+    height: 340px;
+}
+
+.card-button {
+    width: 100%;
+    text-align: center;
+    border-radius: 0.25em;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;color: white;
+}
+
+.text-center
+{text-align: center}
+
+.card-register{height: 629px;width: 400px}
+
