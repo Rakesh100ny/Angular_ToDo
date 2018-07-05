@@ -2,11 +2,11 @@
 
 <div layout="column" layout-align="center center">
     <span style="color:red;"><p>{{result}}</p></span>
-            <img src="../assert/keep.png" width="80" height="80" style="margin-top: 20px;">
+            <img src="../assert/keep.png" width="80" height="80" style="margin-top: 10px;">
 
             <h4 style="font-family: Arial;">Sign in to FundooNote !</h4>
-        <md-card flex-gt-md='45' flex-md='60' flex-sm='45' class="md-whiteframe-9dp card-login layout-padding">
-           <form name="myForm" style="margin-top: 10px">
+        <md-card  class="md-whiteframe-24dp md-padding">
+           <form name="myForm">
                <md-list layout="column" >
                    <md-list-item class="md-3-line">
                        <div class="md-list-item-text">
@@ -23,9 +23,6 @@
                        </div>
                    </md-list-item>
                </md-list>
-               <span flex="15000"></span>
-
-
                <md-list layout="column">
                    <md-list-item class="md-3-line">
                        <div class="md-list-item-text">
@@ -45,19 +42,18 @@
                </md-list>
                 <a href="forgotpassword.html"><span style="float:right;color: blue">Forgot password?</span></a>
                <br>
-               <md-divider ></md-divider>
                 <div layout="row" layout-align='center center' layout-xs="column" ng-cloak="">
                     <md-button ng-click="login(email,password);" ng-disabled="myForm.$invalid" style="background-color: #28a745" class="card-button">Login</md-button>
-                   <!-- <a ui-sref="register" target="_self"><md-button  class="md-primary md-raised button" >Register</md-button></a>-->
+
                 </div>
 
             </form>
 
         </md-card>
     <div layout="row" layout-align='center center' layout-xs="column">
-        <md-card class="md-whiteframe-24dp md-padding layout-padding">
+        <md-card class="md-whiteframe-20dp md-padding  layout-padding-sm">
             <div class="text-center">
-                <span>New to GitHub?</span><span><a ui-sref="register" target="_self"> &nbsp;Create an account.</a></span>
+                <span>New to FundooNote?</span><span><a ui-sref="register" target="_self"> Create an account.</a></span>
             </div>
 
         </md-card>

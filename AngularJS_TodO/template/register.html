@@ -2,9 +2,9 @@
     <span style="color:red;"><p>{{result}}</p></span>
     <img src="../assert/keep.png" width="80" height="80">
 
-    <h4 style="font-family: Arial;">Welcome in the FundooNote !<md-icon><i style="color: coral" class="material-icons">sentiment_satisfied_alt</i></md-icon></h4>
-    <md-card  flex-gt-md='35' flex-md='35' flex-sm='35' class="md-whiteframe-9dp md-padding layout-padding card-register">
-           <form name="myForm" style="margin-top: 10px">
+    <span><h4 style="font-family: Arial;">Welcome in the FundooNote !<md-icon><i style="color: coral" class="material-icons">sentiment_satisfied_alt</i></md-icon></h4></span>
+    <md-card  style="width: 340px;" class="md-whiteframe-24dp md-padding">
+           <form name="myForm">
                <label>Enter First Name</label>
             <md-input-container  class="md-block">
 
@@ -56,7 +56,7 @@
 
                <div layout="row" layout-align='center center' layout-xs="column">
                 <md-button ng-click="register(email,password)" ng-disabled="myForm.$invalid" style="background-color: #28a745" class="card-button">Submit</md-button>
-                <a ui-sref="login" target="_self"><md-button  class="md-primary md-raised button" >Login</md-button></a>
+                <a style="margin: auto 0px" ui-sref="login" target="_self"><md-button  class="md-primary md-raised button" >Login</md-button></a>
             </div>
         </form>
 

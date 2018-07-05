@@ -1,0 +1,29 @@
+<md-sidenav class="md-sidenav-left"  md-component-id="left" md-disable-backdrop md-whiteframe="4" ng-cloak>
+  <md-content layout-margin>
+    <md-subheader class="md-no-sticky"><strong class="color">Manufacturer</strong></md-subheader>
+    <md-list-item  ng-repeat="item in jsonRecord  | unique:'specs.manufacturer' | orderBy : 'specs.manufacturer'">
+      <md-checkbox class="md-secondary md-hue-1" ng-model="Manufacturer" ng-click="toggle(Manufacturer,item.specs.manufacturer)" aria-label="Manufacturer">
+      </md-checkbox>
+      <p>{{ item.specs.manufacturer+" " }}</p>
+    </md-list-item>
+    <md-subheader class="md-no-sticky"><strong class="color">Storage</strong></md-subheader>
+    <md-list-item  ng-repeat="item in jsonRecord | unique:'specs.storage '">
+      <md-checkbox class="md-secondary md-hue-1" ng-model="Storage" ng-click="toggle(Storage,item.specs.storage)" aria-label="Storage"> </md-checkbox>
+      <p>{{ item.specs.storage+" " }}</p>
+
+
+    </md-list-item>
+    <md-subheader class="md-no-sticky"><strong class="color">OS</strong></md-subheader>
+    <md-list-item  ng-repeat="item in jsonRecord | unique:'specs.os'">
+      <md-checkbox class="md-secondary md-hue-1" ng-model="Os" ng-click="toggle(Os,item.specs.os)" aria-label="OS">
+      </md-checkbox>
+      <p>{{ item.specs.os+" " }}</p>
+    </md-list-item>
+    <md-subheader class="md-no-sticky"><strong class="color">Camera</strong>  </md-subheader>
+    <md-list-item  ng-repeat="item in jsonRecord| unique:'specs.camera' | orderBy : 'specs.camera'">
+      <p>{{ item.specs.camera+" " }}</p>
+      <md-checkbox ng-value="item"  class="md-secondary md-hue-1" ng-model="Camera"  ng-click="toggle(Camera,item.specs.camera)" aria-label="Camera">
+      </md-checkbox>
+    </md-list-item>
+  </md-content>
+</md-sidenav>
