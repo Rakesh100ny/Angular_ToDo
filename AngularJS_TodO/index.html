@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="assert/keep.ico">
+    <link rel="icon" href="asset/keep.ico">
     <title>Google Keep</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/fundoo.css">
 </head>
 <body ng-app="keepApp">
- <ui-view></ui-view>
+<ui-view></ui-view>
 </body>
 <!--Angular file-->
 <script src="bower_components/angular/angular.min.js"></script>
@@ -24,12 +24,17 @@
 <script src="app.js"></script>
 
 <!--Controller.js-->
-<script src="controller/registerCtrl.js"></script>
-<script src="controller/loginCtrl.js"></script>
-<script src="controller/homeCtrl.js"></script>
+<script src="controller/userController.js"></script>
+<script src="controller/noteController.js"></script>
 
-<!-- directive file -->
-<script src="directive/navbar.js" charset="utf-8"></script>
-<script src="directive/sidebar.js" charset="utf-8"></script>
+<!--Service File  -->
+<script src="service/userService.js"></script>
+<script src="service/noteService.js"></script>
+
+<!-- Directive file -->
+<script src="directive/navbar.js"></script>
+<script src="directive/sidebar.js"></script>
+<script src="directive/icon.js"></script>
+
 
 </html>

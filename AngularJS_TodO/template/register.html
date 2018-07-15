@@ -1,40 +1,47 @@
 <div layout="column" layout-align="center center">
-    <span style="color:red;"><p>{{result}}</p></span>
-    <img src="../assert/keep.png" width="80" height="80">
+    <img src="asset/keep.png" width="80" height="80"> <span>
 
-    <span><h4 style="font-family: Arial;">Welcome in the FundooNote !<md-icon><i style="color: coral" class="material-icons">sentiment_satisfied_alt</i></md-icon></h4></span>
-    <md-card  style="width: 340px;" class="md-whiteframe-24dp md-padding">
-           <form name="myForm">
-               <label>Enter First Name</label>
-            <md-input-container  class="md-block">
-
-                <md-icon><i class="material-icons">person</i></md-icon>
-                <input type="text" ng-model="firstName" name="firstName" required/>
+				<span style="color: red;"><p>{{ errorMessage }}</p></span>
+                <span style="color: red;"><p>{{ serverError }}</p></span>
+	<h4	style="font-family: Arial;">
+			Welcome in the FundooNote !
+			<md-icon><i style="color: coral" class="material-icons">sentiment_satisfied_alt</i></md-icon>
+		</h4></span>
+    <md-card style="width: 340px;" class="md-whiteframe-24dp md-padding">
+        <form name="myForm" class='form'>
+            <label>Enter First Name</label>
+            <md-input-container class="md-block"> <md-icon>
+                <i class="material-icons">person</i></md-icon> <input type="text"
+                                                                      name="firstName" ng-model="registerModel.firstName" required />
                 <div ng-messages="myForm.firstName.$error">
                     <div ng-message="required">First Name is required...!</div>
                 </div>
             </md-input-container>
-               <label>Enter Last Name</label>
-            <md-input-container  class="md-block">
-                <md-icon><i class="material-icons">person_outline</i></md-icon>
-                <input type="text" ng-model="lastName" name="lastName"  required>
+            <label>Enter Last Name</label>
+            <md-input-container class="md-block"> <md-icon>
+                <i class="material-icons">person_outline</i></md-icon> <input type="text"
+                                                                              name="lastName" ng-model="registerModel.lastName" required>
                 <div ng-messages="myForm.lastName.$error">
                     <div ng-message="required">Last Name is required...!</div>
                 </div>
             </md-input-container>
-               <label>Email Address</label>
-            <md-input-container class="md-block">
-                <md-icon ><i class="material-icons" >email</i></md-icon>
-                <input name="email" type="email" ng-model="email" value="" required>
+            <label>Email Address</label>
+            <md-input-container class="md-block"> <md-icon>
+                <i class="material-icons">email</i></md-icon> <input type="email" name="email"
+                                                                     ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,3}$/"
+                                                                     ng-model="registerModel.email" required>
                 <div ng-messages="myForm.email.$error">
                     <div ng-message="required">Email is required...!</div>
                     <div ng-message="email">Invalid email address...!</div>
+                    <div ng-message="pattern">Check Email Address Properly...!</div>
+
                 </div>
             </md-input-container>
-               <label>Password</label>
-            <md-input-container  class="md-block">
-                <md-icon><i class="material-icons">lock</i></md-icon>
-                <input  type="password" ng-model="password" name="password" value=""  required   minlength="5" md-maxlength="15">
+            <label>Password</label>
+            <md-input-container class="md-block"> <md-icon>
+                <i class="material-icons">lock</i></md-icon> <input type="password"
+                                                                    name="password" ng-model="registerModel.password" required
+                                                                    minlength="5" md-maxlength="15">
                 <div ng-messages="myForm.password.$error">
                     <div ng-message="required">Password is required...!</div>
                     <div ng-message="md-maxlength">Password is too Long...!</div>
@@ -42,21 +49,26 @@
                 </div>
 
             </md-input-container>
-               <label>Mobile Number</label>
+            <label>Mobile Number</label>
 
-               <md-input-container class="md-block">
-                   <md-icon><i class="material-icons">phone_iphone</i></md-icon>
-                   <input name="phone" ng-model="phone" name="phone" required md-maxlength="10"  />
+            <md-input-container class="md-block"> <md-icon>
+                <i class="material-icons">phone_iphone</i></md-icon> <input type="tel"
+                                                                            name="mobileNo" ng-model="registerModel.mobileNo"
+                                                                            ng-pattern="/^\d{2}\+{1} []??\d{3}[]??\d{3}[]??\d{4}$/"
+                                                                            required/>
 
-                    <div ng-messages="myForm.phone.$error">
-                        <div ng-message="required">Mobile Number is required...!</div>
-<!--                       <div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>-->
-                   </div>
-               </md-input-container>
+                <div ng-messages="myForm.mobileNo.$error">
+                    <div ng-message="required">Mobile Number is required...!</div>
+                    <div ng-message="pattern">Please match pattern [91+ 8290771900]</div>
+                </div>
+            </md-input-container>
 
-               <div layout="row" layout-align='center center' layout-xs="column">
-                <md-button ng-click="register(email,password)" ng-disabled="myForm.$invalid" style="background-color: #28a745" class="card-button">Submit</md-button>
-                <a style="margin: auto 0px" ui-sref="login" target="_self"><md-button  class="md-primary md-raised button" >Login</md-button></a>
+            <div layout="row" layout-align='center center' layout-xs="column">
+                <md-button ng-click="register(registerModel)"
+                           ng-disabled="myForm.$invalid" style="background-color: #28a745"
+                           class="card-button">Submit</md-button>
+                <a style="margin: auto 0px" ui-sref="login" target="_self"><md-button
+                        class="md-primary md-raised button">Login</md-button></a>
             </div>
         </form>
 

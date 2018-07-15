@@ -1,29 +1,86 @@
-<md-sidenav class="md-sidenav-left"  md-component-id="left" md-disable-backdrop md-whiteframe="4" ng-cloak>
-  <md-content layout-margin>
-    <md-subheader class="md-no-sticky"><strong class="color">Manufacturer</strong></md-subheader>
-    <md-list-item  ng-repeat="item in jsonRecord  | unique:'specs.manufacturer' | orderBy : 'specs.manufacturer'">
-      <md-checkbox class="md-secondary md-hue-1" ng-model="Manufacturer" ng-click="toggle(Manufacturer,item.specs.manufacturer)" aria-label="Manufacturer">
-      </md-checkbox>
-      <p>{{ item.specs.manufacturer+" " }}</p>
-    </md-list-item>
-    <md-subheader class="md-no-sticky"><strong class="color">Storage</strong></md-subheader>
-    <md-list-item  ng-repeat="item in jsonRecord | unique:'specs.storage '">
-      <md-checkbox class="md-secondary md-hue-1" ng-model="Storage" ng-click="toggle(Storage,item.specs.storage)" aria-label="Storage"> </md-checkbox>
-      <p>{{ item.specs.storage+" " }}</p>
 
+<md-sidenav style="margin-top: 65px;width: 283px;position: fixed;"  id="sidebar"
+            class="md-sidenav-left"
+            md-component-id="left" md-disable-backdrop md-whiteframe="4">
 
-    </md-list-item>
-    <md-subheader class="md-no-sticky"><strong class="color">OS</strong></md-subheader>
-    <md-list-item  ng-repeat="item in jsonRecord | unique:'specs.os'">
-      <md-checkbox class="md-secondary md-hue-1" ng-model="Os" ng-click="toggle(Os,item.specs.os)" aria-label="OS">
-      </md-checkbox>
-      <p>{{ item.specs.os+" " }}</p>
-    </md-list-item>
-    <md-subheader class="md-no-sticky"><strong class="color">Camera</strong>  </md-subheader>
-    <md-list-item  ng-repeat="item in jsonRecord| unique:'specs.camera' | orderBy : 'specs.camera'">
-      <p>{{ item.specs.camera+" " }}</p>
-      <md-checkbox ng-value="item"  class="md-secondary md-hue-1" ng-model="Camera"  ng-click="toggle(Camera,item.specs.camera)" aria-label="Camera">
-      </md-checkbox>
-    </md-list-item>
+  <md-content style="background-color: #e8e8e8">
+    <md-list>
+      <md-list-item ng-click="null">
+        <div layout="row" class="sidebar-text">
+          <md-icon md-svg-icon="asset/notes.svg"></md-icon>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <p>Notes</p>
+        </div>
+      </md-list-item>
+      <md-list-item ng-click="null">
+        <div layout="row" class="sidebar-text">
+          <md-icon md-svg-icon="asset/reminders.svg"></md-icon>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <p>Reminders</p>
+        </div>
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-subheader style="background-color: #e8e8e8">Labels</md-subheader>
+      <md-list-item ng-click="null">
+        <div layout="row" class="sidebar-text">
+          <md-icon><i class="material-icons">add</i></md-icon>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <p>Create new label</p>
+        </div>
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-list-item ng-click="null">
+        <div layout="row" class="sidebar-text">
+          <md-icon><i class="material-icons"> archive</i></md-icon>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <p>Archive</p>
+        </div>
+      </md-list-item>
+      <md-list-item ng-click="null">
+        <div layout="row" class="sidebar-text">
+          <md-icon md-svg-icon="asset/trash.svg"></md-icon>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <p>Trash</p>
+        </div>
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-list-item ng-click="null">
+        <div layout="row" class="sidebar-text">
+          <md-icon><i class="material-icons"> settings</i></md-icon>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <p>Settings</p>
+        </div>
+      </md-list-item>
+
+      <md-list-item ng-click="null">
+        <div layout="row" class="sidebar-text">
+          <md-icon><i class="material-icons"> feedback</i></md-icon>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <p>Send feedback</p>
+        </div>
+      </md-list-item>
+
+      <md-list-item ng-click="null">
+        <div layout="row" class="sidebar-text">
+          <md-icon><i class="material-icons"> help</i></md-icon>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <p>Help</p>
+        </div>
+      </md-list-item>
+
+      <md-list-item ng-click="null">
+        <div layout="row" class="sidebar-text">
+          <md-icon><i class="material-icons"> keyboard</i></md-icon>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <p>Keyboard shortcuts</p>
+        </div>
+      </md-list-item>
+      <md-list-item ng-click="null">
+        <div layout="row" class="sidebar-text">
+
+        </div>
+      </md-list-item>
+    </md-list>
   </md-content>
 </md-sidenav>
+

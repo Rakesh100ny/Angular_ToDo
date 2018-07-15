@@ -1,32 +1,70 @@
-<div layout="column" ng-cloak>
-    <md-toolbar  class="md-toolbar-tools" style="background-color: #ffbb00" id="toolbar">
+<div layout="column"  ng-cloak>
+    <md-toolbar class="md-toolbar-tools" id="toolbar">
 
-        <md-button ng-click="toggleLeft()" class="md-icon-button" aria-label="sidebar">
-           <md-icon><i class="material-icons" style="color: #444444">menu</i> </md-icon>
+        <md-button flex-gt-md="5" ng-click="toggleLeft()" class="md-icon-button">
+            <md-icon><i class="material-icons" style="color: #444444">menu</i> </md-icon>
         </md-button>
 
-        <span class="navbar-logo-text1">Google</span> <span class="navbar-logo-text2">Keep</span>
-        <span flex="5"></span>
+        <span  class="navbar-logo-text1">Google</span>&nbsp;<span class="navbar-logo-text2">Keep</span>
 
-        <div class="search">
-            <md-button class="md-icon-button">
-
-               <md-icon><i class="material-icons" style="color: #444444">search</i></md-icon>
+        <span flex></span>
+        <div layout="row"  class="search-box">
+            <md-button class="md-icon-button md-icon-left">
+                <md-icon><i class="material-icons" style="color: #444444">search</i></md-icon>
             </md-button>
-            <span>
-                <input type="search" class="input-serach" width="400px" height="30px" placeholder="Search" name="search"/>
-            </span>
-            <md-button class="md-icon-button">
 
-                    <md-icon><i class="material-icons" style="color: #444444">close</i></md-icon>
-                   </md-button>
+            <input type="search" class="input-serach" placeholder="Search" name="search"/>
+
+            <md-button class="md-icon-button md-icon-right">
+                <md-icon><i class="material-icons" style="color: #444444">close</i></md-icon>
+            </md-button>
+
         </div>
-          <span flex="5"></span>
-        <md-button class="md-icon-button"> <md-icon><i class="material-icons" style="color: #444444">refresh</i></md-icon></md-button>
-        <md-button class="md-icon-button"><md-icon><i class="material-icons" style="color: #444444">view_list</i></md-icon></md-button>
+        <span flex></span>
+        <div layout="row" layout-align="space-around center">
+            <md-button class="md-icon-button md-icon-left" hide-sm=""> <md-icon><i class="material-icons" style="color: #444444">refresh</i></md-icon></md-button>
+            <md-button class="md-icon-button md-icon-right"><md-icon><i class="material-icons" style="color: #444444">view_stream</i></md-icon></md-button>
+        </div>
+        <span flex></span>
+        <div layout="row" layout-align="space-around center">
+            <md-button class="md-icon-button md-icon-left"><md-icon><i class="material-icons" style="color: #444444">apps</i></md-icon></md-button>
+            <md-button class="md-icon-button md-icon-right"><md-icon><i class="material-icons" style="color: #444444">notifications_none</i></md-icon></md-button>
 
-        <md-button class="md-icon-button"><md-icon><i class="material-icons" style="color: #444444">apps</i></md-icon></md-button>
-        <md-button class="md-icon-button"><md-icon><i class="material-icons" style="color: #444444">notifications_none</i></md-icon></md-button>
+
+        </div>
+
+        <a ng-click="clickProfile()"><img src="asset/profile.jpg" class="profile"></a>
+
+        <div layout="row"  ng-show="isVisible"  layout-align="center end">
+            <md-card  class="profile-card">
+                <md-content>
+                    <md-list>
+                        <md-list-item class="md-3-line">
+                            <img src="asset/profile.jpg"  class="profile-card-img" alt="profile" />
+                            <div class="md-list-item-text" style="text-align: justify-all" layout="column" layout-align="space-around end">
+                                <div layout="row" class="profile-name">Rakesh Soni</div>
+                                <div layout="row" class="profile-email">rakeshsoni.rs1900@gmail.com</div>
+                                <div layout="row">
+                                    <a ui-sref="google.com" class="google" target="_blank" style="margin-right: 5px">Google+ Profile</a>
+                                    <span aria-hidden="true">–</span>
+                                    <a ui-sref="#"  class="google" target="_blank">Privacy</a>
+                                </div>
+                                <button class="profile-button">Fundoo Account</button>
+
+                            </div>
+                        </md-list-item>
+                        <br>
+                        <md-divider ></md-divider>
+                        <div layout="row"  layout-xs="row">
+                            <md-button class="add-btn">Add account</md-button>
+                            <span flex></span>
+                            <md-button class="sign-out-btn" >Sign out</md-button>
+                        </div>
+                    </md-list>
+                </md-content>
+            </md-card>
+        </div>
+
 
 
     </md-toolbar>

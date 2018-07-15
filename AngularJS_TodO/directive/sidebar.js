@@ -1,6 +1,6 @@
 app.directive('sidebar', function() {
-  return {
-    restrict:'EA',
-    templateUrl: 'template/sidebar.html'
-  };
+    return {
+        restrict:'EA',
+        templateUrl: 'template/sidebar.html'
+    };
 });
