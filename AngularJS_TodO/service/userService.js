@@ -1,4 +1,4 @@
-app.service('userService',function($http)
+app.factory('userService',function($http)
 {
     var registerUser=function(registerModel)
     {

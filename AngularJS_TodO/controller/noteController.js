@@ -1,6 +1,5 @@
-app.controller('noteController', function($scope,  $timeout, $mdSidenav,noteService,$state)  {
-
-
+app.controller('noteController', function($scope,$timeout,$mdDialog,$mdSidenav,noteService,$state,$window)
+{
     $scope.noteModel = {
         title : "",
         description : "",
@@ -11,9 +10,31 @@ app.controller('noteController', function($scope,  $timeout, $mdSidenav,noteServ
 
     };
 
+    $scope.isNotePined
+
+   $scope.showDialog = function(event,note) {
+
+        $mdDialog.show({
+            locals : {noteInfo : note},
+            controller: DialogCtrl,
+            templateUrl: 'template/noteDialog.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            clickOutsideToClose:true,
+            fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        });
+
+    };
+    function DialogCtrl($scope, $mdDialog,noteInfo) {
+        $scope.noteInfo= noteInfo;
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+    }
+
+
     $scope.toggleLeft = buildToggler('left');
 
-    $scope.note_array=[];
 
      function buildToggler(componentId) {
         return function() {
@@ -40,107 +61,90 @@ app.controller('noteController', function($scope,  $timeout, $mdSidenav,noteServ
         $scope.isVisible = $scope.isVisible ? false : true;
     }
 
-/*    $scope.isNoteVisible = function() {
-         console.log("r1");
-        $scope.showNote = $scope.showNote ? false : true;
-        console.log("note",$scope.showNote);
-    }
+   $scope.colors=
+       [
 
-    $scope.isLogoVisible = function() {
-        console.log("r2");
-        $scope.showLogo = $scope.showLogo ? false : true;
-    }
+           [
+               {'name': 'White','value': 'white'},
+               {'name': 'Red','value': '#ff8a80'},
+               {'name': 'Orange','value': '#ffd180'},
+               {'name': 'Yellow','value': '#ffff8d'}
+               ]
+       ,
+               [
+                   {'name': 'Green','value': '#ccff90'},
+                   {'name': 'Teal','value': '#a7ffeb'},
+                   {'name': 'Blue','value': '#80d8ff'},
+                   {'name': 'Dark Blue','value': '#82b1ff'}
+                   ]
+       ,
+               [
+                   {'name': 'Purple','value': '#b388ff'},
+                   {'name': 'Pink','value': '#f8bbd0'},
+                   {'name': 'Brown','value': '#d7ccc8'},
+                   {'name': 'Gray','value': '#cfd8dc'}
+               ]
+   ];
 
-    $scope.loadPage = function() {
-         if($scope.showNote==true)
-         {
-             console.log("r3");
-           $scope.showLogo=false;
-         }
-        $state.reload();
-
-
-    };*/
-
-
-    $scope.colors = [
-        ["white","#f88980","#f9d180","#fbff8d"],
-        ["#ccff90","#a7ffeb","#7fd8ff","#81b1ff"],
-        ["#b388ff","#f8bbd0","#d7ccc8","#d0d8dc"]
-    ];
-
-    $scope.colorName = [
-        ["white","red","Orange","Yellow"],
-        ["Green","Teal","Blue","Dark Blue"],
-        ["Purple","Pink","Brown","Gray"]
-    ];
 
 
     $scope.loadPage = function() {
         $window.location.reload();
-        $scope.noteModel = {
-            title : "",
-            description : "",
-            color:"white",
-            isPined : "false",
-            isTrashed:"false",
-            isArchived:"false"
-
-        };
 
     };
+
     $scope.note_info;
 
 
 
-    $scope.addNote = function(noteModel) {
-        console.log("Note Details", angular.toJson(noteModel));
-        noteService.addNote(noteModel).then(function successCallback(response)
-        {
-            $scope.showLogo=false;
-            $scope.showNote=true;
-            console.log("Note",$scope.showNote);
-            console.log("Logo",$scope.showLogo);
-            console.log("successfully",response.data);
-           $scope.getAllNotes();
-        },function errorCallback(response){
-            console.log("failed",response.data);
-        })
+    $scope.addNote = function(noteModel)
+    {
+       console.log("Note Details", angular.toJson(noteModel));
+
+       if(noteModel.title==="" && noteModel.description==="")
+       {
+        console.log("ranu");
+       }
+       else
+           {
+               noteService.addNote(noteModel).then(function successCallback(response)
+               {
+                   $scope.showLogo=false;
+                   $scope.showNote=true;
+                   console.log("successfully",response.data);
+                   $scope.getAllNotes();
+                   noteModel.title="";
+                   noteModel.description="";
+               },function errorCallback(response){
+                   console.log("failed",response.data);
+               })
+           }
+
     };
 
 
-   var idArray=[];
 
     $scope.getAllNotes = function()
     {
         noteService.getlistAllNotes().then(function successCallback(response)
         {
             $scope.note_info=response;
-            console.log("scope.note_info",$scope.note_info);
+
             console.log("successfully from database",response);
 
 
             if($scope.note_info=="")
             {
-              console.log("r1");
+
               $scope.showNote=false;
                 $scope.showLogo=true;
             }
             else
                 {
-                    console.log("r2");
+
                     $scope.showNote=true;
                     $scope.showLogo=false;
 
-
-                    angular.forEach($scope.note_info, function(value, key) {
-                         idArray.push(value.id);
-
-                        });
-
-                    console.log("idArray",idArray);
-
-                    //$scope.getNoteId=idArray;
 
                     return $scope.note_info;
                 }
@@ -152,15 +156,70 @@ app.controller('noteController', function($scope,  $timeout, $mdSidenav,noteServ
         })
     }
 
+    $scope.enableEdit = function (item) {
+        item.editable = true;
+    };
 
-    $scope.bgColor;
+    $scope.disableEdit = function (item) {
+        item.editable = false;
+    };
 
-    $scope.id;
-    $scope.changeColor=function(value,id)
+    $scope.disableCart = function (item)
     {
-        console.log("id",id);
-         $scope.id=id;
-        $scope.bgColor=value;
-        console.log($scope.bgColor);
+        item.editable = false;
+        console.log("r1");
+    };
+
+
+    $scope.changeInitialColor=function(value)
+    {
+      console.log("value",value );
+      $scope.noteModel.color=value;
+    }
+
+    $scope.changeColor=function(value,note)
+    {
+     console.log("color1",note.color);
+     console.log("value",value);
+     note.color=value;
+     console.log("color2",note.color);
+     noteService.updateNote(note).then(function successCallback(response) {
+         console.log("successfully",response);
+     }, function errorCallback(response) {
+         console.log("failed",response);
+     });
+
+    }
+
+    $scope.more=['Delete note','Add label','Make a copy','Show checkboxes','Copy to Google Docs'];
+    $scope.takenotemore=['Add label','Show checkboxes'];
+
+    $scope.performAction=function(task,id)
+    {
+      console.log("task",task);
+
+        switch (task) {
+            case 'Delete note':
+                noteService.deleteNote(id)  .then(function successCallback(response) {
+                    console.log(response);
+                }, function errorCallback(response) {
+                    console.log(response);
+                })
+
+                break;
+            case 'Add label':
+
+                break;
+            case 'Make a copy':
+
+                break;
+            case 'Show checkboxes':
+                unqiueFunction(cameraItem, value);
+                break;
+
+            case 'Copy to Google Docs':
+
+                break;
+        }
     }
 });

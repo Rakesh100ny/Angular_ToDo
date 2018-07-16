@@ -28,33 +28,25 @@ app.factory('noteService', function($http)
 
         console.log(angular.toJson(note));
 
-        return $http(req).then(function successCallback(response) {
-            console.log(response);
-        }, function errorCallback(response) {
-            console.log(response);
-        })
+        return $http(request);
     };
 
 
-    var deleteNote= function deleteNote(note,noteId) {
-        var req = {
+    var deleteNote= function deleteNote(noteId) {
+        var request = {
             method: "DELETE",
-            url: "http://localhost:8081/Fundo_Note/deletenote"+noteId,
+            url: "http://localhost:8081/Fundo_Note/deletenote/"+noteId,
             headers: {
                 'Content-Type': "application/json",
                 'userLoginToken': localStorage.getItem('tokenLogin')
             },
-            data: angular.toJson(userData)
+            data: angular.toJson(noteId)
         };
-        $http(req).then(function successCallback(response) {
-            console.log(response);
-        }, function errorCallback(response) {
-            console.log(response);
-        })
+       return $http(request);
     };
 
     var getlistAllNotes=  function getlistAllNotes() {
-        var req = {
+        var request = {
             method: "GET",
             url: "http://localhost:8081/Fundo_Note/note",
             headers: {
@@ -62,8 +54,8 @@ app.factory('noteService', function($http)
                 'userLoginToken': localStorage.getItem('tokenLogin')
             }
         };
-        console.log(req);
-        var data = $http(req).then(function successCallback(response) {
+        console.log(request);
+        var data = $http(request).then(function successCallback(response) {
             return response.data;
         }, function errorCallback(response) {
             console.log(response);

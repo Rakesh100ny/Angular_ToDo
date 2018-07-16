@@ -1,9 +1,9 @@
 
-<div data-ng-init="getAllNotes()"   style="background-color: #e8e8e8;height: 200%" id="dashboard">
+<div data-ng-init="getAllNotes()"  style="background-color: #e8e8e8;height: 100%" id="dashboard">
     <div class="dashboard" layout="row"  layout-xs="column" layout-align="center center">
 
 
-        <md-card class="md-whiteframe-z2" id="take-note-card"  layout="row" layout-align="top center" ng-show="!showCard">
+        <md-card class="md-whiteframe-z2" id="take-note-card"   layout="row" layout-align="top center" ng-show="!showCard">
             <md-card-header>
                 <md-card-header-text>
                     <md-input-container class="take-note-input" md-no-float>
@@ -18,13 +18,18 @@
             </div>
         </md-card>
 
-        <md-card  class="md-whiteframe-z2 take-note-show-card"  ng-show="showCard">
+
+        <md-card  class="md-whiteframe-z2 take-note-show-card" style="background-color:{{noteModel.color}}" ng-show="showCard">
+
             <div layout="row"  class="take-note-div1"  layout-align="top center">
                 <md-input-container style="width:550px;" md-no-float>
                     <input type="text"  style="border: none;margin: 30px 0 0 5px;"   ng-model="noteModel.title" placeholder="Title">
                 </md-input-container>
                 <span flex></span>
-                <md-icon md-svg-icon="asset/pin.svg"></md-icon>
+               <md-button class="md-icon-button">
+                <md-icon md-svg-icon="asset/pin.svg" ngStyle="noteModel.isPinned ? {color:gray}:{color:currentColor}"></md-icon>
+               </md-button>
+
             </div>
             <div layout="row" class="take-note-div2"  layout-align="top center">
                 <md-input-container style="width: 580px" md-no-float>
@@ -32,13 +37,12 @@
                 </md-input-container>
             </div>
 
-            <div layout="row" layout-align="space-between end" class="take-note-div3">
-                <note-icon></note-icon>
+            <div layout="row" layout-align="space-between end"  class="take-note-div3">
+                <takenoteicon></takenoteicon>
                 <md-button class="take-note-button"  ng-click="showCard=false;addNote(noteModel);loadPage();">
                     <strong>Close</strong>
                 </md-button>
             </div>
-
 
         </md-card>
 
@@ -46,56 +50,22 @@
 
     </div>
 
-    <div  style="margin-top: 35px;"  flex-offset="15" >
-        <md-content   ng-show="showNote"   style="max-width: 800px;background-color: #abcdef" layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center" >
-        <md-card style="width: 250px;background-color:{{bgColor}}"  ng-repeat='note in note_info'>
+    <div  style="margin-top: 35px;"   flex-offset="15" >
+        <md-content   ng-show="showNote" ng-switch="note.editable"  style="max-width: 800px;background-color: #e8e8e8" layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center" >
+        <md-card ng-mouseover="enableEdit(note)" ng-click='showDialog($event,note);disableCart(note)' ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}}"  ng-repeat="note in note_info | filter:{pined:false} | filter:{trashed:false} | filter:{archived:false}">
             <md-card-title>
                 <md-card-title-text>
                     <div class="md-headline">{{note.title}} </div>
                 </md-card-title-text>
+                <md-icon style="width: 5px;height: 5px;" md-svg-icon="asset/pin.svg"></md-icon>
+
             </md-card-title>
             <md-card-content class="center">
                 <p>{{note.description}}</p>
             </md-card-content>
-
-                <div  layout="row"  layout-align="space-around center">
-                    <md-button  class="md-icon-button">
-                        <md-icon><i class="material-icons md-18">touch_app</i></md-icon>
-                        <md-tooltip>Remind Me</md-tooltip>
-                    </md-button>
-
-                    <md-button class="md-icon-button">
-                        <md-icon><i class="material-icons md-18">person_add</i></md-icon>
-                        <md-tooltip>Collaboators</md-tooltip>
-                    </md-button>
-                   <md-menu md-position-mode="target-left target">
-                    <md-button class="md-icon-button" ng-mouseenter="$mdMenu.open()">
-                        <md-icon><i class="material-icons">palette</i></md-icon>
-                        <md-tooltip>Colours</md-tooltip>
-                    </md-button>
-                    <md-menu-content  ng-mouseleave="$mdMenu.close()">
-                        <md-menu-item ng-repeat="item in colors">
-                            <md-button ng-click="changeColor(color,note.id);" md-autofocus class="md-icon-button" style="border: 1px black" ng-repeat="color in item">
-                                <md-icon style="color:{{color}}" ><i class="material-icons"> fiber_manual_record </i></md-icon>
-                            </md-button>
-                        </md-menu-item>
-                    </md-menu-content>
-                   </md-menu>
-                    <label>
-                        <md-icon><i class="material-icons md-18">image</i></md-icon>
-                        <md-tooltip>Add image</md-tooltip>
-                    </label>
-                    <md-button class="md-icon-button md-18">
-                        <md-icon><i class="material-icons">archive</i></md-icon>
-                        <md-tooltip>Archive</md-tooltip>
-                    </md-button>
-
-                    <md-button class="md-icon-button">
-                        <md-icon><i class="material-icons md-18">more_vert</i></md-icon>
-                        <md-tooltip>More</md-tooltip>
-                    </md-button>
-                </div>
-
+            <div  layout="row" layout-align="space-around center">
+              <noteicon></noteicon>
+            </div>
         </md-card>
     </div>
 
@@ -105,5 +75,35 @@
         </div>
         <span class="mid-logo-text"><strong>Notes you add appear here</strong></span>
     </div>
+
+
+
+    <div  style="margin-top: 35px;"   flex-offset="15" >
+        <md-subheader class="md-primary">Pinned</md-subheader>
+        <md-content   ng-show="showPinnedNote" ng-switch="note.editable"  style="max-width: 800px;background-color: #e8e8e8" layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center" >
+            <md-card ng-mouseover="enableEdit(note)" ng-click='showDialog($event,note);disableCart(note)' ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}}"  ng-repeat="note in note_info | filter:{pined:true}">
+                <md-card-title>
+                    <md-card-title-text>
+                        <div class="md-headline">{{note.title}} </div>
+                    </md-card-title-text>
+                    <md-icon style="width: 5px;height: 5px;" md-svg-icon="asset/pin.svg"></md-icon>
+
+                </md-card-title>
+                <md-card-content class="center">
+                    <p>{{note.description}}</p>
+                </md-card-content>
+                <div  layout="row" layout-align="space-around center">
+                    <noteicon></noteicon>
+                </div>
+            </md-card>
+    </div>
+
+    <div layout="column"  ng-show="showLogo"   layout-align="center center" layout-xs="colum">
+        <div layout="column" class="dashboard">
+            <img src="asset/download.svg" class="mid-logo" alt="dataNotFound">
+        </div>
+        <span class="mid-logo-text"><strong>Notes you add appear here</strong></span>
+    </div>
+
 
 </div>
