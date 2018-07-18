@@ -1,4 +1,4 @@
-var app = angular.module('keepApp', [ 'ui.router', 'ngMaterial', 'ngMessages','ngStorage']);
+var app = angular.module('keepApp', [ 'ui.router', 'ngMaterial', 'ngMessages','ngPassword']);
 app.config([ '$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
         $stateProvider
@@ -13,6 +13,25 @@ app.config([ '$stateProvider', '$urlRouterProvider',
                 url : '/register',
                 templateUrl : 'template/register.html',
                 controller : 'userController'
+            })
+
+
+            .state('home.trash', {
+                url : '/trash',
+                templateUrl : 'template/trash.html',
+                controller : 'noteController'
+            })
+
+            .state('home.archive', {
+                url : '/archive',
+                templateUrl : 'template/archive.html',
+                controller : 'noteController'
+            })
+
+            .state('home.reminders', {
+                url : '/reminders',
+                templateUrl : 'template/reminders.html',
+                controller : 'noteController'
             })
 
             .state('signupSuccess', {

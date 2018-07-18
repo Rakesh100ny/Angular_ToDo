@@ -1,5 +1,4 @@
-
-<div data-ng-init="getAllNotes()"  style="background-color: #e8e8e8;height: 200%" id="dashboard">
+<div data-ng-init="getAllNotes()" ng-show="isChangedView" style="background-color: #e8e8e8;height: 200%" id="dashboard">
     <div class="dashboard" layout="row"  layout-xs="column" layout-align="center center">
 
 
@@ -26,9 +25,9 @@
                     <input type="text"  style="border: none;margin: 30px 0 0 5px;"   ng-model="noteModel.title" placeholder="Title">
                 </md-input-container>
                 <span flex></span>
-               <md-button aria-label="Pined Button" class="md-icon-button" ng-click="changeInitialPined(noteModel.isPined)">
-                <md-icon  md-svg-icon="asset/pin.svg" ></md-icon>
-               </md-button>
+                <md-button aria-label="Pined Button" class="md-icon-button" ng-click="changeInitialPined(noteModel.isPined)">
+                    <md-icon  md-svg-icon="asset/pin.svg" ></md-icon>
+                </md-button>
 
             </div>
             <div layout="row" class="take-note-div2"  layout-align="top center">
@@ -50,28 +49,28 @@
     <div  style="margin-top: 35px;" flex-offset="15">
         <md-subheader ng-if="showPinedNote && noteArray.length!=0" style="background-color: #e8e8e8;margin-left: 90px;">Other</md-subheader>
         <md-content   ng-show="showNote"  style="max-width: 800px;background-color: #e8e8e8;margin-left: 100px; " layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center" >
-        <md-card ng-mouseover="enableEdit(note)"  ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}}"  ng-repeat="note in note_info | filter:{pined:false,trashed:false,archived:false} as noteArray">
-            <md-card-title>
-                <md-card-title-text>
-                    <div class="md-headline">{{note.title}} </div>
-                </md-card-title-text>
-                <md-button class="md-icon-button" ng-click="isPinnedNote(note);">
-                <md-icon style="width: 5px;height: 5px;"  md-svg-icon="asset/pin.svg" ></md-icon>
-                </md-button>
-            </md-card-title>
-            <md-card-content class="center">
-                <p>{{note.description}}</p>
-            </md-card-content>
-            <div  layout="row" style="height: 50px;" layout-align="space-around center">
-              <noteicon></noteicon>
-            </div>
-        </md-card>
+            <md-card ng-mouseover="enableEdit(note)"  ng-mouseleave="disableEdit(note)" style="width: 600px;background-color:{{note.color}}"  ng-repeat="note in note_info | filter:{pined:false,trashed:false,archived:false} as noteArray">
+                <md-card-title>
+                    <md-card-title-text>
+                        <div class="md-headline">{{note.title}} </div>
+                    </md-card-title-text>
+                    <md-button class="md-icon-button" ng-click="isPinnedNote(note);">
+                        <md-icon style="width: 5px;height: 5px;"  md-svg-icon="asset/pin.svg" ></md-icon>
+                    </md-button>
+                </md-card-title>
+                <md-card-content class="center">
+                    <p>{{note.description}}</p>
+                </md-card-content>
+                <div  layout="row" style="height: 50px;" layout-align="space-around center">
+                    <noteicon></noteicon>
+                </div>
+            </md-card>
     </div>
 
     <div   ng-show="showPinedNote" style="margin-top: 35px;" flex-offset="15">
         <md-subheader  style="background-color: #e8e8e8;margin-left: 90px;">Pinned</md-subheader>
         <md-content    style="max-width: 800px;background-color: #e8e8e8;margin-left: 100px;" layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center" >
-            <md-card ng-mouseover="enableEdit(note)"  ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}};"  ng-repeat="note in note_info | filter:{pined:true,trashed:false,archived:false} as noteArray">
+            <md-card ng-mouseover="enableEdit(note)"  ng-mouseleave="disableEdit(note)" style="width: 600px;background-color:{{note.color}};"  ng-repeat="note in note_info | filter:{pined:true,trashed:false,archived:false} as noteArray">
                 <md-card-title>
                     <md-card-title-text>
                         <div class="md-headline">{{note.title}} </div>
@@ -98,9 +97,3 @@
     </div>
 
 </div>
-
-
-<!--  -------------------------------------------------------Change View---------------------------------------------------- -->
-
-<changeview></changeview>
-

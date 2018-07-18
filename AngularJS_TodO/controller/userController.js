@@ -1,5 +1,7 @@
 app.controller('userController', function($scope, userService,$state) {
 
+    var baseUrl="http://localhost:8081/Fundo_Note/";
+
     $scope.registerModel = {
         firstName : "Enter First Name ie. Ronny",
         lastName : "Enter Last Name ie. Roy",
@@ -36,8 +38,10 @@ app.controller('userController', function($scope, userService,$state) {
         console.log("User Details", angular.toJson(registerModel));
         localStorage.setItem("registerEmail",registerModel.email);
 
-        userService.registerUser(registerModel)
-            .then( function successCallback(response){
+     var url= baseUrl+"register";
+
+        console.log("url",url);
+        userService.postAPI(url,registerModel).then( function successCallback(response){
                     $state.go('signupSuccess')
                     console.log("successfully",response.data.message);
                 },
@@ -55,9 +59,12 @@ app.controller('userController', function($scope, userService,$state) {
 
     $scope.registerEmail=localStorage.getItem("registerEmail");
 
+
     $scope.login = function(loginModel) {
+
+        var url= baseUrl+"login";
         console.log("Login Details", angular.toJson(loginModel));
-        userService.loginUser(loginModel).then(function successCallback(response)
+        userService.postAPIWithHeader(url,loginModel).then(function successCallback(response)
         {
             $state.go('home.dashboard');
             localStorage.setItem("tokenLogin",response.data.message);
@@ -79,7 +86,8 @@ app.controller('userController', function($scope, userService,$state) {
     $scope.forgotPassword = function(forgotPasswordModel) {
         console.log("ForgotPassword Details", angular.toJson(forgotPasswordModel));
         localStorage.setItem("forgotPasswordEmail",forgotPasswordModel.email);
-        userService.forgotPasswordUser(forgotPasswordModel).then(function successCallback(response){
+        var url= baseUrl+"forgotpassword";
+        userService.postAPI(url,forgotPasswordModel).then(function successCallback(response){
             localStorage.setItem("tokenForgotPassword",response.data.message);
             console.log("successfully",response.data.message);
             $state.go('forgotpasswordSuccess')
@@ -97,8 +105,9 @@ app.controller('userController', function($scope, userService,$state) {
     $scope.forgotPasswordEmail=localStorage.getItem("forgotPasswordEmail");
 
     $scope.resetPassword = function(passwordModel) {
+        var url= baseUrl+"resetpassword";
         console.log("ResetPassword Details", angular.toJson(passwordModel));
-        userService.resetPasswordUser(passwordModel).then(function successCallback(response){
+        userService.postAPIWithHeader(url,passwordModel).then(function successCallback(response){
             $state.go('login')
             console.log("successfully",response.data.message);
 

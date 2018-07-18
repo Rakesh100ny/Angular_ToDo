@@ -1,45 +1,48 @@
 <div ng-show="note.editable" layout="row" layout-align="space-between end">
 
-    <md-button class="md-icon-button" style="margin: 0 auto;padding: 0px">
+    <md-button aria-label="Remind Me" class="md-icon-button" style="margin: 0 auto;padding: 0px">
         <md-icon><i class="material-icons">touch_app</i></md-icon>
         <md-tooltip>Remind Me</md-tooltip>
     </md-button>
 
-    <md-button class="md-icon-button" style="padding: 0px;margin: 0 auto;">
+    <md-button aria-label="Collaboators"  class="md-icon-button" style="padding: 0px;margin: 0 auto;">
         <md-icon><i class="material-icons">person_add</i></md-icon>
         <md-tooltip>Collaboators</md-tooltip>
     </md-button>
 
-    <md-menu>
-            <md-button class="md-icon-button"  style="margin: 0 auto;padding: 0px" ng-mouseenter="$mdMenu.open()">
+    <md-menu md-position-mode="target-right target">
+            <md-button aria-label="Colors" class="md-icon-button"  style="margin: 0 auto;padding: 0px" ng-mouseenter="$mdMenu.open()">
             <md-icon><i class="material-icons">palette</i></md-icon>
         </md-button>
-        <md-menu-content ng-mouseleave="$mdMenu.close()">
+        <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
             <md-menu-item ng-repeat="item in colors">
-                <md-button style=";background-color: {{obj.value}};border-radius: 50%;" ng-click="changeColor(obj.value,note);" class="md-icon-button" ng-repeat="obj in item">
+                <md-button  md-autofocus style=";background-color: {{obj.value}};border-radius: 50%;" ng-click="changeColor(obj.value,note);" class="md-icon-button" ng-repeat="obj in item">
+                  <span>
+                    <md-tooltip md-visible>{{obj.name}}</md-tooltip>
+                  </span>
                 </md-button>
             </md-menu-item>
         </md-menu-content>
     </md-menu>
 
-    <md-button class="md-icon-button" style="margin: 0 auto;padding: 0px">
+    <md-button aria-label="Image" class="md-icon-button" style="margin: 0 auto;padding: 0px">
         <md-icon><i class="material-icons">image</i></md-icon>
         <md-tooltip>Add image</md-tooltip>
     </md-button>
 
-    <md-button class="md-icon-button" style="margin: 0 auto;padding: 0px">
+    <md-button ng-click="isArchivedNote(note)" aria-label="Archive" class="md-icon-button" style="margin: 0 auto;padding: 0px">
         <md-icon><i class="material-icons">archive</i></md-icon>
         <md-tooltip>Archive</md-tooltip>
     </md-button>
 
-    <md-menu>
-        <md-button class="md-icon-button" style="margin: 0 auto;padding: 0px" ng-mouseenter="$mdMenu.open($event)">
+    <md-menu md-position-mode="target-right target">
+        <md-button aria-label="More" class="md-icon-button" style="margin: 0 auto;padding: 0px" ng-mouseenter="$mdMenu.open($event)">
             <md-icon><i class="material-icons">more_vert</i></md-icon>
             <md-tooltip>More</md-tooltip>
         </md-button>
-        <md-menu-content width="1">
-            <md-menu-item ng-repeat="item in more">
-                <md-button ng-click="performAction(item,note.id);loadPage();">
+        <md-menu-content  class="md-menu" ng-mouseleave="$mdMenu.close()">
+            <md-menu-item ng-repeat="item in more" >
+                <md-button ng-click="performAction(item,note);">
                     <span md-menu-align-target>{{item}}</span>
                 </md-button>
             </md-menu-item>

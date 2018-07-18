@@ -1,11 +1,11 @@
-<div layout="column"  ng-cloak>
+<div data-ng-init="profileInfo()" layout="column"  ng-cloak>
     <md-toolbar class="md-toolbar-tools" id="toolbar">
 
         <md-button flex-gt-md="5" ng-click="toggleLeft()" class="md-icon-button">
             <md-icon><i class="material-icons" style="color: #444444">menu</i> </md-icon>
         </md-button>
 
-        <span  class="navbar-logo-text1">Google</span>&nbsp;<span class="navbar-logo-text2">Keep</span>
+        <span  class="navbar-logo-text1">fundoo</span>&nbsp;<span class="navbar-logo-text2">Notes</span>
 
         <span flex></span>
         <div layout="row"  class="search-box">
@@ -13,9 +13,9 @@
                 <md-icon><i class="material-icons" style="color: #444444">search</i></md-icon>
             </md-button>
 
-            <input type="search" class="input-serach" placeholder="Search" name="search"/>
+            <input type="search"  class="input-serach" placeholder="Search" name="search"/>
 
-            <md-button class="md-icon-button md-icon-right">
+            <md-button ng-show="showCancelIcon" class="md-icon-button md-icon-right">
                 <md-icon><i class="material-icons" style="color: #444444">close</i></md-icon>
             </md-button>
 
@@ -23,7 +23,7 @@
         <span flex></span>
         <div layout="row" layout-align="space-around center">
             <md-button class="md-icon-button md-icon-left" hide-sm=""> <md-icon><i class="material-icons" style="color: #444444">refresh</i></md-icon></md-button>
-            <md-button class="md-icon-button md-icon-right"><md-icon><i class="material-icons" style="color: #444444">view_stream</i></md-icon></md-button>
+            <md-button ng-click="changeView()"class="md-icon-button md-icon-right"><md-icon><i class="material-icons" style="color: #444444">view_stream</i></md-icon></md-button>
         </div>
         <span flex></span>
         <div layout="row" layout-align="space-around center">
@@ -42,8 +42,8 @@
                         <md-list-item class="md-3-line">
                             <img src="asset/profile.jpg"  class="profile-card-img" alt="profile" />
                             <div class="md-list-item-text" style="text-align: justify-all" layout="column" layout-align="space-around end">
-                                <div layout="row" class="profile-name">Rakesh Soni</div>
-                                <div layout="row" class="profile-email">rakeshsoni.rs1900@gmail.com</div>
+                                <div layout="row" class="profile-name">{{value.iss}}</div>
+                                <div layout="row" class="profile-email">{{value.sub}}</div>
                                 <div layout="row">
                                     <a ui-sref="google.com" class="google" target="_blank" style="margin-right: 5px">Google+ Profile</a>
                                     <span aria-hidden="true">–</span>
@@ -56,9 +56,9 @@
                         <br>
                         <md-divider ></md-divider>
                         <div layout="row"  layout-xs="row">
-                            <md-button class="add-btn">Add account</md-button>
+                            <md-button ng-click="sendToLogin()" class="add-btn">Add account</md-button>
                             <span flex></span>
-                            <md-button class="sign-out-btn" >Sign out</md-button>
+                            <md-button ng-click="sendToLogin()" class="sign-out-btn" >Sign out</md-button>
                         </div>
                     </md-list>
                 </md-content>
