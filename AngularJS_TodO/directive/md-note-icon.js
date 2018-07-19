@@ -1,6 +1,6 @@
 app.directive('noteicon', function() {
     return {
         restrict: 'EA',
-        templateUrl: 'template/icon.html'
+        templateUrl: 'template/icon.html',
     };
 });

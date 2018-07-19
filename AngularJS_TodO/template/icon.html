@@ -1,10 +1,54 @@
 <div ng-show="note.editable" layout="row" layout-align="space-between end">
 
-    <md-button aria-label="Remind Me" class="md-icon-button" style="margin: 0 auto;padding: 0px">
+    <md-menu>
+    <md-button aria-label="Remind Me" class="md-icon-button" style="margin: 0 auto;padding: 0px" ng-click="$mdMenu.open($event)">
         <md-icon><i class="material-icons">touch_app</i></md-icon>
         <md-tooltip>Remind Me</md-tooltip>
     </md-button>
+        <md-menu-content width="4">
+            <md-subheader><strong>Reminder :</strong></md-subheader>
+          <md-menu-item ng-repeat="item in reminders">
+              <md-button ng-click="" ng-repeat="info in item">
+                  <div layout="row" flex>
+                      <p flex>{{info.name}}</p>
+                      <p>{{info.value}}</p>
+                  </div>
+              </md-button>
+          </md-menu-item>
+          <md-menu-item>
+           <md-menu>
+           <md-button class="md-button" ng-click="$mdMenu.open($event)" style="background-color: #e8e8e8">
+             <span><md-icon><i class="material-icons md-10">access_time</i></md-icon></span>
+               Pick date & time
+           </md-button>
+            <md-menu-content width="1">
+                <md-subheader class="md-no-stricky">Pick date & time</md-subheader>
+             <md-menu-item>
+                   <form name="myForm" flex-gt-xs>
+                      <md-input-container md-no-float>
+                         <md-datepicker md-placeholder="Add a date" ng-model="myDate" name="dateField" md-min-date="cminDate"
+                                        md-max-date="maxDate"></md-datepicker>
 
+                         <div ng-messages="myForm.dateField.$error">
+                             <div ng-message="valid">Use a valid date format</div>
+                             <div ng-message="mindate">Choose a date on or after {{minDate | date:"shortDate"}}</div>
+                             <div ng-message="maxdate">Choose a date on or before {{maxDate | date:"shortDate"}}</div>
+                         </div>
+                     </md-input-container>
+                 </form>
+             </md-menu-item>
+            </md-menu-content>
+           </md-menu>
+          </md-menu-item>
+              <md-menu-item>
+                  <md-button class="md-button">
+                      <span><md-icon><i class="material-icons">place</i></md-icon></span>
+                      Pick place
+                  </md-button>
+
+              </md-menu-item>
+          </md-menu-content>
+    </md-menu>
     <md-button aria-label="Collaboators"  class="md-icon-button" style="padding: 0px;margin: 0 auto;">
         <md-icon><i class="material-icons">person_add</i></md-icon>
         <md-tooltip>Collaboators</md-tooltip>
@@ -16,7 +60,7 @@
         </md-button>
         <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
             <md-menu-item ng-repeat="item in colors">
-                <md-button  md-autofocus style=";background-color: {{obj.value}};border-radius: 50%;" ng-click="changeColor(obj.value,note);" class="md-icon-button" ng-repeat="obj in item">
+                <md-button  md-autofocus style=";background-color: {{obj.value}};border-radius: 50%;" ng-click="changeNoteColor(obj.value,note);" class="md-icon-button" ng-repeat="obj in item">
                   <span>
                     <md-tooltip md-visible>{{obj.name}}</md-tooltip>
                   </span>
@@ -36,7 +80,7 @@
     </md-button>
 
     <md-menu md-position-mode="target-right target">
-        <md-button aria-label="More" class="md-icon-button" style="margin: 0 auto;padding: 0px" ng-mouseenter="$mdMenu.open($event)">
+        <md-button aria-label="More" class="md-icon-button" style="margin: 0 auto;padding: 0px" ng-click="$mdMenu.open($event)">
             <md-icon><i class="material-icons">more_vert</i></md-icon>
             <md-tooltip>More</md-tooltip>
         </md-button>

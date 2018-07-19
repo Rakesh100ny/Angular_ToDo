@@ -14,9 +14,8 @@ app.controller('noteController', function($scope,$timeout,$mdDialog,$mdSidenav,n
     };
 
 
-
     $scope.sendToReminders = function() {
-        $state.go('reminders');
+        $state.go('home.reminders');
     }
 
     $scope.sendToNotes = function() {
@@ -25,23 +24,81 @@ app.controller('noteController', function($scope,$timeout,$mdDialog,$mdSidenav,n
 
     $scope.sendToArchive = function() {
         $state.go('home.archive');
+
     }
 
     $scope.sendToTrash = function()
     {
-        console.log("r1");
         $state.go('home.trash');
     }
 
     $scope.sendToLogin = function() {
-        console.log("r1");
         $window.localStorage.clear();
         $location.path('login');
     }
 
 
+        $scope.changeColor = function()
+        {
+            $scope.colorValue={};
+            $scope.current = $state.current;
+            console.log("name",$scope.current.name);
+            console.log("url",$scope.current.url);
+
+            switch ($scope.current.name) {
+                case 'home.dashboard':  $scope.title = "fundoo Notes";
+                                        $scope.CustomColor = {
+                                            'background-color': '#fb0',
+                                            'color': 'black'
+                                        }
+                                        break;
+                case 'home.reminders':  $scope.title = "Reminders";
+                                        $scope.CustomColor = {
+                                            'background-color': '#607d8b',
+                                            'color': '#ffffff'
+                                        }
+                                        break;
+                case 'home.archive':    $scope.title = "Archive";
+                                        $scope.CustomColor = {
+                                            'background-color': '#607d8b',
+                                            'color': '#ffffff'
+                                        }
+                                        break;
+                case 'home.trash'  :    $scope.title = "Trash";
+                                        $scope.CustomColor = {
+                                            'background-color': '#636363',
+                                            'color': '#ffffff'
+                                        }
+                                        break;
+
+            }
+
+            $scope.colorValue=$scope.CustomColor;
+            console.log("colorValue",angular.toJson($scope.colorValue));
+           };
+
+
+    $scope.changeColor();
+
+    $scope.myDate = new Date();
+
+    $scope.minDate = new Date(
+        $scope.myDate.getFullYear(),
+        $scope.myDate.getMonth() - 2,
+        $scope.myDate.getDate()
+    );
+
+    $scope.maxDate = new Date(
+        $scope.myDate.getFullYear(),
+        $scope.myDate.getMonth() + 2,
+        $scope.myDate.getDate()
+    );
+
+
+
     $scope.showDialog = function(event,note) {
 
+        console.log("note Information",note);
         $mdDialog.show({
             locals : {noteInfo : note},
             controller: DialogCtrl,
@@ -54,10 +111,25 @@ app.controller('noteController', function($scope,$timeout,$mdDialog,$mdSidenav,n
 
     };
     function DialogCtrl($scope, $mdDialog,noteInfo) {
+        console.log("note details",noteInfo);
         $scope.noteInfo= noteInfo;
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
+
+        $scope.updateNote=function(note)
+        {
+            var url=baseUrl+"updatenote";
+
+            noteService.putAPIWithHeader(url,note).then(function successCallback(response) {
+                $scope.getAllNotes();
+                console.log("Update Successfully",response);
+            }, function errorCallback(response) {
+                console.log(" Update failed",response);
+            });
+        }
+
+
     }
 
 
@@ -81,9 +153,6 @@ app.controller('noteController', function($scope,$timeout,$mdDialog,$mdSidenav,n
                 {
                     document.getElementById('archive').style.marginLeft = '100px';
                 }
-
-
-
             } else {
 
                 if($state.is('home.dashboard'))
@@ -95,16 +164,11 @@ app.controller('noteController', function($scope,$timeout,$mdDialog,$mdSidenav,n
                 {
                     document.getElementById('archive').style.marginLeft = '0px';
                 }
-
-
             }
-
         };
     }
 
      $scope.isVisible = false;
-
-
 
      $scope.clickProfile = function() {
         $scope.isVisible = $scope.isVisible ? false : true;
@@ -115,6 +179,7 @@ app.controller('noteController', function($scope,$timeout,$mdDialog,$mdSidenav,n
 
     $scope.isTrashedNote=function(note)
     {
+        console.log("r2");
         var url=baseUrl+"updatenote";
         console.log("Before pin: ",note.trashed);
         if(note.trashed===false)
@@ -141,7 +206,7 @@ app.controller('noteController', function($scope,$timeout,$mdDialog,$mdSidenav,n
     {
         switch (task) {
             case 'Delete note':
-
+                console.log("r1");
                 $scope.isTrashedNote(note);
                 break;
             case 'Add label':
@@ -251,13 +316,35 @@ app.controller('noteController', function($scope,$timeout,$mdDialog,$mdSidenav,n
         });
     }
 
+
+
     $scope.isChangedView=false;
 
     $scope.changeView=function()
     {
         $scope.isChangedView = $scope.isChangedView ? false : true;
-
         console.log("view",$scope.isChangedView);
+
+
+        var notes = document.getElementsByClassName("card");
+
+        console.log("notes",notes);
+        if($scope.isChangedView)
+        {
+            for (i = 0; i < notes.length; i++) {
+                notes[i].style.width = "79%";
+                notes[i].style.marginLeft="10%";
+            }
+        }
+        else
+        {
+            for (i = 0; i < notes.length; i++) {
+                notes[i].style.width = "30%";
+                notes[i].style.marginLeft="0%";
+            }
+        }
+
+
     }
 
    $scope.colors=
@@ -368,7 +455,6 @@ app.controller('noteController', function($scope,$timeout,$mdDialog,$mdSidenav,n
                         }
                     })
 
-                    console.log("note",$scope.note_info);
 
 
                 }
@@ -401,7 +487,6 @@ app.controller('noteController', function($scope,$timeout,$mdDialog,$mdSidenav,n
 
     $scope.changeInitialPined=function(value)
     {
-      console.log("value",value);
 
         if(!value)
         {
@@ -417,7 +502,7 @@ app.controller('noteController', function($scope,$timeout,$mdDialog,$mdSidenav,n
         $scope.noteModel.isPined=value;
     }
 
-    $scope.changeColor=function(value,note)
+    $scope.changeNoteColor=function(value,note)
     {
      var url=baseUrl+"updatenote";
      note.color=value;
@@ -434,7 +519,23 @@ app.controller('noteController', function($scope,$timeout,$mdDialog,$mdSidenav,n
 
     $scope.takenotemore=['Add label','Show checkboxes'];
 
+
+    $scope.addTime=[
+        [{'name':'Morning','value':'8:00 AM'}],
+        [{'name':'Afternoon','value':'1:00 PM'}],
+        [{'name':'Evening','value':'Mon,6:00 PM'}],
+        [{'name':'Night','value':'8:00 PM'}]
+    ];
+
+
     $scope.trashmore=['Delete forever','Restore'];
+
+    $scope.reminders=[
+        [{'name':'Later today','value':'8:00 PM'}],
+        [{'name':'Tomorrow','value':'8:00 AM'}],
+        [{'name':'Next Week','value':'Mon,8:00 AM'}],
+        [{'name':'Home','value':'Jaitaran'}]
+     ];
 
 
 

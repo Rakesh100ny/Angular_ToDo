@@ -29,7 +29,6 @@ app.factory('noteService', function($http,$location)
                 },
                 data: angular.toJson(data)
             }
-
         return $http(request);
     }
 

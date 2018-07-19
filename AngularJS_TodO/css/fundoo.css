@@ -3,7 +3,6 @@ body{
 
 }
 
-
 .card-button {
     width: 100%;
     text-align: center;
@@ -32,38 +31,34 @@ body{
     vertical-align:middle;
     letter-spacing:normal;
     word-spacing: 0px;
-    color:#000000;
-    color:rgb(0, 0, 0);
-    background-color:#000000;
-    background-color:rgba(0, 0, 0, 0);
+
     font-size: 25px;
     font-family: Roboto, RobotoDraft, Arial, sans-serif;
 }
 
 .navbar-logo-text2
 {
-    color: #000000;
-    color:rgb(0, 0, 0);
-    background-color: #000000;
-    background-color:rgba(0, 0, 0, 0);
+
     line-height:24px;
     vertical-align:middle;
     letter-spacing:normal;
     word-spacing:0px;
     font-weight:400;
     font-style:normal;
-    font-variant:normal;
-    text-transform:none;
     text-align:start;
-    text-indent:0px;
     font-size: 22px;
     font-family: "Product Sans", Arial, sans-serif;
 
 }
 
+.note-title
+{
+ word-wrap: break-word;
+}
+
 #toolbar
 {
-    background-color: #fb0;
+ position: fixed;
 }
 
 .search-box
@@ -74,17 +69,30 @@ body{
     word-spacing: 0px;
     font-weight: 400;
     font-style: normal;
-    font-variant: normal;
-    text-transform: none;
     text-decoration: none solid rgb(0, 0, 0);
     text-align: start;
-    text-indent: 0px;
     font-size: 16px;
+    background-color: rgba(0,0,0,0.04);
     font-family: Roboto, RobotoDraft, Arial, sans-serif;
-    border: #fafafa solid 2px;
-    border-radius: 5px;
-    background: white;
+    border: 1px solid rgba(0,0,0,0);
+    border-radius: 4px;
     min-width: 720px;
+    webkit-transition: background 100ms ease-in,width 100ms ease-out;
+    transition: background 100ms ease-in,width 100ms ease-out;
+}
+
+.input-serach
+{
+    border: 1px solid rgba(0,0,0,0);
+    border-radius: 4px;
+    width: 100%;
+    background-color: rgba(0,0,0,0.04);
+    height: 36px;
+    font-size:16px;
+    font-family: Roboto,sans-serif;
+    webkit-transition: background 100ms ease-in,width 100ms ease-out;
+    transition: background 100ms ease-in,width 100ms ease-out;
+
 }
 
 .profile-card-img
@@ -98,9 +106,8 @@ body{
 {
     margin-left: -360px;
     width: 350px;
-
     background: #fff;
-    border: 1px solid #ccc;
+    border: 1px solid;
     border-color: rgba(0,0,0,.2);
     color: #000;
     box-shadow: 0 2px 10px rgba(0,0,0,.2);
@@ -120,11 +127,8 @@ body{
     word-spacing:0px;
     font-weight:700;
     font-style: normal;
-    font-variant: normal;
-    text-transform:none;
     text-decoration:none solid rgb(0, 0, 0);
     text-align:start;
-    text-indent:0px;
     color:#000000;
     color:rgb(0, 0, 0);
     background-color:#000000;
@@ -142,11 +146,8 @@ body{
     word-spacing:0px;
     font-weight:400;
     font-style: normal;
-    font-variant: normal;
-    text-transform:none;
     text-decoration:none solid rgb(102, 102, 102);
     text-align:start;
-    text-indent:0px;
     color: #666666;
     color:rgb(102, 102, 102);
     background-color:#000000;
@@ -164,11 +165,8 @@ body{
     word-spacing:0px;
     font-weight:700;
     font-style: normal;
-    font-variant: normal;
-    text-transform:none;
     text-decoration:none solid rgb(255, 255, 255);
     text-align:start;
-    text-indent:0px;
     color: #ffffff;
     color:rgb(255, 255, 255);
     background-color:#357ae8;
@@ -182,7 +180,6 @@ body{
 {
     color: #ffffff;
     color:rgb(255, 255, 255);
-
     background-color:rgb(25, 122, 232);
 }
 .google
@@ -193,11 +190,8 @@ body{
     word-spacing:0px;
     font-weight:400;
     font-style: normal;
-    font-variant: normal;
-    text-transform:none;
     text-decoration:none solid rgb(51, 102, 204);
     text-align:start;
-    text-indent:0px;
     color: #3366cc;
     color:rgb(51, 102, 204);
     background-color:#000000;
@@ -209,23 +203,12 @@ body{
 .google:hover
 {
     text-decoration:underline solid rgb(51, 102, 204);
-
 }
-.input-serach
-{
-    border: #fafafa solid 2px;
-    border-radius: 5px;
-    width: 100%;
-    height: 36px;
-    font-size:16px;
-    font-family: Roboto,sans-serif;
 
-}
 
 .success-logo
 {
     margin:100px;
-
 }
 
 .text-h1
@@ -236,11 +219,8 @@ body{
     word-spacing:0px;
     font-weight:600;
     font-style:normal;
-    font-variant: normal;
-    text-transform: none;
     text-decoration: none solid rgb(72, 72, 72);
     text-align:start;
-    text-indent: 0px;
     font-family: "Open Sans", "Helvetica Neue", Arial, Helvetica, Verdana, sans-serif;
     font-size: 30px;
     color: #484848;
@@ -265,8 +245,6 @@ body{
     font-weight:400;
     font-style:normal;
     font-variant: normal;
-    text-transform: none;
-    text-decoration: none solid rgb(72, 72, 72);
     text-align:start;
     text-indent: 0px;
     font-family: "Open Sans", "Helvetica Neue", Arial, Helvetica, Verdana, sans-serif;
@@ -284,9 +262,7 @@ body{
 
 }
 
-#toolbar {
-    position: fixed;
-}
+
 
 .add-btn
 {
@@ -296,8 +272,6 @@ body{
     word-spacing:0px;
     font-weight:400;
     font-style:normal;
-    font-variant: normal;
-    text-transform: none;
     text-decoration: none solid rgb(0, 0, 0);
     text-align:left;
     text-indent: 0px;
@@ -439,7 +413,7 @@ body{
     font-size: 17px;
     color: #000000;
     color:rgba(0, 0, 0,0.87);
-
+    word-break: break-word;
 
 }
 
@@ -599,4 +573,26 @@ body{
     font-size: 13px;
     color: #000000;
     color: rgba(0, 0, 0, 0.87);
+}
+
+.trash-text
+{
+    line-height: normal;
+    vertical-align:baseline;
+    letter-spacing:normal;
+    word-spacing:0px;
+    font-weight:400;
+    font-style:italic;
+    font-variant: normal;
+    text-transform: none;
+    text-decoration:none solid rgba(0, 0, 0, 0.87);
+    text-align:center;
+    text-indent: 0px;
+    font-family: Roboto, arial, sans-serif;
+    font-size: 20px;
+    color: #000000;
+    color:rgba(0, 0, 0, 0.87);
+    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0);
+
 }

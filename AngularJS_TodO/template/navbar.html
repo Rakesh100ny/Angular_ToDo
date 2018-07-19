@@ -1,34 +1,35 @@
-<div data-ng-init="profileInfo()" layout="column"  ng-cloak>
-    <md-toolbar class="md-toolbar-tools" id="toolbar">
+<div data-ng-init="profileInfo();changeColor();"  layout="column"  ng-cloak>
+    <md-toolbar class="md-toolbar-tools" ng-style="CustomColor" id="toolbar">
 
         <md-button flex-gt-md="5" ng-click="toggleLeft()" class="md-icon-button">
-            <md-icon><i class="material-icons" style="color: #444444">menu</i> </md-icon>
+            <md-icon><i class="material-icons" ng-style="CustomColor">menu</i> </md-icon>
         </md-button>
 
-        <span  class="navbar-logo-text1">fundoo</span>&nbsp;<span class="navbar-logo-text2">Notes</span>
+
+        <span  class="navbar-logo-text1">{{title}}</span><!--&nbsp;<span class="navbar-logo-text2">{{title2}}</span>-->
 
         <span flex></span>
-        <div layout="row"  class="search-box">
+        <div layout="row"   class="search-box" >
             <md-button class="md-icon-button md-icon-left">
-                <md-icon><i class="material-icons" style="color: #444444">search</i></md-icon>
+                <md-icon><i class="material-icons" ng-style="CustomColor">search</i></md-icon>
             </md-button>
 
-            <input type="search"  class="input-serach" placeholder="Search" name="search"/>
+            <input type="search"  class="input-serach"  placeholder="Search" name="search"/>
 
             <md-button ng-show="showCancelIcon" class="md-icon-button md-icon-right">
-                <md-icon><i class="material-icons" style="color: #444444">close</i></md-icon>
+                <md-icon><i class="material-icons" ng-style="CustomColor">close</i></md-icon>
             </md-button>
 
         </div>
         <span flex></span>
         <div layout="row" layout-align="space-around center">
-            <md-button class="md-icon-button md-icon-left" hide-sm=""> <md-icon><i class="material-icons" style="color: #444444">refresh</i></md-icon></md-button>
-            <md-button ng-click="changeView()"class="md-icon-button md-icon-right"><md-icon><i class="material-icons" style="color: #444444">view_stream</i></md-icon></md-button>
+            <md-button class="md-icon-button md-icon-left" hide-sm=""> <md-icon><i class="material-icons" ng-style="CustomColor">refresh</i></md-icon></md-button>
+            <md-button ng-click="changeView()"class="md-icon-button md-icon-right"><md-icon><i class="material-icons" ng-style="CustomColor">view_stream</i></md-icon></md-button>
         </div>
         <span flex></span>
         <div layout="row" layout-align="space-around center">
-            <md-button class="md-icon-button md-icon-left"><md-icon><i class="material-icons" style="color: #444444">apps</i></md-icon></md-button>
-            <md-button class="md-icon-button md-icon-right"><md-icon><i class="material-icons" style="color: #444444">notifications_none</i></md-icon></md-button>
+            <md-button class="md-icon-button md-icon-left"><md-icon><i class="material-icons" ng-style="CustomColor">apps</i></md-icon></md-button>
+            <md-button class="md-icon-button md-icon-right"><md-icon><i class="material-icons" ng-style="CustomColor">notifications_none</i></md-icon></md-button>
 
 
         </div>
