@@ -95,6 +95,56 @@ body{
 
 }
 
+.label-header
+{
+    line-height:normal;
+    vertical-align:baseline;
+    letter-spacing:normal;
+    word-spacing:0px;
+    font-weight:500;
+    font-style: normal;
+    text-decoration:none solid rgba(0, 0, 0,0.87);
+    text-align:start;
+    color:#000000;
+    color:rgba(0, 0, 0,0.87);
+    background-color:#000000;
+    background-color:rgba(0, 0, 0, 0);
+    font-size: 18px;
+    font-family:Roboto, arial, sans-serif;
+
+}
+
+.label-dialog
+{
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 1px;
+    border-radius: 1px;
+    overflow-y: auto;
+    padding: 0;
+    width: 300px;
+}
+
+.label-btn
+{
+    margin-top: 20px;
+    line-height:normal;
+    vertical-align:baseline;
+    letter-spacing:normal;
+    word-spacing:0px;
+    font-weight:500;
+    font-style: normal;
+    text-transform: uppercase;
+    text-decoration:none solid rgb(0, 0, 0);
+    text-align:right;
+    color:#000000;
+    color:rgba(0, 0, 0);
+    background-color:#000000;
+    background-color:rgba(0, 0, 0, 0.08);
+    font-size: 13px;
+    font-family:Roboto, arial, sans-serif;
+
+}
 .profile-card-img
 {
     width: 100px;

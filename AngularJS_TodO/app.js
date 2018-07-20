@@ -59,7 +59,7 @@ app.config([ '$stateProvider', '$urlRouterProvider',
             .state('home', {
                 url : '/home',
                 templateUrl : 'template/home.html',
-                controller : 'noteController'
+                controller : 'homeController'
             })
 
             .state('home.dashboard', {

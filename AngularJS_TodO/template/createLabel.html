@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<md-dialog aria-label="Label" class="label-dialog">
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <md-subheader class="label-header">Edit labels</md-subheader>
+            <div layout="row" layout-align="start center">
+                <md-button ng-click="changeIcon()" style="margin: 0 auto;padding: 0px;" ng-show="close" class="md-icon-button md-icon-left">
+                    <md-icon><i class="material-icons">close</i></md-icon>
+                </md-button>
+                <md-button ng-click="changeIcon()" style="margin: 0 auto;padding: 0px;" ng-show="add" class="md-icon-button md-icon-left">
+                    <md-icon><i class="material-icons">add</i></md-icon>
+                </md-button>
 
-</body>
-</html>
+
+                 <input type="text" style="border:none;outline: none;" ng-model="label.name" placeholder="Create new label" />
+
+                <md-button class="md-icon-button md-icon-right" style="margin: 0 auto;padding: 0px;" ng-show="done">
+                    <md-icon><i class="material-icons">donee</i></md-icon>
+                </md-button>
+            </div>
+            <div layout="row" layout-align="end end">
+                <md-button class="label-btn" ng-click="cancel();addLabel(label)">
+                    <strong>Done</strong>
+                </md-button>
+            </div>
+        </div>
+    </md-dialog-content>
+</md-dialog>

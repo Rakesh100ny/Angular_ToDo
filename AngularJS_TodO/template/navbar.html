@@ -1,8 +1,8 @@
 <div data-ng-init="profileInfo();changeColor();"  layout="column"  ng-cloak>
-    <md-toolbar class="md-toolbar-tools" ng-style="CustomColor" id="toolbar">
+    <md-toolbar class="md-toolbar-tools" ng-style="colorValue" id="toolbar">
 
         <md-button flex-gt-md="5" ng-click="toggleLeft()" class="md-icon-button">
-            <md-icon><i class="material-icons" ng-style="CustomColor">menu</i> </md-icon>
+            <md-icon><i class="material-icons">menu</i> </md-icon>
         </md-button>
 
 
@@ -11,31 +11,24 @@
         <span flex></span>
         <div layout="row"   class="search-box" >
             <md-button class="md-icon-button md-icon-left">
-                <md-icon><i class="material-icons" ng-style="CustomColor">search</i></md-icon>
+                <md-icon><i class="material-icons">search</i></md-icon>
             </md-button>
-
             <input type="search"  class="input-serach"  placeholder="Search" name="search"/>
-
             <md-button ng-show="showCancelIcon" class="md-icon-button md-icon-right">
-                <md-icon><i class="material-icons" ng-style="CustomColor">close</i></md-icon>
+                <md-icon><i class="material-icons">close</i></md-icon>
             </md-button>
-
         </div>
         <span flex></span>
         <div layout="row" layout-align="space-around center">
-            <md-button class="md-icon-button md-icon-left" hide-sm=""> <md-icon><i class="material-icons" ng-style="CustomColor">refresh</i></md-icon></md-button>
-            <md-button ng-click="changeView()"class="md-icon-button md-icon-right"><md-icon><i class="material-icons" ng-style="CustomColor">view_stream</i></md-icon></md-button>
+            <md-button class="md-icon-button md-icon-left" hide-sm=""> <md-icon><i class="material-icons">refresh</i></md-icon></md-button>
+            <md-button ng-click="changeView()"class="md-icon-button md-icon-right"><md-icon><i class="material-icons">view_stream</i></md-icon></md-button>
         </div>
         <span flex></span>
         <div layout="row" layout-align="space-around center">
-            <md-button class="md-icon-button md-icon-left"><md-icon><i class="material-icons" ng-style="CustomColor">apps</i></md-icon></md-button>
-            <md-button class="md-icon-button md-icon-right"><md-icon><i class="material-icons" ng-style="CustomColor">notifications_none</i></md-icon></md-button>
-
-
+            <md-button class="md-icon-button md-icon-left"><md-icon><i class="material-icons">apps</i></md-icon></md-button>
+            <md-button class="md-icon-button md-icon-right"><md-icon><i class="material-icons">notifications_none</i></md-icon></md-button>
         </div>
-
         <a ng-click="clickProfile()"><img src="asset/profile.jpg" class="profile"></a>
-
         <div layout="row"  ng-show="isVisible"  layout-align="center end">
             <md-card  class="profile-card">
                 <md-content>
@@ -65,8 +58,5 @@
                 </md-content>
             </md-card>
         </div>
-
-
-
     </md-toolbar>
 </div>
