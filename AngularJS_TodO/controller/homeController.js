@@ -49,25 +49,25 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
                 $scope.customColor = {
                     'background-color': '#fb0',
                     'color': 'black'
-                }
+                };
                 break;
             case 'home.reminders':  $scope.title = "Reminders";
                 $scope.customColor = {
                     'background-color': '#607d8b',
                     'color': '#ffffff'
-                }
+                };
                 break;
             case 'home.archive':    $scope.title = "Archive";
                 $scope.customColor = {
                     'background-color': '#607d8b',
                     'color': '#ffffff'
-                }
+                };
                 break;
             case 'home.trash'  :    $scope.title = "Trash";
                 $scope.customColor = {
                     'background-color': '#636363',
                     'color': '#ffffff'
-                }
+                };
                 break;
 
         }
@@ -119,7 +119,7 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
 
 
         $mdDialog.show({
-            controller: labelController,
+            controller: labelDialogCtrl,
             templateUrl: 'template/createLabel.html',
             parent: angular.element(document.body),
             targetEvent: event,
@@ -128,6 +128,93 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
         });
 
     };
+
+    function labelDialogCtrl($scope, $mdDialog) {
+        $scope.labelModel=
+            {
+                labelName:""
+            };
+
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+
+        $scope.close=true;
+        $scope.done=true;
+        $scope.add=false;
+        $scope.isClicked=false;
+        $scope.changeIcon=function()
+        {
+            $scope.isClicked = !$scope.isClicked;
+
+            if($scope.isClicked)
+            {
+                $scope.add=true;
+                $scope.close=false;
+                $scope.done=false;
+
+            }
+            else
+            {
+                $scope.add=false;
+                $scope.close=true;
+                $scope.done=true;
+            }
+        }
+
+        $scope.addLabel=function(labelModel)
+        {
+            var url=baseUrl+"addlabel";
+            if(labelModel.labelName === "")
+            {
+              console.log("Label is Empty...!")
+            }
+            else
+            {
+                console.log("Name",labelModel.labelName);
+                labelService.postAPIWithHeader(url,labelModel).then(function successCallback(response)
+                {
+                    console.log("Add Label Successfully",response);
+                    $scope.labelModel.labelName="";
+                    $scope.getAllLabels();
+                },function errorCallback(response){
+                    console.log("Add Note failed",response.data);
+                })
+            }
+        }
+
+        $scope.label_info=[];
+
+        $scope.getAllLabels = function()
+        {
+            var url=baseUrl+"labels";
+
+
+            labelService.getAPIWithHeader(url).then(function successCallback(response)
+            {
+                console.log("Get Label Successfully",response);
+
+                $scope.label_info=response.data;
+                $scope.showLabelInfo=false;
+
+                if($scope.label_info==="")
+                {
+                    $scope.showLabelInfo=false;
+                }
+                else
+                {
+                   $scope.showLabelInfo=true;
+
+                }
+
+                 console.log("show label",$scope.showLabelInfo);
+
+            },function errorCallback(response){
+                console.log("Get Label failed",response.data);
+            });
+        };
+
+    }
 
     $scope.toggleLeft = buildToggler('left');
 

@@ -265,7 +265,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
 
 
-            if($scope.note_info=="")
+            if($scope.note_info==="")
             {
 
               $scope.showNote=false;
@@ -331,7 +331,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
 
         })
-    }
+    };
 
 
     $scope.enableEdit = function (item) {
@@ -342,15 +342,11 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         item.editable = false;
     };
 
-
-
-
-
     $scope.changeNoteColor=function(value,note)
     {
      var url=baseUrl+"updatenote";
 
-     if(note==undefined)
+     if(note===undefined)
      {
          $scope.noteModel.color=value;
      }
@@ -366,7 +362,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
          });
      }
 
-    }
+    };
 
     $scope.more=['Delete note','Add label','Make a copy','Show checkboxes','Copy to Google Docs'];
 

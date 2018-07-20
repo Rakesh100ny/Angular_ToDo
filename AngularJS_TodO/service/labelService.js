@@ -1,4 +1,4 @@
-app.factory('labelService', function($http,$location)
+app.factory('labelService', function($http)
 {
     var factory= {};
 
