@@ -94,6 +94,7 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
 
     };
     function DialogCtrl($scope, $mdDialog,noteInfo) {
+
         console.log("note details",noteInfo);
         $scope.noteInfo= noteInfo;
         $scope.cancel = function() {
@@ -114,9 +115,9 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
 
 
     }
+    $scope.label_info=[];
 
     $scope.showLabelDialog = function(event) {
-
 
         $mdDialog.show({
             controller: labelDialogCtrl,
@@ -125,11 +126,37 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
             targetEvent: event,
             clickOutsideToClose:true,
             fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        }).then(function successCallback()
+        {
+            /*console.log("Label Dialog Successfully",response);
+            $scope.label_info=response;
+
+            console.log("All Label Dialog In home controller",$scope.label_info);*/
+            $scope.getAllLabels();
+        },function errorCallback(response){
+            console.log("Label Dialog failed",response);
         });
 
     };
 
-    function labelDialogCtrl($scope, $mdDialog) {
+/*    $scope.getAllLabels = function()
+    {
+        var url=baseUrl+"labels";
+
+        labelService.getAPIWithHeader(url).then(function successCallback(response)
+        {
+            console.log("Get Label Successfully in home",response);
+
+            $scope.label_info=response.data;
+
+             $scope.label_info;
+        },function errorCallback(response){
+            console.log("Get Label failed",response.data);
+        });
+    };*/
+
+    function labelDialogCtrl($scope, $mdDialog)
+    {
         $scope.labelModel=
             {
                 labelName:""
@@ -162,6 +189,21 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
             }
         }
 
+
+
+
+        $scope.enableEdit = function (item) {
+            item.editable = true;
+            item.labelIcon=false;
+
+        };
+
+        $scope.disableEdit = function (item) {
+            item.editable = false;
+            item.labelIcon=true;
+            };
+
+
         $scope.addLabel=function(labelModel)
         {
             var url=baseUrl+"addlabel";
@@ -177,24 +219,27 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
                     console.log("Add Label Successfully",response);
                     $scope.labelModel.labelName="";
                     $scope.getAllLabels();
+
                 },function errorCallback(response){
                     console.log("Add Note failed",response.data);
                 })
             }
         }
 
-        $scope.label_info=[];
 
+
+
+        $scope.label_info=[];
         $scope.getAllLabels = function()
         {
             var url=baseUrl+"labels";
-
 
             labelService.getAPIWithHeader(url).then(function successCallback(response)
             {
                 console.log("Get Label Successfully",response);
 
                 $scope.label_info=response.data;
+
                 $scope.showLabelInfo=false;
 
                 if($scope.label_info==="")
@@ -203,17 +248,118 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
                 }
                 else
                 {
-                   $scope.showLabelInfo=true;
-
+                    $scope.showLabelInfo=true;
+                    $scope.labelDisplay=true;
                 }
 
-                 console.log("show label",$scope.showLabelInfo);
-
-            },function errorCallback(response){
+                return $scope.label_info;
+             },function errorCallback(response){
                 console.log("Get Label failed",response.data);
             });
         };
 
+
+
+
+
+
+/*
+
+        $scope.returnInfo=function()
+        {
+            var url=baseUrl+"labels";
+
+            labelService.getAPIWithHeader(url).then(function successCallback(response)
+            {
+                  $mdDialog.hide(response.data);
+
+            },function errorCallback(response){
+                console.log("Return Response failed",response.data);
+            });
+
+        };
+*/
+
+
+
+
+        $scope.deleteDialog = function(event,label) {
+            $mdDialog.show({
+                locals : {labelInfo : label},
+                controller: daleteDialogCtrl,
+                templateUrl: 'template/deleteLabel.html',
+                parent: angular.element(document.body),
+                targetEvent: event,
+                clickOutsideToClose:true,
+                fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+            });
+
+        };
+
+        function daleteDialogCtrl($scope, $mdDialog,labelInfo) {
+
+            $scope.labelInfo=labelInfo;
+
+            $scope.cancel = function() {
+                $mdDialog.cancel();
+            };
+
+
+            $scope.deleteLabel=function(labelInfo)
+            {
+                var url=baseUrl+"deletelabel/";
+
+                console.log("url",url);
+                console.log("label ID",labelInfo.id);
+
+                labelService.deleteAPIWithHeader(url,labelInfo.id).then(function successCallback(response)
+                {
+                    console.log("Delete Label Successfully",response);
+                    $scope.getAllLabels();
+                },function errorCallback(response){
+                    console.log("Delete Note failed",response.data);
+                })
+            }
+
+/*
+            $scope.label_info=[];
+
+            $scope.getAllLabels = function()
+            {
+                var url=baseUrl+"labels";
+
+
+                labelService.getAPIWithHeader(url).then(function successCallback(response)
+                {
+                    console.log("Get Label Successfully",response);
+
+                    $scope.label_info=response.data;
+                    $scope.showLabelInfo=false;
+
+                    if($scope.label_info==="")
+                    {
+                        $scope.showLabelInfo=false;
+
+
+                    }
+                    else
+                    {
+                        $scope.showLabelInfo=true;
+                        $scope.labelDisplay=true;
+
+
+                    }
+
+                    console.log("show label",$scope.showLabelInfo);
+
+                },function errorCallback(response){
+                    console.log("Get Label failed",response.data);
+                });
+            };*/
+
+
+
+        }
     }
 
     $scope.toggleLeft = buildToggler('left');

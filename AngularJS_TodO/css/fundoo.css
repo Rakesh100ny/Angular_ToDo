@@ -138,13 +138,52 @@ body{
     text-decoration:none solid rgb(0, 0, 0);
     text-align:right;
     color:#000000;
-    color:rgba(0, 0, 0);
+    color:rgb(0, 0, 0);
     background-color:#000000;
     background-color:rgba(0, 0, 0, 0.08);
     font-size: 13px;
     font-family:Roboto, arial, sans-serif;
 
 }
+
+.delete-label
+{
+    line-height:normal;
+    vertical-align:baseline;
+    letter-spacing:normal;
+    word-spacing:0px;
+    font-weight:400;
+    font-style: normal;
+    text-decoration:none solid rgba(0, 0, 0, 0.87);
+    text-align:start;
+    color:#000000;
+    color:rgba(0, 0, 0, 0.87);
+    background-color:#ffffff;
+    background-color:rgb(255, 255, 255);
+    font-size: 15px;
+    font-family:Roboto, arial, sans-serif;
+
+}
+.delete-label-button
+{
+    line-height:normal;
+    vertical-align:baseline;
+    letter-spacing:normal;
+    word-spacing:0px;
+    font-weight:500;
+    font-style: normal;
+    text-transform: uppercase;
+    text-decoration:none solid rgb(64, 129, 245);
+    text-align:right;
+    color:#4081f5;
+    color:rgb(64, 129, 245);
+    background-color:#000000;
+    background-color:rgba(0, 0, 0, 0.08);
+    font-size: 13px;
+    font-family:Roboto, arial, sans-serif;
+
+}
+
 .profile-card-img
 {
     width: 100px;
@@ -502,7 +541,7 @@ body{
     font-variant: normal;
     text-transform: none;
     text-decoration: none solid rgba(0, 0, 0,0.54);
-    text-align:start;
+    text-align:center;
     text-indent: 0px;
     font-family: Roboto, arial, sans-serif;
     font-size: 12px;

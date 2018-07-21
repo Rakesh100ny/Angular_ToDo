@@ -39,16 +39,18 @@ app.factory('labelService', function($http)
         return user;
     }*/
 
-    factory.deleteAPIWithHeader = function(url,noteId)
+    factory.deleteAPIWithHeader = function(url,labelId)
     {
+
+        console.log("label ki id",labelId);
         var request =
             {
                 method: "DELETE",
-                url: url+noteId,
+                url: url+labelId,
                 headers: {
                     'userLoginToken': localStorage.getItem('tokenLogin')
                 },
-                data: angular.toJson(noteId)
+                data: angular.toJson(labelId)
             }
 
         return $http(request);

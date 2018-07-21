@@ -1,0 +1,18 @@
+<md-dialog aria-label="Label">
+    <md-dialog-content class="delete-label">
+        <div style="width: 400px"  class="md-dialog-content">
+            <div layout="row" layout-align="center center">
+                <p>We’ll delete this label and remove it from all of your Keep notes. Your notes won’t be deleted</p>
+            </div>
+            <div layout="row" layout-align="end end"  class="take-note-div3">
+                <md-button class="take-note-button"  ng-click="cancel()">
+                    <strong>Cancel</strong>
+                </md-button>
+                <md-button class="delete-label-button"  ng-click="cancel();deleteLabel(labelInfo);">
+                    <strong>Delete</strong>
+                </md-button>
+            </div>
+        </div>
+    </md-dialog-content>
+</md-dialog>
+

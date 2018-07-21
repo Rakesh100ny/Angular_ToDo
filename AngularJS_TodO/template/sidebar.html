@@ -1,7 +1,7 @@
 
 <md-sidenav style="margin-top: 65px;width: 283px;position: fixed;"  id="sidebar"
             class="md-sidenav-left"
-            md-component-id="left" md-disable-backdrop md-whiteframe="4">
+            md-component-id="left" data-ng-init="getAllLabels()" md-disable-backdrop md-whiteframe="4">
 
   <md-content style="background-color: #e8e8e8">
     <md-list>
@@ -20,7 +20,19 @@
         </div>
       </md-list-item>
       <md-divider></md-divider>
-      <md-subheader style="background-color: #e8e8e8">Labels</md-subheader>
+      <md-subheader style="background-color: #e8e8e8;color: black"><b>Labels</b>
+         <md-button ng-click="showLabelDialog($event)"  style="margin-left: 80px;" class="md-button" >Edit</md-button>
+      </md-subheader>
+        <md-list-item ng-click="null" ng-repeat="label in label_info">
+            <div  layout="row" layout-align="start" >
+                <md-button style="margin: 0px auto;padding: 0px 0px" class="md-icon-button md-icon md-icon-left">
+                    <md-icon><i class="material-icons">label</i></md-icon>
+                </md-button>
+                {{label.labelName}}
+            </div>
+        </md-list-item>
+
+
       <md-list-item ng-click="showLabelDialog($event)" ng-click="null">
         <div layout="row" class="sidebar-text">
           <md-icon ng-click=""><i class="material-icons">add</i></md-icon>
