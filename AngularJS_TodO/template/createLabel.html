@@ -1,4 +1,4 @@
-<md-dialog aria-label="Label" data-ng-init="getAllLabels()" class="label-dialog">
+<md-dialog aria-label="Label" class="label-dialog">
     <md-dialog-content>
         <div class="md-dialog-content">
             <md-subheader class="label-header">Edit labels</md-subheader>
@@ -13,18 +13,17 @@
 
                  <input type="text" style="border:none;outline: none;" ng-model="labelModel.labelName" placeholder="Create new label" />
 
-                <md-button class="md-icon-button md-icon-right" ng-click="addLabel(labelModel);returnInfo()" style="margin: 0 auto;padding: 0px;" ng-show="done">
+                <md-button class="md-icon-button md-icon-right" ng-click="addLabel(labelModel);" style="margin: 0 auto;padding: 0px;" ng-show="done">
                     <md-icon><i class="material-icons">donee</i></md-icon>
                 </md-button>
             </div>
 
-            <div  layout="row" layout-align="start" ng-show="showLabelInfo" ng-repeat="label in label_info">
+            <div  layout="row" layout-align="start"  ng-repeat="label in label_info">
 
-
-               <md-button ng-show="label.editable"  ng-mouseover="enableEdit(label)" ng-mouseleave="disableEdit(label)" ng-click="deleteDialog($event,label)"  style="margin: 0px auto;padding: 0px" class="md-icon-button md-icon md-icon-left">
+               <md-button ng-show="label.editable"  ng-mouseover="enableEdit(label)" ng-mouseleave="disableEdit(label)" ng-click="deleteDialog($event,label);"  style="margin: 0px auto;padding: 0px" class="md-icon-button md-icon md-icon-left">
                     <md-icon><i class="material-icons">delete</i></md-icon>
                 </md-button>
-                <md-button style="margin: 0px auto;padding: 0px 0px"   ng-show="labelDisplay && label.labelIcon" ng-mouseover="enableEdit(label)" ng-mouseleave="disableEdit(label)" class="md-icon-button md-icon md-icon-left">
+                <md-button style="margin: 0px auto;padding: 0px 0px"   ng-show="label.labelIcon" class="md-icon-button md-icon md-icon-left">
                     <md-icon><i class="material-icons">label</i></md-icon>
                 </md-button>
 

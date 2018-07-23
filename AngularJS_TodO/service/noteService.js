@@ -58,7 +58,6 @@ app.factory('noteService', function($http,$location)
         var user = {};
         if (token !== null) {
             var encoded = token.split('.')[1];
-            console.log("encoded",encoded)
             user = JSON.parse(tokenDecode(encoded));
         }
         else

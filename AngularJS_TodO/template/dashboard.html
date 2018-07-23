@@ -57,10 +57,10 @@
                     <md-card-title-text>
                         <div class="md-headline">{{note.title}} </div>
                     </md-card-title-text>
-                    <md-button class="md-icon-button" ng-show="simaplePin" ng-click="isPinnedNote(note);">
+                    <md-button class="md-icon-button" ng-show="note.pined===false" ng-click="isPinnedNote(note);">
                         <md-icon style="width: 5px;height: 5px;"  md-svg-icon="asset/pin.svg" ></md-icon>
                     </md-button>
-                    <md-button aria-label="Pined Button" ng-show="bluePin" class="md-icon-button" ng-click="isPinnedNote(note);">
+                    <md-button aria-label="Pined Button" ng-if="bluePin && note.pined===true" class="md-icon-button" ng-click="isPinnedNote(note);">
                         <md-icon   md-svg-icon="asset/bluePin.svg" ></md-icon>
                     </md-button>
                 </md-card-title>
@@ -82,10 +82,10 @@
                 <md-card-title-text>
                     <div class="md-headline">{{note.title}} </div>
                 </md-card-title-text>
-                <md-button class="md-icon-button" ng-click="isPinnedNote(note);">
-                <md-icon style="width: 5px;height: 5px;"  md-svg-icon="asset/pin.svg" ></md-icon>
+                <md-button class="md-icon-button"  ng-click="isPinnedNote(note);">
+                    <md-icon style="width: 5px;height: 5px;"  md-svg-icon="asset/pin.svg" ></md-icon>
                 </md-button>
-            </md-card-title>
+              </md-card-title>
             <md-card-content class="center">
                 <p>{{note.description}}</p>
             </md-card-content>

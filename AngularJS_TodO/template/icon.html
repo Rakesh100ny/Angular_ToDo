@@ -60,7 +60,7 @@
         </md-button>
         <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
             <md-menu-item ng-repeat="item in colors">
-                <md-button  md-autofocus style=";background-color: {{obj.value}};border-radius: 50%;" ng-click="changeNoteColor(obj.value,note);" class="md-icon-button" ng-repeat="obj in item">
+                <md-button ng-repeat="obj in item" md-autofocus style="background-color: {{obj.value}};border-radius: 50%;" ng-click="changeNoteColor(obj.value,note);" class="md-icon-button" >
                  </md-button>
             </md-menu-item>
         </md-menu-content>

@@ -26,20 +26,17 @@ app.controller('userController', function($scope, userService,$state) {
 
     };
 
-    $scope.error = new Array;
+    $scope.error = [];
     $scope.errorMessage;
 
-    $scope.status = new Array;
+    $scope.status = [];
     $scope.message;
 
     $scope.serverError;
 
     $scope.register = function(registerModel) {
-        console.log("User Details", angular.toJson(registerModel));
         localStorage.setItem("registerEmail",registerModel.email);
-
-     var url= baseUrl+"register";
-
+        var url= baseUrl+"register";
         console.log("url",url);
         userService.postAPI(url,registerModel).then( function successCallback(response){
                     $state.go('signupSuccess')
@@ -61,9 +58,7 @@ app.controller('userController', function($scope, userService,$state) {
 
 
     $scope.login = function(loginModel) {
-
         var url= baseUrl+"login";
-        console.log("Login Details", angular.toJson(loginModel));
         userService.postAPIWithHeader(url,loginModel).then(function successCallback(response)
         {
             $state.go('home.dashboard');
@@ -71,12 +66,9 @@ app.controller('userController', function($scope, userService,$state) {
             console.log("successfully",response.data.message);
         },function errorCallback(response){
             console.log("failed",response.data);
-            console.log("status",response.status);
-
-
                     $scope.error=response.data;
-                    console.log("error",$scope.error);
                     $scope.errorMessage=$scope.error.errorMessage;
+
                     $scope.status=response.data;
                     $scope.message=$scope.status.message;
 
@@ -84,7 +76,6 @@ app.controller('userController', function($scope, userService,$state) {
     };
 
     $scope.forgotPassword = function(forgotPasswordModel) {
-        console.log("ForgotPassword Details", angular.toJson(forgotPasswordModel));
         localStorage.setItem("forgotPasswordEmail",forgotPasswordModel.email);
         var url= baseUrl+"forgotpassword";
         userService.postAPI(url,forgotPasswordModel).then(function successCallback(response){
@@ -96,7 +87,6 @@ app.controller('userController', function($scope, userService,$state) {
             $scope.error=response.data;
             $scope.errorMessage=$scope.error.errorMessage;
 
-
             $scope.status=response.data;
             $scope.message=$scope.status.message;
         })
@@ -106,7 +96,6 @@ app.controller('userController', function($scope, userService,$state) {
 
     $scope.resetPassword = function(passwordModel) {
         var url= baseUrl+"resetpassword";
-        console.log("ResetPassword Details", angular.toJson(passwordModel));
         userService.postAPIWithHeader(url,passwordModel).then(function successCallback(response){
             $state.go('login')
             console.log("successfully",response.data.message);
