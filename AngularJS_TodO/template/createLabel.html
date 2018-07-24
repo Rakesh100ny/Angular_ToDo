@@ -18,7 +18,7 @@
                 </md-button>
             </div>
 
-            <div  layout="row" layout-align="start"  ng-repeat="label in label_info">
+            <div  layout="row" layout-align="start"  ng-repeat="label in labelInfo">
 
                <md-button ng-show="label.editable"  ng-mouseover="enableEdit(label)" ng-mouseleave="disableEdit(label)" ng-click="deleteDialog($event,label);"  style="margin: 0px auto;padding: 0px" class="md-icon-button md-icon md-icon-left">
                     <md-icon><i class="material-icons">delete</i></md-icon>

@@ -1,4 +1,4 @@
-app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSidenav,noteService,labelService,$location){
+app.controller('homeController',function($scope,$stateParams,$state,$window,$mdDialog,$mdSidenav,noteService,labelService,$location){
 
     var baseUrl="http://localhost:8081/Fundo_Note/";
 
@@ -25,6 +25,15 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
         $window.localStorage.clear();
         $location.path('login');
     };
+
+    $scope.sendToLabel=function(label)
+    {
+        labelId=label.labelName;
+        $scope.location=labelId;
+       $state.go('home.label',{labelId:labelId});
+    };
+
+    console.log("location2",$scope.location);
 
     $scope.showCancel=function()
     {
@@ -74,6 +83,8 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
     };
 
 
+
+
     changeColor();
 
     $scope.showDialog = function(event,note) {
@@ -108,6 +119,8 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
 
     }
 
+
+
     getAllLabels();
 
     $scope.label_info=[];
@@ -120,11 +133,46 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
         {
            console.log("Get Label Successfully in Home",response);
             $scope.label_info=response.data;
+
+            //$scope.editableLabels = angular.copy(value.labelName);
+
+           // checkCurrentState($scope.label_info);
+            $scope.showLabel=true;
+
         },function errorCallback(response){
             console.log("Get Label failed in Home",response.data);
         });
     };
 
+    $scope.selected = [];
+    $scope.toggle = function (item, list)
+    {
+        var idx = list.indexOf(item);
+        if (idx > -1) {
+            list.splice(idx, 1);
+        }
+        else {
+            list.push(item);
+        }
+    };
+
+  /*  $scope.perticularLabel=[];
+    function checkCurrentState(label)
+    {
+     console.log("check label",label);
+     console.log("lacation",$scope.location);
+
+     angular.forEach(label,function (value)
+     {
+       if(value.labelName===$scope.location)
+       {
+           $scope.perticularLabel=value.labelName;
+       }
+     });
+
+     console.log("perticular location",$scope.perticularLabel);
+    }
+*/
 
     $scope.showLabelDialog = function(event) {
 
@@ -195,14 +243,13 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
                     $scope.labelModel.labelName="";
                     getAllLabelsInDialog();
                     getAllLabels();
-
                 },function errorCallback(response){
                     console.log("Add Label failed in Dialog",response.data);
                 })
             }
         };
 
-       $scope.label_info=[];
+
        function getAllLabelsInDialog()
         {
             var url=baseUrl+"labels";
@@ -210,7 +257,7 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
             labelService.getAPIWithHeader(url).then(function successCallback(response)
             {
                 console.log("Get Label Successfully in Dialog",response);
-                $scope.label_info=response.data;
+                $scope.labelInfo=response.data;
 
                     $scope.labelDisplay=true;
             },function errorCallback(response){
@@ -221,6 +268,9 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
 
 
         $scope.deleteDialog = function(event,label) {
+
+            console.log("info",label);
+
             $mdDialog.show({
                 locals : {labelData : label},
                 controller: daleteDialogCtrl,
@@ -229,6 +279,13 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
                 targetEvent: event,
                 clickOutsideToClose:true,
                 fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+            }).then(function successCallback(response)
+            {
+                console.log("Successfully in Delete Dialog",response);
+                getAllLabelsInDialog();
+                getAllLabels();
+            },function errorCallback(response){
+                console.log("failed in Delete Dialog",response.data);
             });
         };
 
@@ -239,7 +296,6 @@ app.controller('homeController',function($scope,$state,$window,$mdDialog,$mdSide
             $scope.labelInfo=labelData;
 
             console.log("label data",$scope.labelInfo);
-
 
             $scope.cancel = function() {
                 $mdDialog.cancel();

@@ -61,9 +61,9 @@ app.config([ '$stateProvider', '$urlRouterProvider',
                 templateUrl : 'template/home.html',
                 controller : 'homeController'
             })
-            .state('label', {
-                url : '/label:labelId',
-                templateUrl : 'template/displayLabel',
+            .state('home.label', {
+                url : '/label/:labelId',
+                templateUrl : 'template/displayLabel.html',
                 controller : 'homeController'
             })
             .state('home.dashboard', {

@@ -9,11 +9,12 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         color:"white",
         isPined : "false",
         isTrashed:"false",
-        isArchived:"false"
+        isArchived:"false",
+
 
     };
 
-    function initializeNote()
+    $scope.initializeNote=function()
     {
         $scope.noteModel = {
             title : "",
@@ -27,6 +28,11 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
     };
 
 
+
+    $scope.exists = function (item, list) {
+        return list.indexOf(item) > -1;
+    };
+
     $scope.more=['Delete note','Add label','Make a copy','Show checkboxes','Copy to Google Docs'];
 
     $scope.takenotemore=['Add label','Show checkboxes'];
@@ -38,6 +44,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         [{'name':'Evening','value':'Mon,6:00 PM'}],
         [{'name':'Night','value':'8:00 PM'}]
     ];
+
 
 
     $scope.trashmore=['Delete forever','Restore'];
@@ -111,7 +118,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
             case 'Delete note':
                 $scope.isTrashedNote(note);
                 break;
-            case 'Add label':
+            case 'Add label': openDialogLabel();
 
                 break;
             case 'Make a copy':
@@ -126,6 +133,36 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
                 break;
         }
     };
+
+    function openDialogLabel()
+    {
+        console.log("label in note controller",$scope.label_info);
+
+        $scope.showDialogNoteLabel = function(event) {
+            $mdDialog.show({
+                locals : {labelInfo : $scope.label_info},
+                controller: DialogNoteLabelCtrl,
+                templateUrl: 'template/labelDialog.html',
+                parent: angular.element(document.body),
+                targetEvent: event,
+                clickOutsideToClose:true,
+                fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+            });
+        };
+
+        function DialogNoteLabelCtrl($scope, $mdDialog,labelInfo) {
+            $scope.labelInfo= labelInfo;
+
+            $scope.cancel = function() {
+                $mdDialog.cancel();
+            };
+
+
+
+        }
+
+
+    }
 
     $scope.isDeleteNote=function(task,note)
     {
@@ -236,7 +273,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
                    $scope.showNote=true;
                    console.log("Add Note Successfully",response.data);
                    $scope.getAllNotes();
-                   initializeNote();
+                   $scope.initializeNote();
                },function errorCallback(response){
                    console.log("Add Note failed",response.data);
                })
@@ -249,7 +286,9 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
       var url=baseUrl+"note";
         noteService.getAPIWithHeader(url).then(function successCallback(response)
         {
-             $scope.note_info=response.data;
+            console.log("Get Note Successfully",response.data);
+
+            $scope.note_info=response.data;
             if($scope.note_info==="")
             {
               $scope.showNote=false;

@@ -20,12 +20,13 @@
       <md-subheader  style="background-color: #e8e8e8;color: black"><b>Labels</b>
         <md-button ng-click="showLabelDialog($event)"  style="margin-left: 80px;" class="md-button" >Edit</md-button>
       </md-subheader>
-      <md-list-item ng-repeat="label in label_info" ng-click="null">
+      <md-list-item ng-click="sendToLabel(label)" ng-repeat="label in label_info" ng-click="null">
             <div  layout="row" layout-align="start" >
                 <md-button style="margin: 0px auto;padding: 0px 0px" class="md-icon-button md-icon md-icon-left">
                     <md-icon><i class="material-icons">label</i></md-icon>
                 </md-button>
-                {{label.labelName}}
+              <span flex>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <span>{{label.labelName}}</span>
             </div>
         </md-list-item>
 
