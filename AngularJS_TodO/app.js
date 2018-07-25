@@ -1,4 +1,4 @@
-var app = angular.module('keepApp', [ 'ui.router', 'ngMaterial', 'ngMessages','ngPassword']);
+var app = angular.module('keepApp', [ 'ui.router', 'ngMaterial', 'ngMessages','ngPassword','content-editable']);
 app.config([ '$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
         $stateProvider
@@ -59,12 +59,17 @@ app.config([ '$stateProvider', '$urlRouterProvider',
             .state('home', {
                 url : '/home',
                 templateUrl : 'template/home.html',
-                controller : 'homeController'
+                controller : 'noteController'
+            })
+            .state('home.search', {
+                url : '/search',
+                templateUrl : 'template/search.html',
+                controller : 'noteController'
             })
             .state('home.label', {
                 url : '/label/:labelId',
                 templateUrl : 'template/displayLabel.html',
-                controller : 'homeController'
+                controller : 'noteController'
             })
             .state('home.dashboard', {
                 url: '/dashboard',

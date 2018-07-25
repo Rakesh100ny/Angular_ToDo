@@ -4,11 +4,14 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-     "start": "set PORT=8000 && live-server"
+    "start": "set PORT=8000 && live-server"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "live-server": "^1.2.0"
+  },
+  "dependencies": {
+    "ng-content-editable": "0.0.5"
   }
 }

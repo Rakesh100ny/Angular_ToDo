@@ -1,4 +1,4 @@
-<md-dialog aria-label="Label" class="label-dialog">
+<md-dialog aria-label="Label"  class="label-dialog">
     <md-dialog-content>
         <div class="md-dialog-content">
             <md-subheader class="label-header">Edit labels</md-subheader>
@@ -17,9 +17,9 @@
                     <md-icon><i class="material-icons">donee</i></md-icon>
                 </md-button>
             </div>
+            <span style="text-align: center;color: red;">{{error}} </span>
 
             <div  layout="row" layout-align="start"  ng-repeat="label in labelInfo">
-
                <md-button ng-show="label.editable"  ng-mouseover="enableEdit(label)" ng-mouseleave="disableEdit(label)" ng-click="deleteDialog($event,label);"  style="margin: 0px auto;padding: 0px" class="md-icon-button md-icon md-icon-left">
                     <md-icon><i class="material-icons">delete</i></md-icon>
                 </md-button>
@@ -29,13 +29,13 @@
 
                  <input  type="text" ng-mouseover="enableEdit(label)" ng-mouseleave="disableEdit(label)" style="border:none;outline: none;" ng-model="label.labelName" />
 
-                <md-button  ng-mouseover="enableEdit(label)" ng-mouseleave="disableEdit(label)" style="margin: 0px auto;padding: 0px;" class="md-icon-button md-icon md-icon-right">
+                <md-button  ng-mouseover="enableEdit(label)" ng-mouseleave="disableEdit(label)" style="margin: 0px auto;padding: 0px;" ng-click="updateLabel(label)" class="md-icon-button md-icon md-icon-right">
                     <md-icon><i class="material-icons">create</i></md-icon>
                 </md-button>
 
             </div>
             <div layout="row" layout-align="end end">
-                <md-button class="label-btn" ng-click="addLabel(labelModel);returnInfo()">
+                <md-button class="label-btn" ng-click="cancel();addLabel(labelModel);">
                     <strong>Done</strong>
                 </md-button>
             </div>

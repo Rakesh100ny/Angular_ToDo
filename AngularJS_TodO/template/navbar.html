@@ -4,17 +4,15 @@
         <md-button flex-gt-md="5" ng-click="toggleLeft()" class="md-icon-button">
             <md-icon><i class="material-icons">menu</i> </md-icon>
         </md-button>
-
-
         <span  class="navbar-logo-text1">{{title}}</span><!--&nbsp;<span class="navbar-logo-text2">{{title2}}</span>-->
 
         <span flex></span>
         <div layout="row"   class="search-box" >
-            <md-button class="md-icon-button md-icon-left">
+            <md-button ng-click="showCancel()" class="md-icon-button md-icon-left">
                 <md-icon><i class="material-icons">search</i></md-icon>
             </md-button>
-            <input type="search"  class="input-serach"  placeholder="Search" name="search"/>
-            <md-button ng-show="showCancelIcon" class="md-icon-button md-icon-right">
+            <input type="search"  ng-click="showCancel()" class="input-serach" ng-model="searchText" placeholder="Search" name="search"/>
+            <md-button ng-click="sendToHome()" ng-show="showCancelIcon" class="md-icon-button md-icon-right">
                 <md-icon><i class="material-icons">close</i></md-icon>
             </md-button>
         </div>

@@ -1,4 +1,4 @@
-app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteService,$state,$window,$location)
+app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteService,labelService,$state,$window,$location)
 {
 
     var baseUrl="http://localhost:8081/Fundo_Note/";
@@ -27,10 +27,51 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         };
     };
 
+    $scope.sendToReminders = function() {
+        $state.go('home.reminders');
+    };
+
+    $scope.showCancelIcon=false;
+
+    $scope.showCancel=function()
+    {
+     $state.go('home.search');
+
+        $scope.showCancelIcon=true;
+
+    };
 
 
-    $scope.exists = function (item, list) {
-        return list.indexOf(item) > -1;
+
+   $scope.sendToHome=function()
+   {
+       $state.go('home.dashboard');
+   };
+
+    $scope.sendToNotes = function() {
+        $state.go('home.dashboard');
+    };
+
+    $scope.sendToArchive = function() {
+        $state.go('home.archive');
+
+    };
+
+    $scope.sendToTrash = function()
+    {
+        $state.go('home.trash');
+    };
+
+    $scope.sendToLogin = function() {
+        $window.localStorage.clear();
+        $location.path('login');
+    };
+
+    $scope.sendToLabel=function(label)
+    {
+        labelId=label.labelName;
+        $scope.location=labelId;
+        $state.go('home.label',{labelId:labelId});
     };
 
     $scope.more=['Delete note','Add label','Make a copy','Show checkboxes','Copy to Google Docs'];
@@ -96,6 +137,332 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         $scope.myDate.getDate()
     );
 
+
+
+    $scope.isVisible = false;
+
+    $scope.clickProfile = function() {
+        $scope.isVisible = !$scope.isVisible;
+    };
+
+
+    $scope.profileInfo=function()
+    {
+        $scope.value=noteService.getUserFromToken();
+    }
+
+    $scope.isChangedView=false;
+
+    $scope.changeView=function()
+    {
+        $scope.isChangedView = !$scope.isChangedView;
+
+        var notes = document.getElementsByClassName("card");
+
+        if($scope.isChangedView)
+        {
+            for (i = 0; i < notes.length; i++) {
+                notes[i].style.width = "79%";
+                notes[i].style.marginLeft="10%";
+            }
+        }
+        else
+        {
+            for (i = 0; i < notes.length; i++) {
+                notes[i].style.width = "30%";
+                notes[i].style.marginLeft="0%";
+            }
+        }
+
+
+    };
+
+    function changeColor()
+    {
+        $scope.colorValue={};
+        $scope.current = $state.current;
+
+        switch ($scope.current.name) {
+            case 'home.dashboard':  $scope.title = "fundoo Notes";
+                $scope.customColor = {
+                    'background-color': '#fb0',
+                    'color': 'black'
+                };
+                break;
+            case 'home.reminders':  $scope.title = "Reminders";
+                $scope.customColor = {
+                    'background-color': '#607d8b',
+                    'color': '#ffffff'
+                };
+                break;
+            case 'home.archive':    $scope.title = "Archive";
+                $scope.customColor = {
+                    'background-color': '#607d8b',
+                    'color': '#ffffff'
+                };
+                break;
+            case 'home.trash'  :    $scope.title = "Trash";
+                $scope.customColor = {
+                    'background-color': '#636363',
+                    'color': '#ffffff'
+                };
+                break;
+        }
+
+        $scope.colorValue=$scope.customColor;
+    };
+
+    changeColor();
+
+    $scope.showDialog = function(event,note) {
+        $mdDialog.show({
+            locals : {noteInfo : note},
+            controller: DialogCtrl,
+            templateUrl: 'template/noteDialog.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            clickOutsideToClose:true,
+            fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        });
+    };
+
+    function DialogCtrl($scope, $mdDialog,noteInfo) {
+        $scope.noteInfo= noteInfo;
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+
+        $scope.updateNote=function(note)
+        {
+            var url=baseUrl+"updatenote";
+
+            noteService.putAPIWithHeader(url,note).then(function successCallback(response) {
+                $scope.getAllNotes();
+                console.log("Update Successfully in home controller",response);
+            }, function errorCallback(response) {
+                console.log(" Update failed",response);
+            });
+        }
+
+    }
+
+    getAllLabels();
+
+    $scope.label_info=[];
+
+    function getAllLabels()
+    {
+        var url=baseUrl+"labels";
+
+        labelService.getAPIWithHeader(url).then(function successCallback(response)
+        {
+            console.log("Get Label Successfully in Home",response);
+            $scope.label_info=response.data;
+
+            //$scope.editableLabels = angular.copy(value.labelName);
+
+            // checkCurrentState($scope.label_info);
+            $scope.showLabel=true;
+
+        },function errorCallback(response){
+            console.log("Get Label failed in Home",response.data);
+        });
+    };
+
+    $scope.showLabelDialog = function(event) {
+
+        $mdDialog.show({
+            locals : {labelInfo : $scope.label_info},
+            controller: labelDialogCtrl,
+            templateUrl: 'template/createLabel.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            clickOutsideToClose:true,
+            fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        });
+    };
+
+    function labelDialogCtrl($scope, $mdDialog,labelInfo)
+    {
+        $scope.labelInfo=labelInfo;
+
+
+        $scope.labelModel=
+            {
+                labelName:""
+            };
+
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+
+        $scope.close=true;
+        $scope.done=true;
+        $scope.add=false;
+        $scope.isClicked=false;
+        $scope.changeIcon=function()
+        {
+            $scope.isClicked = !$scope.isClicked;
+            if($scope.isClicked)
+            {
+                $scope.add=true;
+                $scope.close=false;
+                $scope.done=false;
+            }
+            else
+            {
+                $scope.add=false;
+                $scope.close=true;
+                $scope.done=true;
+            }
+        };
+
+        $scope.enableEdit = function (item) {
+            item.editable = true;
+            item.labelIcon=false;
+        };
+
+        $scope.disableEdit = function (item) {
+            item.editable = false;
+            item.labelIcon=true;
+        };
+
+        $scope.addLabel=function(labelModel)
+        {
+            var url=baseUrl+"addlabel";
+            if(labelModel.labelName !== "")
+            {
+                labelService.postAPIWithHeader(url,labelModel).then(function successCallback(response)
+                {
+                    console.log("Add Label Successfully in Dialog",response);
+                    $scope.labelModel.labelName="";
+                    getAllLabelsInDialog();
+                    getAllLabels();
+                },function errorCallback(response){
+                    console.log("Add Label failed in Dialog",response.data);
+                })
+            }
+        };
+
+
+        function getAllLabelsInDialog()
+        {
+            var url=baseUrl+"labels";
+
+            labelService.getAPIWithHeader(url).then(function successCallback(response)
+            {
+                console.log("Get Label Successfully in Dialog",response);
+                $scope.labelInfo=response.data;
+
+                $scope.labelDisplay=true;
+            },function errorCallback(response){
+                console.log("Get Label failed in Dialog",response.data);
+            });
+        };
+
+        $scope.updateLabel=function(label)
+        {
+          var url=baseUrl+"updatelabel";
+          console.log("updated Name",label.labelName);
+            labelService.putAPIWithHeader(url,label).then(function successCallback(response) {
+                getAllLabels();
+                console.log("Update Label Successfully in Note Controller",response);
+
+            }, function errorCallback(response) {
+                console.log("Update Label Failed In Note Controller",response);
+
+            });
+
+
+        }
+
+        $scope.deleteDialog = function(event,label) {
+
+            console.log("info",label);
+
+            $mdDialog.show({
+                locals : {labelData : label},
+                controller: daleteDialogCtrl,
+                templateUrl: 'template/deleteLabel.html',
+                parent: angular.element(document.body),
+                targetEvent: event,
+                clickOutsideToClose:true,
+                fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+            }).then(function successCallback(response)
+            {
+                console.log("Successfully in Delete Dialog",response);
+                getAllLabelsInDialog();
+                getAllLabels();
+            },function errorCallback(response){
+                console.log("failed in Delete Dialog",response);
+            });
+        };
+
+
+        function daleteDialogCtrl($scope, $mdDialog,labelData)
+        {
+
+            $scope.labelInfo=labelData;
+
+            console.log("label data",$scope.labelInfo);
+
+            $scope.cancel = function() {
+                $mdDialog.cancel();
+            };
+
+
+            $scope.deleteLabel=function(labelInfo)
+            {
+                var url=baseUrl+"deletelabel/";
+                labelService.deleteAPIWithHeader(url,labelInfo.id).then(function successCallback(response)
+                {
+                    $mdDialog.hide(response.data);
+                    console.log("Delete Label Successfully",response);
+
+                },function errorCallback(response){
+                    console.log("Delete Label failed in Delete Dialog",response);
+                })
+            }
+
+        }
+    }
+
+    $scope.toggleLeft = buildToggler('left');
+
+
+    function buildToggler(componentId) {
+        return function() {
+            $mdSidenav(componentId).toggle();
+            var isOpen = $mdSidenav(componentId).isOpen();
+            if (isOpen) {
+
+                if (!$state.is('home.dashboard')) {
+                    document.getElementById('archive').style.marginLeft = '100px';
+                }
+                else {
+                    document.getElementById('take-note-card').style.marginTop = '35px';
+
+                    document.getElementById('dashboard').style.marginLeft = '100px';
+                }
+            } else {
+
+                if($state.is('home.dashboard'))
+                {
+                    document.getElementById('take-note-card').style.marginTop='30px';
+                    document.getElementById('dashboard').style.marginLeft = '0px';
+                }
+                else
+                {
+                    document.getElementById('archive').style.marginLeft = '0px';
+                }
+            }
+        };
+    }
+
+
+
+
+
     $scope.isTrashedNote=function(note)
     {
         if(note.trashed===false)
@@ -118,7 +485,8 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
             case 'Delete note':
                 $scope.isTrashedNote(note);
                 break;
-            case 'Add label': openDialogLabel();
+            case 'Add label': openDialogLabel(event,note);
+
 
                 break;
             case 'Make a copy':
@@ -134,13 +502,15 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         }
     };
 
-    function openDialogLabel()
-    {
-        console.log("label in note controller",$scope.label_info);
 
-        $scope.showDialogNoteLabel = function(event) {
+
+
+
+    function openDialogLabel(event,note)
+    {
+
             $mdDialog.show({
-                locals : {labelInfo : $scope.label_info},
+                locals : {labelInfo : $scope.label_info,noteInfo:note},
                 controller: DialogNoteLabelCtrl,
                 templateUrl: 'template/labelDialog.html',
                 parent: angular.element(document.body),
@@ -148,16 +518,86 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
                 clickOutsideToClose:true,
                 fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
             });
-        };
 
-        function DialogNoteLabelCtrl($scope, $mdDialog,labelInfo) {
+        function DialogNoteLabelCtrl($scope, $mdDialog,labelInfo,noteInfo) {
+
             $scope.labelInfo= labelInfo;
+            $scope.noteInfo= noteInfo;
+
+            console.log("note details in add label",noteInfo);
+
+            $scope.labelModel=
+                {
+                    labelName:""
+                };
 
             $scope.cancel = function() {
                 $mdDialog.cancel();
             };
 
+            $scope.selected=[];
 
+
+            $scope.toggle = function (item, list) {
+                console.log("item",item);
+                console.log("list1",list);
+
+                var idx = list.indexOf(item);
+                console.log("idx",idx);
+
+                if (idx > -1) {
+                    list.splice(idx, 1);
+                    console.log("list2",list);
+
+                }
+                else {
+                    list.push(item);
+                    console.log("list3",list);
+
+                }
+            };
+
+            console.log("list4",$scope.selected);
+
+            $scope.exists = function (item, list) {
+                return list.indexOf(item) > -1;
+            };
+            $scope.addLabel=function(label)
+            {
+                console.log("new label",label);
+               /* $scope.labelModel.labelName=label;
+                console.log("label Model",$scope.labelModel.labelName);*/
+                //console.log("new label name",label.labelName);
+
+                var url=baseUrl+"addlabel";
+                if($scope.labelModel.labelName !== "")
+                {
+                    labelService.postAPIWithHeader(url,$scope.labelModel).then(function successCallback(response)
+                    {
+                        console.log("Add Label Successfully in Note Dialog",response);
+                        $scope.labelModel.labelName="";
+                        getAllLabels();
+                        getAllLabelsInDialogNote();
+                    },function errorCallback(response){
+                        console.log("Add Label failed in Note Dialog",response.data);
+                        $scope.error=response.data.errorMessage;
+                    })
+                }
+            };
+
+            function getAllLabelsInDialogNote()
+            {
+                var url=baseUrl+"labels";
+
+                labelService.getAPIWithHeader(url).then(function successCallback(response)
+                {
+                    console.log("Get Label Successfully in Dialog Note",response);
+                    $scope.labelInfo=response.data;
+                    $scope.labelDisplay=true;
+                },function errorCallback(response){
+                    console.log("Get Label failed in Dialog Note",response.data);
+                });
+            };
 
         }
 

@@ -208,6 +208,7 @@ body{
 
 }
 
+
 .profile-name
 {
     line-height:normal;
@@ -595,6 +596,14 @@ body{
     color:rgba(0, 0, 0,0.87);
     background-color: #000000;
     background-color: rgba(0, 0, 0, 0);
+}
+
+.input_text
+{
+    -webkit-user-modify: read-write;
+    word-wrap: break-word;
+    -webkit-appearance: none;
+    -webkit-line-break: after-white-space;
 }
 
 .mid-logo
