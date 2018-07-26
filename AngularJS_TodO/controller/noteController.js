@@ -62,6 +62,16 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         $state.go('home.trash');
     };
 
+    $scope.openMenu=function($mdMenu,event)
+    {
+     $mdMenu.open(event);
+    };
+
+    $scope.closeMenu=function($mdMenu,event)
+    {
+        $mdMenu.close(event);
+    };
+
     $scope.sendToLogin = function() {
         $window.localStorage.clear();
         $location.path('login');
@@ -141,10 +151,16 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
     $scope.isVisible = false;
 
-    $scope.clickProfile = function() {
+     $scope.clickProfile = function() {
         $scope.isVisible = !$scope.isVisible;
     };
 
+    $scope.isReminderVisible=false;
+    $scope.clickReminder = function() {
+        $scope.isReminderVisible = !$scope.isReminderVisible;
+        console.log("Reminder",$scope.isReminderVisible);
+        //=$scope.isReminderVisible;
+    };
 
     $scope.profileInfo=function()
     {
@@ -431,34 +447,36 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
 
     function buildToggler(componentId) {
-        return function() {
+        return function () {
             $mdSidenav(componentId).toggle();
             var isOpen = $mdSidenav(componentId).isOpen();
             if (isOpen) {
 
-                if (!$state.is('home.dashboard')) {
-                    document.getElementById('archive').style.marginLeft = '100px';
-                }
-                else {
+                console.log("url", $state.current.url);
+                if ($state.current.url === '/dashboard') {
                     document.getElementById('take-note-card').style.marginTop = '35px';
 
                     document.getElementById('dashboard').style.marginLeft = '100px';
-                }
-            } else {
 
-                if($state.is('home.dashboard'))
-                {
-                    document.getElementById('take-note-card').style.marginTop='30px';
-                    document.getElementById('dashboard').style.marginLeft = '0px';
                 }
-                else
-                {
-                    document.getElementById('archive').style.marginLeft = '0px';
+                else if ($state.current.url === '/trash' || $state.current.url === '/archive') {
+                    document.getElementById('archiveTrash').style.marginLeft = '100px';
                 }
             }
+            else {
+
+                if ($state.current.url === '/dashboard') {
+                    document.getElementById('take-note-card').style.marginTop = '30px';
+                    document.getElementById('dashboard').style.marginLeft = '0px';
+
+                }
+                else if ($state.current.url === '/trash' || $state.current.url === '/archive') {
+                    document.getElementById('archiveTrash').style.marginLeft = '0px';
+                }
+            }
+
         };
     }
-
 
 
 

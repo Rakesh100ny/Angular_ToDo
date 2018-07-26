@@ -11,7 +11,6 @@
 <md-menu>
     <md-button aria-label="Colors" class="md-icon-button" style="margin: 0 auto;" ng-mouseenter="$mdMenu.open()">
         <md-icon><i class="material-icons">palette</i></md-icon>
-        <md-tooltip>Colours</md-tooltip>
     </md-button>
     <md-menu-content ng-mouseleave="$mdMenu.close()">
         <md-menu-item ng-repeat="item in colors">
@@ -32,14 +31,13 @@
 </md-button>
 
 <md-menu>
-    <md-button aria-label="More" style="margin: 0 auto;" class="md-icon-button"  ng-mouseenter="$mdMenu.open()">
+    <md-button aria-label="More" style="margin: 0 auto;" class="md-icon-button"  ng-click="openMenu($mdMenu,$event)">
         <md-icon><i class="material-icons">more_vert</i></md-icon>
-        <md-tooltip>More</md-tooltip>
     </md-button>
-    <md-menu-content width="1">
+    <md-menu-content ng-click="closeMenu($mdMenu,$event)">
         <md-menu-item ng-repeat="item in takenotemore">
             <md-button >
-                <span md-menu-align-target>{{item}}</span>
+                <span>{{item}}</span>
             </md-button>
         </md-menu-item>
     </md-menu-content>

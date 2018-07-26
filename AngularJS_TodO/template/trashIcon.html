@@ -1,14 +1,13 @@
 <div ng-show="note.editable" layout="row">
 
-    <md-menu md-position-mode="target-right target">
-        <md-button aria-label="More" class="md-icon-button"  ng-mouseenter="$mdMenu.open($event)">
+    <md-menu>
+        <md-button aria-label="More" class="md-icon-button"  ng-click="openMenu($mdMenu,$event)">
             <md-icon><i class="material-icons">more_vert</i></md-icon>
-            <md-tooltip>More</md-tooltip>
         </md-button>
-        <md-menu-content  class="md-menu" ng-mouseleave="$mdMenu.close()">
+        <md-menu-content  ng-click="closeMenu($mdMenu,$event)">
             <md-menu-item ng-repeat="item in trashmore" >
                 <md-button ng-click="isDeleteNote(item,note);">
-                    <span md-menu-align-target>{{item}}</span>
+                    <span>{{item}}</span>
                 </md-button>
             </md-menu-item>
         </md-menu-content>

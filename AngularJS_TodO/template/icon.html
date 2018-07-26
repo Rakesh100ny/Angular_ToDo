@@ -1,9 +1,8 @@
 <div ng-show="note.editable" layout="row" layout-align="space-between end">
 
     <md-menu>
-    <md-button aria-label="Remind Me" class="md-icon-button" style="margin: 0 auto;padding: 0px" ng-click="$mdMenu.open($event)">
+    <md-button aria-label="Remind Me" class="md-icon-button" style="margin: 0 auto;padding: 0px" ng-click="openMenu($mdMenu,$event);">
         <md-icon><i class="material-icons">touch_app</i></md-icon>
-        <md-tooltip>Remind Me</md-tooltip>
     </md-button>
         <md-menu-content width="4">
             <md-subheader><strong>Reminder :</strong></md-subheader>
@@ -16,36 +15,18 @@
               </md-button>
           </md-menu-item>
           <md-menu-item>
-           <md-menu>
-           <md-button class="md-button" ng-click="$mdMenu.open($event)" style="background-color: #e8e8e8">
-             <span><md-icon><i class="material-icons md-10">access_time</i></md-icon></span>
+
+           <md-button class="md-button" ng-click="clickReminder()" style="background-color: #e8e8e8">
+             <md-icon><i class="material-icons md-10">access_time</i></md-icon>
                Pick date & time
            </md-button>
-            <md-menu-content width="1">
-                <md-subheader class="md-no-stricky">Pick date & time</md-subheader>
-             <md-menu-item>
-                   <form name="myForm" flex-gt-xs>
-                      <md-input-container md-no-float>
-                         <md-datepicker md-placeholder="Add a date" ng-model="myDate" name="dateField" md-min-date="cminDate"
-                                        md-max-date="maxDate"></md-datepicker>
 
-                         <div ng-messages="myForm.dateField.$error">
-                             <div ng-message="valid">Use a valid date format</div>
-                             <div ng-message="mindate">Choose a date on or after {{minDate | date:"shortDate"}}</div>
-                             <div ng-message="maxdate">Choose a date on or before {{maxDate | date:"shortDate"}}</div>
-                         </div>
-                     </md-input-container>
-                 </form>
-             </md-menu-item>
-            </md-menu-content>
-           </md-menu>
           </md-menu-item>
               <md-menu-item>
                   <md-button class="md-button">
                       <span><md-icon><i class="material-icons">place</i></md-icon></span>
                       Pick place
                   </md-button>
-
               </md-menu-item>
           </md-menu-content>
     </md-menu>
@@ -54,13 +35,13 @@
         <md-tooltip>Collaboators</md-tooltip>
     </md-button>
 
-    <md-menu md-position-mode="target-right target">
-            <md-button aria-label="Colors" class="md-icon-button"  style="margin: 0 auto;padding: 0px" ng-mouseover="$mdMenu.open()">
+    <md-menu>
+            <md-button aria-label="Colors" class="md-icon-button"  style="margin: 0 auto;padding: 0px" ng-mouseenter="$mdMenu.open()">
             <md-icon><i class="material-icons">palette</i></md-icon>
         </md-button>
-        <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
+        <md-menu-content  ng-mouseleave="$mdMenu.close()">
             <md-menu-item ng-repeat="item in colors">
-                <md-button ng-repeat="obj in item" md-autofocus style="background-color: {{obj.value}};border-radius: 50%;" ng-click="changeNoteColor(obj.value,note);" class="md-icon-button" >
+                <md-button ng-repeat="obj in item" style="background-color: {{obj.value}};border-radius: 50%;" ng-click="changeNoteColor(obj.value,note);" class="md-icon-button" >
                  </md-button>
             </md-menu-item>
         </md-menu-content>
@@ -76,12 +57,11 @@
         <md-tooltip>Archive</md-tooltip>
     </md-button>
 
-    <md-menu md-position-mode="target-right target">
-        <md-button aria-label="More" class="md-icon-button" style="margin: 0 auto;padding: 0px" ng-click="$mdMenu.open($event)">
+    <md-menu>
+        <md-button aria-label="More" class="md-icon-button" style="margin: 0 auto;padding: 0px" ng-click="openMenu($mdMenu,$event)">
             <md-icon><i class="material-icons">more_vert</i></md-icon>
-            <md-tooltip>More</md-tooltip>
         </md-button>
-        <md-menu-content  class="md-menu" ng-mouseleave="$mdMenu.close()">
+        <md-menu-content  ng-click="closeMenu($mdMenu,$event)">
             <md-menu-item ng-repeat="item in more" >
                 <md-button ng-click="performAction(item,note);">
                     <span md-menu-align-target>{{item}}</span>
@@ -89,3 +69,34 @@
             </md-menu-item>
         </md-menu-content>
     </md-menu>
+</div>
+
+<div layout="row" ng-show="isReminderVisible" class="reminder-card" layout-align="center end">
+
+        <md-content>
+            <md-list>
+                <md-list-item class="md-3-line">
+                    <img src="asset/profile.jpg"  class="profile-card-img" alt="profile" />
+                    <div class="md-list-item-text" style="text-align: justify-all" layout="column" layout-align="space-around end">
+                        <div layout="row" class="profile-name">{{value.iss}}</div>
+                        <div layout="row" class="profile-email">{{value.sub}}</div>
+                        <div layout="row">
+                            <a ui-sref="google.com" class="google" target="_blank" style="margin-right: 5px">Google+ Profile</a>
+                            <span aria-hidden="true">–</span>
+                            <a ui-sref="#"  class="google" target="_blank">Privacy</a>
+                        </div>
+                        <button class="profile-button">Fundoo Account</button>
+
+                    </div>
+                </md-list-item>
+                <br>
+                <md-divider ></md-divider>
+                <div layout="row"  layout-xs="row">
+                    <md-button ng-click="sendToLogin()" class="add-btn">Add account</md-button>
+                    <span flex></span>
+                    <md-button ng-click="sendToLogin()" class="sign-out-btn" >Sign out</md-button>
+                </div>
+            </md-list>
+        </md-content>
+
+</div>
