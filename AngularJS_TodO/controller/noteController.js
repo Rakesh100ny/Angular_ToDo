@@ -1,4 +1,4 @@
-app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteService,labelService,$state,$window,$location)
+app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteService,labelService,$state,$window,$location,$log)
 {
 
     var baseUrl="http://localhost:8081/Fundo_Note/";
@@ -65,6 +65,8 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
     $scope.openMenu=function($mdMenu,event)
     {
      $mdMenu.open(event);
+     event.preventDefault();
+     event.stopPropagation();
     };
 
     $scope.closeMenu=function($mdMenu,event)
@@ -132,7 +134,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
             ]
 
         ];
-
+/*
     $scope.myDate = new Date();
 
     $scope.minDate = new Date(
@@ -145,8 +147,17 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         $scope.myDate.getFullYear(),
         $scope.myDate.getMonth() + 2,
         $scope.myDate.getDate()
-    );
+    );*/
 
+    $scope.myDate = new Date();
+
+/*
+    $scope.onDateChanged = function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        $log.log('Updated Date: ', this.myDate);
+    };
+*/
 
 
     $scope.isVisible = false;
@@ -156,9 +167,12 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
     };
 
     $scope.isReminderVisible=false;
-    $scope.clickReminder = function() {
+    $scope.clickReminder = function(note) {
         $scope.isReminderVisible = !$scope.isReminderVisible;
+
         console.log("Reminder",$scope.isReminderVisible);
+
+        note.editable=$scope.isReminderVisible;
         //=$scope.isReminderVisible;
     };
 
@@ -390,7 +404,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
             });
 
 
-        }
+        };
 
         $scope.deleteDialog = function(event,label) {
 
@@ -540,7 +554,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         function DialogNoteLabelCtrl($scope, $mdDialog,labelInfo,noteInfo) {
 
             $scope.labelInfo= labelInfo;
-            $scope.noteInfo= noteInfo;
+
 
             console.log("note details in add label",noteInfo);
 
@@ -556,23 +570,38 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
             $scope.selected=[];
 
 
-            $scope.toggle = function (item, list) {
-                console.log("item",item);
+            $scope.toggle = function (label, list) {
+                console.log("label",label);
                 console.log("list1",list);
 
-                var idx = list.indexOf(item);
+                var idx = list.indexOf(label);
                 console.log("idx",idx);
 
                 if (idx > -1) {
                     list.splice(idx, 1);
                     console.log("list2",list);
 
+
                 }
                 else {
-                    list.push(item);
+
+                    list.push(label);
                     console.log("list3",list);
 
                 }
+
+                var url=baseUrl+"relationNoteLabel";
+                labelService.putRelationNoteLabel(url, noteInfo.id,label.id).then(function successCallback(response)
+                {
+                    console.log("Add Label On Note Successfully in Note",response);
+                    getAllLabels();
+                    $scope.getAllNotes();
+                },function errorCallback(response){
+                    console.log("Add Label On Note failed in Note",response);
+
+                });
+
+
             };
 
             console.log("list4",$scope.selected);
@@ -723,12 +752,18 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
        noteModel.pined= noteModel.isPined;
        var url=baseUrl+"addnote";
 
+
        if(noteModel.title!=="" && noteModel.description!=="")
        {
+           console.log("tilte",noteModel.title);
+           console.log("dis", noteModel.description);
+
+
                noteService.postAPIWithHeader(url,noteModel).then(function successCallback(response)
                {
                    $scope.showLogo=false;
                    $scope.showNote=true;
+
                    console.log("Add Note Successfully",response.data);
                    $scope.getAllNotes();
                    $scope.initializeNote();
@@ -742,38 +777,41 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
     $scope.getAllNotes = function()
     {
       var url=baseUrl+"note";
+      console.log("url",url);
         noteService.getAPIWithHeader(url).then(function successCallback(response)
-        {
-            console.log("Get Note Successfully",response.data);
+         {
+             console.log("Get Note Successfully",response.data);
 
-            $scope.note_info=response.data;
-            if($scope.note_info==="")
+             $scope.note_info=response.data;
+             if($scope.note_info==="")
             {
-              $scope.showNote=false;
-                $scope.showLogo=true;
-            }
-            else
-                {
-                    $scope.showNote=true;
-                    $scope.showLogo=false;
-                    checkOtherNote($scope.note_info);
-                    checkPinedNote($scope.note_info);
-                }
+               $scope.showNote=false;
+                 $scope.showLogo=true;
+             }
+             else
+                 {
+                     $scope.showNote=true;
+                     $scope.showLogo=false;
+                     checkOtherNote($scope.note_info);
+                     checkPinedNote($scope.note_info);
+                 }
 
-        },function errorCallback(response){
-            console.log("Get Note failed",response.data);
-        })
+         },function errorCallback(response){
+            console.log("Get Note failed",response);
+             })
     };
 
     function updateNote(note)
     {
+        console.log("note1",angular.toJson(note));
+
         var url=baseUrl+"updatenote";
         noteService.putAPIWithHeader(url,note).then(function successCallback(response) {
-            $scope.getAllNotes();
-            console.log("Update Successfully in Note Controller",response);
 
+            console.log("Update Successfully in Note Controller",response.data);
+            $scope.getAllNotes();
         }, function errorCallback(response) {
-            console.log("Update Failed In Note Controller",response);
+            console.log("Update Failed In Note Controller",angular.fromJson(angular.toJson(response)));
 
         });
     };
@@ -822,3 +860,23 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
 });
 
+/*
+app.config(function($mdDateLocaleProvider) {
+    /!**
+     * @param date {Date}
+     * @returns {string} string representation of the provided date
+     *!/
+    $mdDateLocaleProvider.formatDate = function(date) {
+        return date ? moment(date).format('L') : '';
+    };
+
+    /!**
+     * @param dateString {string} string that can be converted to a Date
+     * @returns {Date} JavaScript Date object created from the provided dateString
+     *!/
+    $mdDateLocaleProvider.parseDate = function(dateString) {
+        var m = moment(dateString, 'L', true);
+        return m.isValid() ? m.toDate() : new Date(NaN);
+    };
+   });
+*/

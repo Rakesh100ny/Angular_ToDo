@@ -1,5 +1,41 @@
 <div ng-show="note.editable" layout="row" layout-align="space-between end">
 
+<!--
+    <md-menu>
+        <md-button aria-label="Remind Me" class="md-icon-button" style="margin: 0 auto;padding: 0px" ng-click="openMenu($mdMenu,$event);" md-prevent-menu-close="md-prevent-menu-close">
+            <md-icon><i class="material-icons">touch_app</i></md-icon>
+        </md-button>
+        <md-menu-content>
+            <md-subheader><strong>Reminder :</strong></md-subheader>
+            <md-menu-item ng-repeat="item in reminders">
+                <md-button ng-click="" ng-repeat="info in item">
+                    <div layout="row" flex>
+                        <p flex>{{info.name}}</p>
+                        <p>{{info.value}}</p>
+                    </div>
+                </md-button>
+            </md-menu-item>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item>
+                <md-menu>
+                    <md-button class="md-button"  style="background-color: #e8e8e8">
+                        <md-icon><i class="material-icons md-10">access_time</i></md-icon>
+                        Pick date & time
+                    </md-button>
+                    <md-menu-content>
+                        <md-menu-item>
+                            <md-datepicker id="myDatePicker" ng-model="myDate" md-prevent-menu-close="md-prevent-menu-close" md-placeholder="Enter date"></md-datepicker>
+                           </md-menu-item>
+                        <md-menu-item><md-datepicker ng-model="myDate" ng-change="onDateChanged()"
+                                                     md-placeholder="Enter date"></md-datepicker>
+                            </md-menu-item>
+
+                    </md-menu-content>
+                </md-menu>
+            </md-menu-item>
+        </md-menu-content>
+    </md-menu>-->
+
     <md-menu>
     <md-button aria-label="Remind Me" class="md-icon-button" style="margin: 0 auto;padding: 0px" ng-click="openMenu($mdMenu,$event);">
         <md-icon><i class="material-icons">touch_app</i></md-icon>
@@ -14,21 +50,21 @@
                   </div>
               </md-button>
           </md-menu-item>
-          <md-menu-item>
+            <md-menu-item>
 
-           <md-button class="md-button" ng-click="clickReminder()" style="background-color: #e8e8e8">
-             <md-icon><i class="material-icons md-10">access_time</i></md-icon>
-               Pick date & time
-           </md-button>
+                <button class="md-button" ng-click="clickReminder()" style="background-color: #e8e8e8">
+                    <md-icon><i class="material-icons md-10">access_time</i></md-icon>
+                    Pick date & time
+                </button>
 
-          </md-menu-item>
-              <md-menu-item>
-                  <md-button class="md-button">
-                      <span><md-icon><i class="material-icons">place</i></md-icon></span>
-                      Pick place
-                  </md-button>
-              </md-menu-item>
-          </md-menu-content>
+            </md-menu-item>
+                <md-menu-item>
+                <md-button class="md-button">
+                    <span><md-icon><i class="material-icons">place</i></md-icon></span>
+                    Pick place
+                </md-button>
+                </md-menu-item>
+        </md-menu-content>
     </md-menu>
     <md-button aria-label="Collaboators"  class="md-icon-button" style="padding: 0px;margin: 0 auto;">
         <md-icon><i class="material-icons">person_add</i></md-icon>
@@ -71,7 +107,10 @@
     </md-menu>
 </div>
 
-<div layout="row" ng-show="isReminderVisible" class="reminder-card" layout-align="center end">
+
+
+<!--
+<div layout="row" ng-show="note.editable" class="reminder-card" layout-align="center end">
 
         <md-content>
             <md-list>
@@ -100,3 +139,5 @@
         </md-content>
 
 </div>
+-->
+

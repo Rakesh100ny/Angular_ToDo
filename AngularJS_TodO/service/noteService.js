@@ -13,10 +13,10 @@ app.factory('noteService', function($http,$location)
                     'userLoginToken': localStorage.getItem('tokenLogin'),
                 },
                 data: angular.toJson(data)
-            }
+            };
 
         return $http(request);
-    }
+    };
 
     factory.putAPIWithHeader = function(url,data)
     {
@@ -28,9 +28,10 @@ app.factory('noteService', function($http,$location)
                     'userLoginToken': localStorage.getItem('tokenLogin')
                 },
                 data: angular.toJson(data)
-            }
+            };
+
         return $http(request);
-    }
+    };
 
     factory.deleteAPIWithHeader = function(url,noteId)
     {
@@ -66,7 +67,7 @@ app.factory('noteService', function($http,$location)
         }
 
         return user;
-    }
+    };
 
     factory.getAPIWithHeader = function(url)
     {
@@ -77,7 +78,7 @@ app.factory('noteService', function($http,$location)
                 headers: {
                     'userLoginToken': localStorage.getItem('tokenLogin')
                 }
-            }
+            };
 
         return $http(request);
     };
