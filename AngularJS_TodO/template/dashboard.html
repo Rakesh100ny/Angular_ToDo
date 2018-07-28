@@ -67,7 +67,13 @@
                 <md-card-content class="center">
                     <p>{{note.description}}</p>
                 </md-card-content>
-                <div  layout="row" style="height: 50px;" layout-align="space-around center">
+                <div  layout="row" layout-align="start space-around" >
+                    <md-chips style="box-shadow: none;"  ng-repeat="label in note.listOfLabels">
+                     <md-chip>{{label.labelName}}</md-chip>
+                    </md-chips>
+                 </div>
+
+               <div  layout="row" style="height: 50px;" layout-align="space-around center">
                     <noteicon></noteicon>
                 </div>
             </md-card>
@@ -77,7 +83,7 @@
     <div style="margin-top: 35px;" flex-offset="15">
         <md-subheader ng-if="showPinedNote && showOtherNote" style="background-color: #e8e8e8;margin-left: 90px;">Other</md-subheader>
         <md-content  ng-show="showNote"  style="max-width: 800px;background-color: #e8e8e8;margin-left: 100px;overflow: hidden;" layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center">
-        <md-card ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card" ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}}"  ng-repeat="note in note_info | filter:{pined:false,trashed:false,archived:false} | orderBy: 'note.id':true" as noteArray">
+        <md-card ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card" ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}}"  ng-repeat="note in note_info | filter:{pined:false,trashed:false,archived:false} | orderBy: 'note.id':true">
             <md-card-title>
                 <md-card-title-text>
                     <div class="md-headline">{{note.title}} </div>
@@ -89,6 +95,11 @@
             <md-card-content class="center">
                 <p>{{note.description}}</p>
             </md-card-content>
+            <div  layout="row" layout-align="start space-around" >
+                <md-chips style="box-shadow: none;" ng-repeat="label in note.listOfLabels">
+                    <md-chip>{{label.labelName}}</md-chip>
+                </md-chips>
+            </div>
             <div  layout="row" style="height: 50px;" layout-align="space-around center">
               <noteicon></noteicon>
             </div>

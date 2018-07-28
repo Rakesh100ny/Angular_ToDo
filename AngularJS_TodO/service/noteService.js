@@ -33,6 +33,17 @@ app.factory('noteService', function($http,$location)
         return $http(request);
     };
 
+    factory.putRelationNoteLabel=function(url,noteId,labelId,status)
+    {
+        var request =
+            {
+                method: "PUT",
+                url: url+noteId+"/"+labelId+"/"+status,
+            };
+
+        return $http(request);
+    };
+
     factory.deleteAPIWithHeader = function(url,noteId)
     {
         var request =
@@ -43,10 +54,10 @@ app.factory('noteService', function($http,$location)
                     'userLoginToken': localStorage.getItem('tokenLogin')
                 },
                 data: angular.toJson(noteId)
-            }
+            };
 
         return $http(request);
-    }
+    };
 
     function tokenDecode(str) {
         var output = str.replace('-', '+').replace('_', '/');

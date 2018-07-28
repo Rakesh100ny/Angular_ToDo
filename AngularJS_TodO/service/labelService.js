@@ -18,36 +18,6 @@ app.factory('labelService', function($http)
     };
 
 
-    factory.addNoteLabel = function(url,noteId,labelId)
-    {
-        var request =
-            {
-                method: "POST",
-                url: url+noteId+labelId,
-                headers: {
-                    'userLoginToken': localStorage.getItem('tokenLogin'),
-                },
-
-            };
-
-        return $http(request);
-    };
-
-    factory.removeNoteLabel = function(url,noteId,labelId)
-    {
-        var request =
-            {
-                method: "POST",
-                url: url+noteId+labelId,
-                headers: {
-                    'userLoginToken': localStorage.getItem('tokenLogin'),
-                },
-
-            };
-
-        return $http(request);
-    };
-
     factory.deleteAPIWithHeader = function(url,labelId)
     {
 

@@ -555,6 +555,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
             $scope.labelInfo= labelInfo;
 
+            console.log("in the note have labels",noteInfo.listOfLabels);
 
             console.log("note details in add label",noteInfo);
 
@@ -567,7 +568,11 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
                 $mdDialog.cancel();
             };
 
-            $scope.selected=[];
+
+
+            $scope.selected=noteInfo.listOfLabels;
+
+            console.log("selected",$scope.selected);
 
 
             $scope.toggle = function (label, list) {
@@ -577,25 +582,24 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
                 var idx = list.indexOf(label);
                 console.log("idx",idx);
 
+                var status="";
                 if (idx > -1) {
                     list.splice(idx, 1);
                     console.log("list2",list);
-
+                    status="remove";
 
                 }
                 else {
 
                     list.push(label);
                     console.log("list3",list);
-
+                    status="add";
                 }
 
-                var url=baseUrl+"relationNoteLabel";
-                labelService.putRelationNoteLabel(url, noteInfo.id,label.id).then(function successCallback(response)
+                var url=baseUrl+"relationNoteLabel/";
+                noteService.putRelationNoteLabel(url, noteInfo.id,label.id,status).then(function successCallback(response)
                 {
                     console.log("Add Label On Note Successfully in Note",response);
-                    getAllLabels();
-                    $scope.getAllNotes();
                 },function errorCallback(response){
                     console.log("Add Label On Note failed in Note",response);
 
@@ -606,7 +610,10 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
             console.log("list4",$scope.selected);
 
+
+
             $scope.exists = function (item, list) {
+
                 return list.indexOf(item) > -1;
             };
             $scope.addLabel=function(label)
@@ -790,16 +797,20 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
              }
              else
                  {
+
+
                      $scope.showNote=true;
                      $scope.showLogo=false;
                      checkOtherNote($scope.note_info);
                      checkPinedNote($scope.note_info);
+                    // checkLabelsNote($scope.note_info);
                  }
 
          },function errorCallback(response){
             console.log("Get Note failed",response);
              })
     };
+
 
     function updateNote(note)
     {
@@ -829,7 +840,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         });
     }
 
-    checkOtherNote=function(notes)
+    function checkOtherNote(notes)
     {
         angular.forEach(notes,function(value){
             if(!value.pined && !value.archived && !value.trashed)
@@ -840,7 +851,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         })
     };
 
-    checkPinedNote=function(notes)
+    function checkPinedNote(notes)
     {
         var keepGoing = true;
         angular.forEach(notes,function(value){
@@ -857,6 +868,17 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         })
     };
 
+   /* function checkLabelsNote(notes)
+    {
+        angular.forEach(notes,function(value){
+                    $scope.labelInfo=value.listOfLabels;
+                    console.log("labels1",$scope.labelInfo);
+
+
+
+        });
+
+    }*/
 
 });
 
