@@ -11,7 +11,7 @@
             <span style="text-align: center;color: red;margin-left: 15px;">{{error}} </span>
 
             <div  layout="row" layout-align="start space-around" style="margin-left: 15px;"  ng-repeat="label in labelInfo | filter:labelModel.labelName">
-                        <md-checkbox ng-checked="exists(label, selected)" ng-click="toggle(label,selected)">
+                        <md-checkbox ng-checked="exists(label,selected)" ng-click="toggle(label,selected)">
                             {{ label.labelName }} <!--<span ng-if="exists(item, selected)">selected</span>-->
                         </md-checkbox>
             </div>

@@ -207,6 +207,32 @@ body{
 
 }
 
+md-chips .md-chips
+{
+ box-shadow: none;
+}
+
+
+
+
+
+.reminder-text
+{
+    line-height:normal;
+    vertical-align:baseline;
+    letter-spacing:normal;
+    word-spacing:0px;
+    font-weight:400;
+    font-style: normal;
+    text-decoration:none solid rgba(0, 0, 0, 0.87);
+    text-align:start;
+    color:#000000;
+    color:rgba(0, 0, 0, 0.87);
+    background-color:#000000;
+    background-color:rgba(0, 0, 0, 0);
+    font-size: 14px;
+    font-family:Roboto, arial, sans-serif;
+}
 .reminder-card
 {
     margin-left: 200px;

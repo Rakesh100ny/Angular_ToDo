@@ -67,9 +67,9 @@
                 <md-card-content class="center">
                     <p>{{note.description}}</p>
                 </md-card-content>
-                <div  layout="row" layout-align="start space-around" >
-                    <md-chips style="box-shadow: none;"  ng-repeat="label in note.listOfLabels">
-                     <md-chip>{{label.labelName}}</md-chip>
+                <div  layout="row" layout-wrap layout-align="start space-around">
+                    <md-chips   ng-repeat="label in note.listOfLabels">
+                        <md-chip>{{label.labelName}}<md-button class="md-icon-button"><md-icon><i class="material-icons">close</i></md-icon></md-button></md-chip>
                     </md-chips>
                  </div>
 
@@ -95,10 +95,10 @@
             <md-card-content class="center">
                 <p>{{note.description}}</p>
             </md-card-content>
-            <div  layout="row" layout-align="start space-around" >
-                <md-chips style="box-shadow: none;" ng-repeat="label in note.listOfLabels">
-                    <md-chip>{{label.labelName}}</md-chip>
-                </md-chips>
+            <div layout="row" layout-align="start space-around" >
+                <md-chips ng-repeat="label in note.listOfLabels">
+                    <md-chip >{{label.labelName}}</md-chip>
+                 </md-chips>
             </div>
             <div  layout="row" style="height: 50px;" layout-align="space-around center">
               <noteicon></noteicon>

@@ -3,6 +3,8 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
     var baseUrl="http://localhost:8081/Fundo_Note/";
 
+    $scope.removable=true;
+
     $scope.noteModel = {
         title : "",
         description : "",
@@ -555,9 +557,9 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
             $scope.labelInfo= labelInfo;
 
-            console.log("in the note have labels",noteInfo.listOfLabels);
+            console.log("in note labels",noteInfo.listOfLabels);
+            console.log("in click note ",noteInfo);
 
-            console.log("note details in add label",noteInfo);
 
             $scope.labelModel=
                 {
@@ -569,35 +571,40 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
             };
 
 
-
             $scope.selected=noteInfo.listOfLabels;
 
             console.log("selected",$scope.selected);
 
 
+            $scope.exists = function (item, list) {
+                console.log("exist list",list);
+                console.log("status",list.indexOf(item) > -1);
+                return list.indexOf(item) > -1;
+
+            };
+
             $scope.toggle = function (label, list) {
-                console.log("label",label);
+
                 console.log("list1",list);
+
 
                 var idx = list.indexOf(label);
                 console.log("idx",idx);
 
-                var status="";
                 if (idx > -1) {
+
+
                     list.splice(idx, 1);
-                    console.log("list2",list);
-                    status="remove";
 
                 }
                 else {
 
                     list.push(label);
-                    console.log("list3",list);
-                    status="add";
+
                 }
 
                 var url=baseUrl+"relationNoteLabel/";
-                noteService.putRelationNoteLabel(url, noteInfo.id,label.id,status).then(function successCallback(response)
+                noteService.putRelationNoteLabel(url, noteInfo.id,label.id).then(function successCallback(response)
                 {
                     console.log("Add Label On Note Successfully in Note",response);
                 },function errorCallback(response){
@@ -608,14 +615,10 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
             };
 
-            console.log("list4",$scope.selected);
 
 
 
-            $scope.exists = function (item, list) {
 
-                return list.indexOf(item) > -1;
-            };
             $scope.addLabel=function(label)
             {
                 console.log("new label",label);
@@ -803,7 +806,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
                      $scope.showLogo=false;
                      checkOtherNote($scope.note_info);
                      checkPinedNote($scope.note_info);
-                    // checkLabelsNote($scope.note_info);
+                     //checkLabelsNote($scope.note_info);
                  }
 
          },function errorCallback(response){
@@ -868,12 +871,12 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         })
     };
 
-   /* function checkLabelsNote(notes)
+   /*function checkLabelsNote(notes)
     {
         angular.forEach(notes,function(value){
                     $scope.labelInfo=value.listOfLabels;
                     console.log("labels1",$scope.labelInfo);
-
+                    $scope.checked=true;
 
 
         });

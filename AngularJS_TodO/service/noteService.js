@@ -33,12 +33,12 @@ app.factory('noteService', function($http,$location)
         return $http(request);
     };
 
-    factory.putRelationNoteLabel=function(url,noteId,labelId,status)
+    factory.putRelationNoteLabel=function(url,noteId,labelId)
     {
         var request =
             {
                 method: "PUT",
-                url: url+noteId+"/"+labelId+"/"+status,
+                url: url+noteId+"/"+labelId,
             };
 
         return $http(request);

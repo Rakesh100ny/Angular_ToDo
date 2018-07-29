@@ -35,8 +35,59 @@
             </md-menu-item>
         </md-menu-content>
     </md-menu>-->
-
     <md-menu>
+        <md-button aria-label="Remind Me" class="md-icon-button" style="margin: 0 auto;padding: 0px" ng-click="openMenu($mdMenu,$event);">
+            <md-icon><i class="material-icons">touch_app</i></md-icon>
+        </md-button>
+        <md-menu-content width="4">
+            <md-subheader><strong>Reminder :</strong></md-subheader>
+            <md-menu-item ng-repeat="item in reminders">
+                <md-button ng-click="" md-prevent-menu-close="md-prevent-menu-close" ng-repeat="info in item">
+                    <div layout="row" flex>
+                        <p flex>{{info.name}}</p>
+                        <p>{{info.value}}</p>
+                    </div>
+                </md-button>
+            </md-menu-item>
+            <md-menu-item>
+                <md-menu>
+                    <md-button class="md-button" ng-click="openMenu($mdMenu,$event);" md-prevent-menu-close="md-prevent-menu-close" style="background-color: #e8e8e8">
+                        <md-icon><i class="material-icons md-10">access_time</i></md-icon>
+                        Pick date & time
+                    </md-button>
+                    <md-menu-content class="md-padding" style="height: 200px;overflow: hidden;">
+                        <md-subheader class="reminder-text">Pick date & time</md-subheader>
+                        <md-divider></md-divider><br>
+                        <md-menu-item>
+                             <md-input-container>
+                                 <label>Enter Date</label>
+                                   <input type="date" ng-model="myDate"/>
+                               </md-input-container>
+                        </md-menu-item>
+                           <md-menu-item>
+                               <md-input-container>
+                                   <label>Enter Time</label>
+                                   <input type="time" />
+                               </md-input-container>
+                           </md-menu-item>
+                        <md-menu-item>
+                            <div layout="row" layout-align="end end">
+                             <input type="button"  value="Save"  ng-click=""></input>
+                            </div>
+                       </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </md-menu-item>
+            <md-menu-item>
+                <md-button class="md-button">
+                    <span><md-icon><i class="material-icons">place</i></md-icon></span>
+                    Pick place
+                </md-button>
+            </md-menu-item>
+        </md-menu-content>
+    </md-menu>
+
+  <!--  <md-menu>
     <md-button aria-label="Remind Me" class="md-icon-button" style="margin: 0 auto;padding: 0px" ng-click="openMenu($mdMenu,$event);">
         <md-icon><i class="material-icons">touch_app</i></md-icon>
     </md-button>
@@ -65,7 +116,8 @@
                 </md-button>
                 </md-menu-item>
         </md-menu-content>
-    </md-menu>
+    </md-menu>-->
+
     <md-button aria-label="Collaboators"  class="md-icon-button" style="padding: 0px;margin: 0 auto;">
         <md-icon><i class="material-icons">person_add</i></md-icon>
         <md-tooltip>Collaboators</md-tooltip>
