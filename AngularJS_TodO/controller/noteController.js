@@ -28,6 +28,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
         };
     };
+    $scope.label_note_info=[];
 
     $scope.sendToReminders = function() {
         $state.go('home.reminders');
@@ -81,26 +82,87 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         $location.path('login');
     };
 
-    $scope.sendToLabel=function(label)
+    $scope.sendToLabel=function(label,event)
     {
-        labelId=label.labelName;
-        $scope.location=labelId;
+        if(event!==undefined)
+        {
+         event.stopPropagation();
+        }
+
+        labelId=label.id;
         $state.go('home.label',{labelId:labelId});
+
+        $scope.getAllLabelNotes(label);
+
+    };
+
+    checkLabelState();
+
+    function checkLabelState()
+    {
+     var id=$state.current.url;
+
+     var searchObject = $location.search();
+
+     console.log("label id",id);
+
+     console.log("label sabject",searchObject);
+
+     console.log("param",$state.labelId);
+
+
+    }
+
+    $scope.getAllLabelNotes = function(label)
+    {
+        var url=baseUrl+"labelNote/";
+        console.log("url",url);
+        console.log("id",label.id);
+        labelService.getAllLabelNotes(url,label.id).then(function successCallback(response)
+        {
+            console.log("Get Label Note Successfully",response.data);
+
+            $scope.label_note_info=response.data;
+
+           if($scope.label_note_info==="")
+            {
+                $scope.showNote=false;
+            }
+            else
+            {
+                $scope.showNote=true;
+                checkOtherNote($scope.label_note_info);
+                checkPinedNote($scope.label_note_info);
+
+            }
+
+        },function errorCallback(response){
+            console.log("Get Label Note failed",response);
+        })
     };
 
     $scope.more=['Delete note','Add label','Make a copy','Show checkboxes','Copy to Google Docs'];
 
     $scope.takenotemore=['Add label','Show checkboxes'];
 
-    $scope.addTime=
-        [
-        [{'name':'Morning','value':'8:00 AM'}],
-        [{'name':'Afternoon','value':'1:00 PM'}],
-        [{'name':'Evening','value':'Mon,6:00 PM'}],
-        [{'name':'Night','value':'8:00 PM'}]
+    $scope.addTime= [
+        {'name':'Morning   8:00 AM','value':'8:00 AM'},
+        {'name':'Afternoon 1:00 PM','value':'1:00 PM'},
+        {'name':'Evening   6:00 PM','value':'6:00 PM'},
+        {'name':'Night     8:00 PM','value':'8:00 PM'}
+
     ];
 
+    $scope.filterCondition={
+        operator: 'eq'
+    }
 
+    $scope.operators = [
+        {value: 'eq', displayName: 'equals'},
+        {value: 'neq', displayName: 'not equal'}
+    ];
+
+    $scope.names = ["Emil", "Tobias", "Linus"];
 
     $scope.trashmore=['Delete forever','Restore'];
 
@@ -536,8 +598,40 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         }
     };
 
+    $scope.removeLabel=function(label,note,event)
+    {
+      addRemoveLabel(label,note,event);
+    };
+
+    function addRemoveLabel (label, note,event) {
+
+        if(event!==undefined)
+        {
+            event.stopPropagation();
+        }
+
+        var idx=note.listOfLabels.findIndex(x => x.labelName===label.labelName);
+
+        console.log("idx",idx);
+        console.log("Ranu Soni");
+        if (idx > -1) {
+            note.listOfLabels.splice(idx, 1);
+        }
+        else {
+            note.listOfLabels.push(label);
+        }
+
+        var url=baseUrl+"relationNoteLabel/";
+        noteService.putRelationNoteLabel(url, note.id,label.id).then(function successCallback(response)
+        {
+            console.log("Add Label On Note Successfully in Note",response);
+        },function errorCallback(response){
+            console.log("Add Label On Note failed in Note",response);
+
+        });
 
 
+    };
 
 
     function openDialogLabel(event,note)
@@ -556,7 +650,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         function DialogNoteLabelCtrl($scope, $mdDialog,labelInfo,noteInfo) {
 
             $scope.labelInfo= labelInfo;
-
+            $scope.noteInfo=noteInfo;
             console.log("in note labels",noteInfo.listOfLabels);
             console.log("in click note ",noteInfo);
 
@@ -571,60 +665,29 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
             };
 
 
-            $scope.selected=noteInfo.listOfLabels;
 
-            console.log("selected",$scope.selected);
-
-
-            $scope.exists = function (item, list) {
-                console.log("exist list",list);
-                console.log("status",list.indexOf(item) > -1);
-                return list.indexOf(item) > -1;
-
-            };
-
-            $scope.toggle = function (label, list) {
-
-                console.log("list1",list);
+            $scope.exists = function (item, note) {
 
 
-                var idx = list.indexOf(label);
-                console.log("idx",idx);
-
-                if (idx > -1) {
-
-
-                    list.splice(idx, 1);
-
+                for(var i=0;i<note.listOfLabels.length;i++){
+                    if(note.listOfLabels[i].labelName === item.labelName){
+                        return true;
+                    }
                 }
-                else {
-
-                    list.push(label);
-
-                }
-
-                var url=baseUrl+"relationNoteLabel/";
-                noteService.putRelationNoteLabel(url, noteInfo.id,label.id).then(function successCallback(response)
-                {
-                    console.log("Add Label On Note Successfully in Note",response);
-                },function errorCallback(response){
-                    console.log("Add Label On Note failed in Note",response);
-
-                });
-
+                return false;
 
             };
 
 
-
-
+            $scope.addRemove=function(label,note)
+            {
+             console.log("hello kitto");
+             addRemoveLabel(label,note);
+            };
 
             $scope.addLabel=function(label)
             {
                 console.log("new label",label);
-               /* $scope.labelModel.labelName=label;
-                console.log("label Model",$scope.labelModel.labelName);*/
-                //console.log("new label name",label.labelName);
 
                 var url=baseUrl+"addlabel";
                 if($scope.labelModel.labelName !== "")
@@ -783,38 +846,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
            }
     };
 
-    $scope.note_info=[];
-    $scope.getAllNotes = function()
-    {
-      var url=baseUrl+"note";
-      console.log("url",url);
-        noteService.getAPIWithHeader(url).then(function successCallback(response)
-         {
-             console.log("Get Note Successfully",response.data);
-
-             $scope.note_info=response.data;
-             if($scope.note_info==="")
-            {
-               $scope.showNote=false;
-                 $scope.showLogo=true;
-             }
-             else
-                 {
-
-
-                     $scope.showNote=true;
-                     $scope.showLogo=false;
-                     checkOtherNote($scope.note_info);
-                     checkPinedNote($scope.note_info);
-                     //checkLabelsNote($scope.note_info);
-                 }
-
-         },function errorCallback(response){
-            console.log("Get Note failed",response);
-             })
-    };
-
-
     function updateNote(note)
     {
         console.log("note1",angular.toJson(note));
@@ -843,6 +874,36 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         });
     }
 
+    $scope.note_info=[];
+    $scope.getAllNotes = function()
+    {
+        var url=baseUrl+"note";
+        console.log("url",url);
+        noteService.getAPIWithHeader(url).then(function successCallback(response)
+        {
+            console.log("Get Note Successfully",response.data);
+
+            $scope.note_info=response.data;
+
+            if($scope.note_info==="")
+            {
+                $scope.showNote=false;
+                $scope.showLogo=true;
+            }
+            else
+            {
+                $scope.showNote=true;
+                $scope.showLogo=false;
+                checkOtherNote($scope.note_info);
+                checkPinedNote($scope.note_info);
+                /*checkLabelNote($scope.note_info,labelName);*/
+            }
+
+        },function errorCallback(response){
+            console.log("Get Note failed",response);
+        })
+    };
+
     function checkOtherNote(notes)
     {
         angular.forEach(notes,function(value){
@@ -862,6 +923,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
             {
                 if(value.pined)
                 {
+                    console.log("pin hua hey");
                     $scope.simaplePin=false;
                     $scope.bluePin=true;
                     $scope.showPinedNote=true;
@@ -871,37 +933,28 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         })
     };
 
-   /*function checkLabelsNote(notes)
+   /*function checkLabelNote(notes,labelName)
     {
-        angular.forEach(notes,function(value){
-                    $scope.labelInfo=value.listOfLabels;
-                    console.log("labels1",$scope.labelInfo);
-                    $scope.checked=true;
+        console.log("in check label in note",notes);
+        console.log("label Name in check label",labelName);
 
+        for(var i=0;i<notes.length;i++)
+        {
+            console.log("i",i);
+            console.log("label length",notes[i].listOfLabels.length);
+            for(var j=0;j<notes[i].listOfLabels.length;j++)
+            {
+                console.log("ranu");
+                console.log("label Name",notes[i].listOfLabels[j].labelName);
+                if(notes[i].listOfLabels[j].labelName === labelName)
+                {
+                  $scope.showNoteLabel=true;
+                }
+            }
 
-        });
+        }
 
     }*/
 
 });
 
-/*
-app.config(function($mdDateLocaleProvider) {
-    /!**
-     * @param date {Date}
-     * @returns {string} string representation of the provided date
-     *!/
-    $mdDateLocaleProvider.formatDate = function(date) {
-        return date ? moment(date).format('L') : '';
-    };
-
-    /!**
-     * @param dateString {string} string that can be converted to a Date
-     * @returns {Date} JavaScript Date object created from the provided dateString
-     *!/
-    $mdDateLocaleProvider.parseDate = function(dateString) {
-        var m = moment(dateString, 'L', true);
-        return m.isValid() ? m.toDate() : new Date(NaN);
-    };
-   });
-*/

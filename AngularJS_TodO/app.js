@@ -1,4 +1,4 @@
-var app = angular.module('keepApp', [ 'ui.router', 'ngMaterial', 'ngMessages','ngPassword','content-editable']);
+var app = angular.module('keepApp', [ 'ui.router', 'ngMaterial','ngMessages','ngPassword','content-editable']);
 app.config([ '$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
         $stateProvider

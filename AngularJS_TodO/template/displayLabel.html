@@ -1,7 +1,9 @@
-<div data-ng-init="getAllLabelNotes()"  style="background-color: #e8e8e8;height: 200%" id="dashboard">
+
+<div  style="background-color: #e8e8e8;height: 200%" id="dashboard">
     <div class="dashboard" layout="row"  layout-xs="column" layout-align="center center">
 
-       <md-card class="md-whiteframe-z2" id="take-note-card"  layout="row" layout-align="top center" ng-show="!showCard">
+
+        <md-card class="md-whiteframe-z2" id="take-note-card"  layout="row" layout-align="top center" ng-show="!showCard">
             <md-card-header>
                 <md-card-header-text>
                     <md-input-container class="take-note-input" md-no-float>
@@ -37,14 +39,9 @@
                 </md-input-container>
             </div>
 
-            <div layout="row" style="background-color: #abcdef" ng-repeat="label in perticularLabel" layout-align="center center">
-                <md-chips ng-model="label" readonly="false"
-                          md-removable="removable" md-enable-chip-edit="true"></md-chips>
-            </div>
-
             <div layout="row" layout-align="space-between end"  class="take-note-div3">
                 <takenoteicon></takenoteicon>
-                <md-button aria-label="Close Button" class="take-note-button"  ng-click="showCard=false;changeSvg2=false;changeSvg1=true;addLabelNote(noteModel);initializeNote()">
+                <md-button aria-label="Close Button" class="take-note-button"  ng-click="showCard=false;changeSvg2=false;changeSvg1=true;addNote(noteModel);initializeNote()">
                     <strong>Close</strong>
                 </md-button>
             </div>
@@ -52,9 +49,10 @@
         </md-card>
     </div>
 
-    <div   ng-show="showPinedNote"  style="margin-top: 35px;" flex-offset="15">
+    <div   style="margin-top: 35px;" flex-offset="15">
+        {{label_note_info}}
         <md-subheader  style="background-color: #e8e8e8;margin-left: 90px;">Pinned</md-subheader>
-        <md-content  style="max-width: 800px;background-color: #e8e8e8;margin-left: 100px;" layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center" >
+        <md-content  style="max-width: 800px;background-color: #e8e8e8;margin-left: 100px;overflow: hidden;" layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center" >
             <md-card ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card"  ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}};"  ng-repeat="note in label_note_info | filter:{pined:true,trashed:false,archived:false} as noteArray">
                 <md-card-title>
                     <md-card-title-text>
@@ -70,6 +68,12 @@
                 <md-card-content class="center">
                     <p>{{note.description}}</p>
                 </md-card-content>
+                <div  layout="row" layout-wrap layout-align="start space-around">
+                    <md-chips  ng-mouseover="enableEdit(label)"  ng-mouseleave="disableEdit(label)" ng-repeat="label in note.listOfLabels">
+                        <md-chip  style="margin:0px auto;padding: 0px;"><button ng-click="sendToLabel(label,$event)" style="border:none;outline:none;border-radius: 50px;margin-left: 5px;">{{label.labelName}}</button><md-button ng-show="label.editable" class="md-icon-button" ng-click="removeLabel(label,note,$event)"  style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button></md-chip>
+                    </md-chips>
+                </div>
+
                 <div  layout="row" style="height: 50px;" layout-align="space-around center">
                     <noteicon></noteicon>
                 </div>
@@ -78,24 +82,28 @@
     </div>
 
     <div style="margin-top: 35px;" flex-offset="15">
-        <md-subheader ng-if="showPinedNote && showOtherNote" style="background-color: #e8e8e8;margin-left: 90px;">Other</md-subheader>
-        <md-content  ng-show="showNote"  style="max-width: 800px;background-color: #e8e8e8;margin-left: 100px; " layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center">
-            <md-card ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card" ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}}"  ng-repeat="note in label_note_info | filter:{pined:false,trashed:false,archived:false} | orderBy: 'note.id':true" as noteArray">
-            <md-card-title>
-                <md-card-title-text>
-                    <div class="md-headline">{{note.title}} </div>
-                </md-card-title-text>
-                <md-button class="md-icon-button"  ng-click="isPinnedNote(note);">
-                    <md-icon style="width: 5px;height: 5px;"  md-svg-icon="asset/pin.svg" ></md-icon>
-                </md-button>
-            </md-card-title>
-            <md-card-content class="center">
-                <p>{{note.description}}</p>
-            </md-card-content>
-
-            <div  layout="row" style="height: 50px;" layout-align="space-around center">
-                <noteicon></noteicon>
-            </div>
+        <md-subheader  style="background-color: #e8e8e8;margin-left: 90px;">Other</md-subheader>
+        <md-content    style="max-width: 800px;background-color: #e8e8e8;margin-left: 100px;overflow: hidden;" layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center">
+            <md-card ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card" ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}}"  ng-repeat="note in label_note_info">
+                <md-card-title>
+                    <md-card-title-text>
+                        <div class="md-headline">{{note.title}} </div>
+                    </md-card-title-text>
+                    <md-button class="md-icon-button"  ng-click="isPinnedNote(note);">
+                        <md-icon style="width: 5px;height: 5px;"  md-svg-icon="asset/pin.svg" ></md-icon>
+                    </md-button>
+                </md-card-title>
+                <md-card-content class="center">
+                    <p>{{note.description}}</p>
+                </md-card-content>
+                <div layout="row" layout-align="start space-around" >
+                    <md-chips ng-repeat="label in note.listOfLabels">
+                        <md-chip >{{label.labelName}}</md-chip>
+                    </md-chips>
+                </div>
+                <div  layout="row" style="height: 50px;" layout-align="space-around center">
+                    <noteicon></noteicon>
+                </div>
             </md-card>
         </md-content>
     </div>
@@ -109,5 +117,11 @@
     </div>
 
 </div>
+
+
+
+
+
+
 
 

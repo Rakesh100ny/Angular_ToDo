@@ -64,7 +64,20 @@ app.factory('labelService', function($http)
         return $http(request);
     };
 
+    factory.getAllLabelNotes = function(url,labelId)
+    {
+        var request =
+            {
+                method: "GET",
+                url: url+labelId,
+                headers: {
+                    'userLoginToken': localStorage.getItem('tokenLogin')
+                },
+                data: angular.toJson(labelId)
+            };
 
+        return $http(request);
+    };
 
     return factory;
 
