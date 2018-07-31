@@ -61,24 +61,22 @@
                         <md-menu-item>
                              <md-input-container>
                                  <label>Enter Date</label>
-                                   <input type="date" ng-model="myDate"/>
+                                 <input type="date" min="{{today | date : 'yyyy-MM-dd'}}" ng-model="note.tempdate"/>
                                </md-input-container>
                         </md-menu-item>
                         <md-menu-item>
-                            <div style="position:relative;width:200px;height:25px;border:0;padding:0;margin:0;">
-                                <select style="position:absolute;top:0px;left:0px;width:200px; height:25px;line-height:20px;margin:0;padding:0;" onchange="document.getElementById('displayValue').value=this.options[this.selectedIndex].text; document.getElementById('idValue').value=this.options[this.selectedIndex].value;">
-                                    <option >custom</option>
-                                    <option value="one">one</option>
-                                    <option value="two">two</option>
-                                    <option value="three">three</option>
-                                </select>
-                                <input name="displayValue" placeholder="add/select a value" id="displayValue" style="position:absolute;top:0px;left:0px;width:183px;width:180px\9;#width:180px;height:21px; height:28px\9;#height:18px;border:1px solid #A9A9A9;" onfocus="this.select()" type="text">
-                                <input name="idValue" id="idValue" type="hidden">
-                            </div>
+                            <md-input-container>
+                            <labe style="font-size: small">Enter Time</labe>
+
+                            <input list="timelist" ng-model="note.remindertime" /></label>
+                            <datalist id="timelist">
+                              <option ng-repeat="time in addTime" value="{{time.value}}">{{time.name}}</option>
+                            </datalist>
+                            </md-input-container>
                         </md-menu-item>
                         <md-menu-item>
                             <div layout="row" layout-align="end end">
-                             <input type="button"  value="Save"  ng-click="">
+                              <input type="button"  value="Save"  ng-click="ReminderDate(note)">
                             </div>
                        </md-menu-item>
                     </md-menu-content>

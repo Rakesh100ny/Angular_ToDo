@@ -1,4 +1,4 @@
-app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteService,labelService,$state,$window,$location,$log)
+app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteService,labelService,$state,$window,$location,$filter)
 {
 
     var baseUrl="http://localhost:8081/Fundo_Note/";
@@ -12,7 +12,8 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         isPined : "false",
         isTrashed:"false",
         isArchived:"false",
-
+        tempdate:'',
+        remindertime:''
 
     };
 
@@ -44,7 +45,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
     };
 
-
+    //createEditableSelect(document.forms[0].myText);
 
    $scope.sendToHome=function()
    {
@@ -149,20 +150,11 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         {'name':'Morning   8:00 AM','value':'8:00 AM'},
         {'name':'Afternoon 1:00 PM','value':'1:00 PM'},
         {'name':'Evening   6:00 PM','value':'6:00 PM'},
-        {'name':'Night     8:00 PM','value':'8:00 PM'}
+        {'name':'Night     8:00 PM','value':'8:00 PM'},
+        {'name':'custom','value':''}
 
     ];
 
-    $scope.filterCondition={
-        operator: 'eq'
-    }
-
-    $scope.operators = [
-        {value: 'eq', displayName: 'equals'},
-        {value: 'neq', displayName: 'not equal'}
-    ];
-
-    $scope.names = ["Emil", "Tobias", "Linus"];
 
     $scope.trashmore=['Delete forever','Restore'];
 
@@ -213,16 +205,39 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         $scope.myDate.getDate()
     );*/
 
-    $scope.myDate = new Date();
+
+   $scope.today=new Date();
+   console.log("today",$scope.today);
+
+    $scope.ReminderDate=function(note)
+    {
+
+      var myDate = new Date(note.tempdate);
+
+        if($scope.today.getHours() > 12){
+            console.log("r1");
+            myDate.setHours(note.remindertime.split(':')[0]);
+            myDate.setMinutes(note.remindertime.split(':')[1].split(' ')[0]);
+        }else if($scope.today.getHours() < 12) {
+            console.log("r2");
+            myDate.setHours('20');
+            myDate.setMinutes('00');
+        }
+
 
 /*
-    $scope.onDateChanged = function(event) {
-        event.stopPropagation();
-        event.preventDefault();
-        $log.log('Updated Date: ', this.myDate);
-    };
-*/
+            myDate.setHours(note.remindertime.split(':')[0]);
+      myDate.setMinutes(note.remindertime.split(':')[1].split(' ')[0]);*/
 
+
+
+            console.log("myDate with time",myDate+note.remindertime.split(':')[1].split(' ')[1]);
+
+      note.reminderDate=myDate;
+
+      updateNote(note)
+
+    };
 
     $scope.isVisible = false;
 
@@ -777,10 +792,12 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
     $scope.enableEdit = function (item) {
         item.editable = true;
+        item.reminder=true;
     };
 
     $scope.disableEdit = function (item) {
         item.editable = false;
+        item.reminder=false;
     };
 
     $scope.changeNoteColor=function(value,note)
@@ -848,8 +865,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
     function updateNote(note)
     {
-        console.log("note1",angular.toJson(note));
-
         var url=baseUrl+"updatenote";
         noteService.putAPIWithHeader(url,note).then(function successCallback(response) {
 
@@ -881,9 +896,72 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         console.log("url",url);
         noteService.getAPIWithHeader(url).then(function successCallback(response)
         {
-            console.log("Get Note Successfully",response.data);
+            console.log("Get Note Successfully",response);
 
             $scope.note_info=response.data;
+
+/*
+            for(var i=0;i<$scope.note_info.length;i++)
+            {
+             if($scope.note_info[i].reminderDate !==null)
+             {
+                 var myDate=new Date();
+                 var backendDate=new Date($scope.note_info[i].reminderDate);
+
+                 console.log("backend se date",backendDate);
+                 console.log("getHour",backendDate.getHours());
+                 console.log("getMinutes",backendDate.getMinutes());
+
+                 var hour=backendDate.getHours().toString().length;
+                 var min=backendDate.getMinutes().toString().length;
+
+                 console.log("hour",hour);
+                 console.log("min",min);
+
+                 var convertTime=myDate.getHours()+":"+myDate.getMinutes();
+
+                 console.log("timmming today",convertTime);
+                 /!*var time=tConvert(convertTime);
+
+                 console.log("today time",time);
+                 *!/
+
+                 var difference=backendDate.getDay()-myDate.getDay();
+                 console.log("diff",difference);
+
+                 switch (difference)
+                 {
+                     case 0 : if(hour===1 && min===1)
+                              {
+                               $scope.note_info[i].reminderDate="Today,"+backendDate.getHours()+":"+backendDate.getMinutes()+"0";
+                              }
+                              else
+                              {
+                               $scope.note_info[i].reminderDate="Today,"+backendDate.getHours()+":"+backendDate.getMinutes();
+                              }
+
+
+                         break;
+                     case 1 : $scope.note_info[i].reminderDate="tomorrow";
+                         break;
+
+                 }
+             }
+            }
+
+            function tConvert (time) {
+                // Check correct time format and split into components
+                time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+                if (time.length > 1) { // If time format correct
+                    time = time.slice (1);  // Remove full string match value
+                    time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+                    time[0] = +time[0] % 12 || 12; // Adjust hours
+                }
+                return time.join (''); // return adjusted time or original string
+            }
+
+*/
 
             if($scope.note_info==="")
             {
