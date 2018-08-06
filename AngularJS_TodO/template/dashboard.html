@@ -69,8 +69,8 @@
                 </md-card-content>
 
                 <div  layout="row" layout-wrap layout-align="start space-around">
-                    <md-chips ng-mouseover="enableEdit(note)"  ng-mouseleave="disableEdit(note)">
-                        <md-chip style="margin: 0px auto;padding: 0px"><span style="margin-left: 5px;">{{note.reminderDate | date : 'MMM dd,HH:mm a'}}</span><md-button  ng-show="note.reminder" class="md-icon-button" ng-click="" style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button ></md-chip>
+                    <md-chips style="background-color: rgba(0,0,0,0.08);border-radius: 2px;opacity:.54;" ng-mouseover="enableEdit(note)"  ng-mouseleave="disableEdit(note)">
+                        <md-chip style="margin: 0px auto;padding: 0px;"><span style="margin-left: 5px;">{{note.reminderDate | date : 'MMM dd,HH:mm a'}}</span><md-button  ng-show="note.reminder && note.reminderDate!==null"  class="md-icon-button" ng-click="removeReminder(note,$event)" style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button ></md-chip>
                     </md-chips>
 
                     <md-chips  ng-mouseover="enableEdit(label)"  ng-mouseleave="disableEdit(label)" ng-repeat="label in note.listOfLabels">

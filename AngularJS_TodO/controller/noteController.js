@@ -214,28 +214,87 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
       var myDate = new Date(note.tempdate);
 
-        if($scope.today.getHours() > 12){
-            console.log("r1");
+        if(note.remindertime.split(':')[1].split(' ')[1]==='PM')
+        {
+            var a=note.remindertime.split(':')[0];
+            var b=12;
+            var time24=addTime(a,b);
+            console.log("time in 24 hr"+time24);
+            myDate.setHours(time24);
+            myDate.setMinutes(note.remindertime.split(':')[1].split(' ')[0]);
+
+            console.log("date and time "+myDate+" "+myDate.getHours()+" "+myDate.getMinutes());
+        }
+        else {
             myDate.setHours(note.remindertime.split(':')[0]);
             myDate.setMinutes(note.remindertime.split(':')[1].split(' ')[0]);
-        }else if($scope.today.getHours() < 12) {
-            console.log("r2");
-            myDate.setHours('20');
-            myDate.setMinutes('00');
+
+        console.log("date and time "+myDate+" "+myDate.getHours()+" "+myDate.getMinutes());
         }
-
-
-/*
-            myDate.setHours(note.remindertime.split(':')[0]);
-      myDate.setMinutes(note.remindertime.split(':')[1].split(' ')[0]);*/
-
-
 
             console.log("myDate with time",myDate+note.remindertime.split(':')[1].split(' ')[1]);
 
       note.reminderDate=myDate;
 
       updateNote(note)
+
+    };
+
+
+    function addTime(a,b)
+    {
+        console.log("value of a and b",a+" "+b);
+        var count=0;
+        while (count<a)
+        {
+            b++;
+            count++;
+
+        }
+        return b;
+    }
+
+    function todayDate(note)
+    {
+       note.reminderDate="Today,8:00 PM";
+       updateNote(note);
+    };
+
+    function tomorrowDate(note)
+    {
+        note.reminderDate="Tomorrow,8:00 AM";
+        updateNote(note);
+    };
+
+
+    function nextWeekDate(note)
+    {
+     var NEXTWEEKDATE=7* 24 * 60 * 60 * 1000;
+
+     var nextDate=new Date($scope.today.getTime()+NEXTWEEKDATE);
+     console.log("nextDate",nextDate);
+     nextDate.setHours('08');
+     nextDate.setMinutes('00');
+
+     note.reminderDate=nextDate;
+        updateNote(note);
+    };
+
+
+    $scope.reminderAction=function(note,task)
+    {
+     console.log("task",task);
+
+
+        switch (task) {
+            case 'Later today': todayDate(note);
+                break;
+            case 'Tomorrow':  tomorrowDate(note);
+                break;
+            case 'Next Week': nextWeekDate(note);
+                break;
+           }
+
 
     };
 
@@ -618,6 +677,22 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
       addRemoveLabel(label,note,event);
     };
 
+    $scope.removeReminder=function(note,event)
+    {
+
+        if(event!==undefined)
+        {
+            event.stopPropagation();
+        }
+        console.log("reminder",new Date(note.reminderDate));
+
+        note.reminderDate="";
+
+        updateNote(note);
+
+
+    };
+
     function addRemoveLabel (label, note,event) {
 
         if(event!==undefined)
@@ -699,6 +774,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
              console.log("hello kitto");
              addRemoveLabel(label,note);
             };
+
 
             $scope.addLabel=function(label)
             {
@@ -900,68 +976,82 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
             $scope.note_info=response.data;
 
-/*
+
+
             for(var i=0;i<$scope.note_info.length;i++)
             {
-             if($scope.note_info[i].reminderDate !==null)
-             {
-                 var myDate=new Date();
-                 var backendDate=new Date($scope.note_info[i].reminderDate);
-
-                 console.log("backend se date",backendDate);
-                 console.log("getHour",backendDate.getHours());
-                 console.log("getMinutes",backendDate.getMinutes());
-
-                 var hour=backendDate.getHours().toString().length;
-                 var min=backendDate.getMinutes().toString().length;
-
-                 console.log("hour",hour);
-                 console.log("min",min);
-
-                 var convertTime=myDate.getHours()+":"+myDate.getMinutes();
-
-                 console.log("timmming today",convertTime);
-                 /!*var time=tConvert(convertTime);
-
-                 console.log("today time",time);
-                 *!/
-
-                 var difference=backendDate.getDay()-myDate.getDay();
-                 console.log("diff",difference);
-
-                 switch (difference)
-                 {
-                     case 0 : if(hour===1 && min===1)
-                              {
-                               $scope.note_info[i].reminderDate="Today,"+backendDate.getHours()+":"+backendDate.getMinutes()+"0";
-                              }
-                              else
-                              {
-                               $scope.note_info[i].reminderDate="Today,"+backendDate.getHours()+":"+backendDate.getMinutes();
-                              }
+                if($scope.note_info[i].reminderDate !==null)
+                {
+                    var myDate=new Date();
+                    var backendDate=new Date($scope.note_info[i].reminderDate);
 
 
-                         break;
-                     case 1 : $scope.note_info[i].reminderDate="tomorrow";
-                         break;
+                        var min=backendDate.getMinutes().toString().length;
 
-                 }
-             }
-            }
+                    var difference=backendDate.getDate()-myDate.getDate();
 
-            function tConvert (time) {
-                // Check correct time format and split into components
-                time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+                    switch (difference)
+                    {
+                    case 0 : if(min===1)
+                    {
+                        if(backendDate.getHours()>12)
+                        {
+                            $scope.note_info[i].reminderDate="Today,"+backendDate.getHours()+":"+backendDate.getMinutes()+"0 PM";
+                        }
+                        else
+                        {
+                            $scope.note_info[i].reminderDate="Today,"+backendDate.getHours()+":"+backendDate.getMinutes()+"0 AM";
+                        }
 
-                if (time.length > 1) { // If time format correct
-                    time = time.slice (1);  // Remove full string match value
-                    time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
-                    time[0] = +time[0] % 12 || 12; // Adjust hours
+                    }
+                    else
+                    {
+                        if(backendDate.getHours()>12)
+                        {
+                            $scope.note_info[i].reminderDate="Today,"+backendDate.getHours()+":"+backendDate.getMinutes()+" PM";
+                        }
+                        else
+                        {
+                            $scope.note_info[i].reminderDate="Today,"+backendDate.getHours()+":"+backendDate.getMinutes()+" AM";
+                        }
+
+                    }
+
+
+                        break;
+                    case 1 :
+
+                        if(min===1)
+                        {
+                            if(backendDate.getHours()>12)
+                            {
+                                $scope.note_info[i].reminderDate="Tomorrow,"+backendDate.getHours()+":"+backendDate.getMinutes()+"0 PM";
+                            }
+                            else
+                            {
+                                $scope.note_info[i].reminderDate="Tomorrow,"+backendDate.getHours()+":"+backendDate.getMinutes()+"0 AM";
+                            }
+
+                        }
+                        else
+                        {
+                            if(backendDate.getHours()>12)
+                            {
+                                $scope.note_info[i].reminderDate="Tomorrow,"+backendDate.getHours()+":"+backendDate.getMinutes()+" PM";
+                            }
+                            else
+                            {
+                                $scope.note_info[i].reminderDate="Tomorrow,"+backendDate.getHours()+":"+backendDate.getMinutes()+" AM";
+                            }
+
+                        }
+
+                        break;
+
+                    }
                 }
-                return time.join (''); // return adjusted time or original string
             }
 
-*/
 
             if($scope.note_info==="")
             {
@@ -974,7 +1064,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
                 $scope.showLogo=false;
                 checkOtherNote($scope.note_info);
                 checkPinedNote($scope.note_info);
-                /*checkLabelNote($scope.note_info,labelName);*/
             }
 
         },function errorCallback(response){
@@ -1036,3 +1125,75 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
 });
 
+
+/*
+for(var i=0;i<$scope.note_info.length;i++)
+{
+    if($scope.note_info[i].reminderDate !==null)
+    {
+        var myDate=new Date();
+        var backendDate=new Date($scope.note_info[i].reminderDate);
+
+        console.log("backend se date",backendDate);
+        console.log("getHour",backendDate.getHours());
+        console.log("getMinutes",backendDate.getMinutes());
+
+        if(backendDate.getHours()>12)
+        {
+            var hour=backendDate.getHours().toString().length;
+            var min=backendDate.getMinutes().toString().length;
+
+            console.log("hour",hour);
+            console.log("min",min);
+
+            var convertTime=backendDate.getHours()+":"+backendDate.getMinutes();
+
+            console.log("timmming today",convertTime);
+            var time=tConvert(convertTime);
+
+            console.log("time",time);
+
+            new Date($scope.note_info[i].reminderDate).setHours(time.split(':')[0]);
+            new Date($scope.note_info[i].reminderDate).setMinutes(time.split(':')[1]);
+
+
+            var newDate=new Date($scope.note_info[i].reminderDate);
+
+
+        }
+
+        $scope.exactDate=backendDate;
+
+        var difference=backendDate.getDay()-myDate.getDay();
+        console.log("diff",difference);
+
+        /!*switch (difference)
+        {
+            case 0 : if(hour===1 && min===1)
+                     {
+                      $scope.note_info[i].reminderDate="Today,"+backendDate.getHours()+":"+backendDate.getMinutes()+"0";
+                     }
+                     else
+                     {
+                      $scope.note_info[i].reminderDate="Today,"+backendDate.getHours()+":"+backendDate.getMinutes();
+                     }
+
+
+                break;
+            case 1 : $scope.note_info[i].reminderDate="tomorrow";
+                break;
+
+        }*!/
+    }
+}
+
+function tConvert(time24) {
+    var ts = time24;
+    var H = +ts.substr(0, 2);
+    var h = (H % 12) || 12;
+    h = (h < 10)?("0"+h):h;  // leading 0 at the left for 1 digit hours
+    var ampm = H < 12 ? " AM" : " PM";
+    ts = h + ts.substr(2, 3) + ampm;
+    return ts;
+};
+*/
