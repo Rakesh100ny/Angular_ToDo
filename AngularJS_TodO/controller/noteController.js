@@ -90,7 +90,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
          event.stopPropagation();
         }
 
-        labelId=label.id;
+        labelId=label.labelName;
         $state.go('home.label',{labelId:labelId});
 
         $scope.getAllLabelNotes(label);
@@ -256,13 +256,19 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
     function todayDate(note)
     {
-       note.reminderDate="Today,8:00 PM";
+       $scope.today.setHours('20');
+       $scope.today.setMinutes('00');
+       note.reminderDate=$scope.today;
        updateNote(note);
     };
 
     function tomorrowDate(note)
     {
-        note.reminderDate="Tomorrow,8:00 AM";
+        var DAYDATE= 24 * 60 * 60 * 1000;
+        var tomorrowDate=new Date($scope.today.getTime()+DAYDATE);
+        tomorrowDate.setHours(8);
+        tomorrowDate.setMinutes('00');
+        note.reminderDate=tomorrowDate;
         updateNote(note);
     };
 
@@ -275,7 +281,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
      console.log("nextDate",nextDate);
      nextDate.setHours('08');
      nextDate.setMinutes('00');
-
      note.reminderDate=nextDate;
         updateNote(note);
     };
@@ -283,9 +288,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
     $scope.reminderAction=function(note,task)
     {
-     console.log("task",task);
-
-
         switch (task) {
             case 'Later today': todayDate(note);
                 break;
@@ -294,8 +296,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
             case 'Next Week': nextWeekDate(note);
                 break;
            }
-
-
     };
 
     $scope.isVisible = false;
@@ -311,7 +311,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         console.log("Reminder",$scope.isReminderVisible);
 
         note.editable=$scope.isReminderVisible;
-        //=$scope.isReminderVisible;
     };
 
     $scope.profileInfo=function()
@@ -381,6 +380,49 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
     };
 
     changeColor();
+
+
+    $scope.showCollaboatorsDialog = function(event)
+    {
+        if(event!=undefined)
+        {
+         event.stopPropagation();
+        }
+        $mdDialog.show({
+            controller: DialogCollaboatorCtrl,
+            templateUrl: 'template/collabotorDialog.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            clickOutsideToClose:true,
+            fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        });
+    };
+
+    function DialogCollaboatorCtrl($scope, $mdDialog)
+    {
+
+    }
+
+    $scope.imageSelect=function(files)
+    {
+        if(event!=undefined)
+        {
+            event.stopPropagation();
+        }
+
+        var form = new FormData();
+        form.append("file", files[0]);
+
+
+        console.log("form",form);
+        var url=baseUrl+"uploadFile";
+        console.log("url",url);
+        noteService.postImage(url,form).then(function successCallback(response) {
+           console.log("Update Successfully in home controller",response);
+        }, function errorCallback(response) {
+            console.log(" Update failed",response);
+        });
+    };
 
     $scope.showDialog = function(event,note) {
         $mdDialog.show({

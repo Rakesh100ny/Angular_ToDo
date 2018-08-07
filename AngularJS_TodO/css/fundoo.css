@@ -526,6 +526,48 @@ md-chips .md-chips
 
 }
 
+#icon
+{
+    cursor: pointer;
+}
+
+
+.hide-file {
+    position: absolute;
+    z-index: 1000;
+    opacity: 0;
+    cursor: pointer;
+    right: 0;
+    top: 0;
+    height: 100%;
+    font-size: 24px;
+    width: 100%;
+}
+
+.collaborator
+{
+
+    margin: 60px 0 0 400px;
+    width:600px;
+    line-height: normal;
+    vertical-align:baseline;
+    letter-spacing:normal;
+    word-spacing:0px;
+    font-weight:400;
+    font-style:normal;
+    font-variant: normal;
+    text-transform: none;
+    text-decoration: none solid rgba(0, 0, 0,0.87);
+    text-align:start;
+    text-indent: 0px;
+    font-family: Roboto, arial, sans-serif;
+    font-size: 15px;
+    color: #000000;
+    color:rgba(0, 0, 0,0.87);
+
+
+}
+
 .take-note-div1
 {
     height: 55px;
@@ -546,6 +588,27 @@ md-chips .md-chips
     color:rgba(0, 0, 0,0.87);
     word-break: break-word;
 
+}
+
+.collaborator-header
+{
+    line-height: normal;
+    vertical-align:baseline;
+    letter-spacing:normal;
+    word-spacing:0px;
+    font-weight:500;
+    font-style:normal;
+    font-variant: normal;
+    text-transform: none;
+    text-decoration: none solid rgba(0, 0, 0,0.87);
+    text-align:start;
+    text-indent: 0px;
+    font-family: Roboto, arial, sans-serif;
+    font-size: 18px;
+    color: #000000;
+    color:rgba(0, 0, 0,0.87);
+    background-color:#000000;
+    background-color:rgba(0, 0, 0, 0);
 }
 
 .take-note-div2

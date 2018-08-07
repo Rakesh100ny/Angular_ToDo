@@ -1,0 +1,49 @@
+<md-dialog aria-label="Note" style="background-color:{{noteInfo.color}}">
+    <md-dialog-content>
+        <div class="md-dialog-content">
+        <div layout="row"  class="collaborator-header md-no-sticky md-dialo"  layout-align="top center">
+            Collaborators
+        </div>
+        <br>
+        <md-divider></md-divider>
+
+        <md-content>
+            <md-list>
+                <md-list-item class="md-2-line">
+                    <div layout="row" class="sidebar-text">
+                        <img src="asset/profile.jpg" class="profile">
+                        <div class="md-list-item-text" style="margin-left: 10px;" layout="column">
+                            <h4> Rakesh Soni(Owner)</h4>
+                            <h4> baberwalrakesh@yahoo.com </h4>
+                        </div>
+                    </div>
+                </md-list-item>
+                <md-list-item class="md-2-line">
+                    <div layout="row" class="sidebar-text">
+                        <div style="height: 35px;width: 35px;border: 1px solid rgba(0, 0, 0, 0.87);border-radius: 50%">
+                            <md-icon style="margin:2px 0px 0px 5px;"><i class="material-icons">person_add</i></md-icon>
+                        </div>
+
+                        <div class="md-list-item-text" style="margin-left: 10px;" layout="column">
+                            <md-input-container md-no-float="" style="margin: 0px auto;padding: 0px 0px;">
+                                <input type="text" placeholder="Person or email to share with" style="border: none;width: 450px;">
+                            </md-input-container>
+                        </div>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-content>
+
+        <div layout="row" layout-align="end end"  class="take-note-div3">
+            <md-button aria-label="close Button" class="take-note-button"  ng-click="showCollaboators=false;">
+                <strong>Close</strong>
+            </md-button>
+            <md-button aria-label="save Button" class="take-note-button"  ng-click="">
+                <strong>Save</strong>
+            </md-button>
+        </div>
+        </div>
+    </md-dialog-content>
+</md-dialog>
+
+

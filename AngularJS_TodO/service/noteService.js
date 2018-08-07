@@ -18,6 +18,23 @@ app.factory('noteService', function($http,$location)
         return $http(request);
     };
 
+    factory.postImage = function(url,data)
+    {
+        console.log("formData",data);
+        var request =
+            {
+                method: "POST",
+                url: url,
+                headers: {
+                    'Content-Type': 'application/json',
+
+                },
+                data: data
+            };
+
+        return $http(request);
+    };
+
     factory.putAPIWithHeader = function(url,data)
     {
         var request =
