@@ -73,17 +73,12 @@
         </md-menu-content>
     </md-menu>
 
-    <!--<md-button aria-label="Image"  class="md-icon-button" style="margin: 0 auto;padding: 0px;">
-        <input type="file" class="hide-file" />
-        <md-icon><i class="material-icons" id="icon">image</i></md-icon>
-        <md-tooltip>Add image</md-tooltip>
-    </md-button>-->
-
     <md-button class="md-icon-button" style="margin: 0 auto;padding: 0px;">
-        <input type="file" name="file" accept="*" enctype="multipart/form-data" class="hide-file" onchange="angular.element(this).scope().imageSelect(this.files)" ng-click="imageSelect($event,note)">
+        <input type="file"  class="hide-file"  ng-click="imageSelect($event,note)">
         <md-icon><i class="material-icons" id="icon">image</i></md-icon>
         <md-tooltip>Add image</md-tooltip>
     </md-button>
+
     <md-button ng-click="isArchivedNote(note)" aria-label="Archive" class="md-icon-button" style="margin: 0 auto;padding: 0px">
         <md-icon><i class="material-icons">archive</i></md-icon>
         <md-tooltip>Archive</md-tooltip>

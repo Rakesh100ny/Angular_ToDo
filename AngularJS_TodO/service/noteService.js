@@ -25,12 +25,12 @@ app.factory('noteService', function($http,$location)
             {
                 method: "POST",
                 url: url,
+                data: data,
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': undefined,
 
-                },
-                data: data
-            };
+                }
+             };
 
         return $http(request);
     };
