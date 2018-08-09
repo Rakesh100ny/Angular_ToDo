@@ -32,7 +32,7 @@
                 <md-content>
                     <md-list>
                         <md-list-item class="md-3-line">
-                            <img src="asset/profile.jpg"  class="profile-card-img" alt="profile" />
+                            <img src="asset/profile.jpg" ng-click="showProfileDialog($event)" class="profile-card-img" alt="profile" />
                             <div class="md-list-item-text"  layout="column" layout-align="space-around end">
                                 <div layout="row" class="profile-name">{{value.iss}}</div>
                                 <div layout="row" class="profile-email">{{value.sub}}</div>

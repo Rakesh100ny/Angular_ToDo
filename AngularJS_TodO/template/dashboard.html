@@ -95,7 +95,7 @@
     <div   ng-show="showPinedNote"  style="margin-top: 35px;" flex-offset="15">
         <md-subheader  style="background-color: #e8e8e8;margin-left: 90px;">Pinned</md-subheader>
         <md-content  style="max-width: 800px;background-color: #e8e8e8;margin-left: 100px;overflow: hidden;" layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center" >
-             <md-card ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card"  ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}};"  ng-repeat="note in note_info | filter:{pined:true,trashed:false,archived:false} as noteArray">
+             <md-card ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card"  ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}};"  ng-repeat="note in note_info | filter:{pined:true,trashed:false,archived:false}">
 
                  <div class="container">
                      <img  ng-src="{{note.imageUrl}}"  class="md-card-image">

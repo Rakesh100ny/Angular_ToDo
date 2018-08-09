@@ -1,6 +1,9 @@
 app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteService,labelService,$state,$window,$location,$filter)
 {
 
+    var path=$location.path();
+    $scope.pathParam=path.split('/')[3];
+
     var baseUrl="http://localhost:8081/Fundo_Note/";
 
     $scope.removable=true;
@@ -92,37 +95,15 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
         labelId=label.labelName;
         $state.go('home.label',{labelId:labelId});
-
-        $scope.getAllLabelNotes(label);
-
     };
 
-    checkLabelState();
-
-    function checkLabelState()
-    {
-     var id=$state.current.url;
-
-     var searchObject = $location.search();
-
-     console.log("label id",id);
-
-     console.log("label sabject",searchObject);
-
-     console.log("param",$state.labelId);
-
-
-    }
-
+/*
     $scope.getAllLabelNotes = function(label)
     {
         var url=baseUrl+"labelNote/";
-        console.log("url",url);
-        console.log("id",label.id);
         labelService.getAllLabelNotes(url,label.id).then(function successCallback(response)
         {
             console.log("Get Label Note Successfully",response.data);
-
             $scope.label_note_info=response.data;
 
            if($scope.label_note_info==="")
@@ -134,13 +115,12 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
                 $scope.showNote=true;
                 checkOtherNote($scope.label_note_info);
                 checkPinedNote($scope.label_note_info);
-
             }
 
         },function errorCallback(response){
             console.log("Get Label Note failed",response);
         })
-    };
+    };*/
 
     $scope.more=['Delete note','Add label','Make a copy','Show checkboxes','Copy to Google Docs'];
 
@@ -190,24 +170,8 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
             ]
 
         ];
-/*
-    $scope.myDate = new Date();
-
-    $scope.minDate = new Date(
-        $scope.myDate.getFullYear(),
-        $scope.myDate.getMonth() - 2,
-        $scope.myDate.getDate()
-    );
-
-    $scope.maxDate = new Date(
-        $scope.myDate.getFullYear(),
-        $scope.myDate.getMonth() + 2,
-        $scope.myDate.getDate()
-    );*/
-
 
    $scope.today=new Date();
-   console.log("today",$scope.today);
 
     $scope.ReminderDate=function(note)
     {
@@ -219,21 +183,15 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
             var a=note.remindertime.split(':')[0];
             var b=12;
             var time24=addTime(a,b);
-            console.log("time in 24 hr"+time24);
             myDate.setHours(time24);
             myDate.setMinutes(note.remindertime.split(':')[1].split(' ')[0]);
 
-            console.log("date and time "+myDate+" "+myDate.getHours()+" "+myDate.getMinutes());
         }
         else {
             myDate.setHours(note.remindertime.split(':')[0]);
             myDate.setMinutes(note.remindertime.split(':')[1].split(' ')[0]);
 
-        console.log("date and time "+myDate+" "+myDate.getHours()+" "+myDate.getMinutes());
         }
-
-            console.log("myDate with time",myDate+note.remindertime.split(':')[1].split(' ')[1]);
-
       note.reminderDate=myDate;
 
       updateNote(note)
@@ -243,7 +201,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
     function addTime(a,b)
     {
-        console.log("value of a and b",a+" "+b);
         var count=0;
         while (count<a)
         {
@@ -278,7 +235,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
      var NEXTWEEKDATE=7* 24 * 60 * 60 * 1000;
 
      var nextDate=new Date($scope.today.getTime()+NEXTWEEKDATE);
-     console.log("nextDate",nextDate);
      nextDate.setHours('08');
      nextDate.setMinutes('00');
      note.reminderDate=nextDate;
@@ -307,9 +263,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
     $scope.isReminderVisible=false;
     $scope.clickReminder = function(note) {
         $scope.isReminderVisible = !$scope.isReminderVisible;
-
-        console.log("Reminder",$scope.isReminderVisible);
-
         note.editable=$scope.isReminderVisible;
     };
 
@@ -343,6 +296,7 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
 
     };
+
 
     function changeColor()
     {
@@ -403,9 +357,26 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
     }
 
+
+    $scope.showProfileDialog = function(event)
+    {
+        $mdDialog.show({
+            controller: DialogProfileImageCtrl,
+            templateUrl: 'template/profileImageDialog.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            clickOutsideToClose:true,
+            fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        });
+    };
+
+    function DialogProfileImageCtrl($scope, $mdDialog)
+    {
+
+    }
+
     $scope.imageSelect=function(event,note)
      {
-         console.log("note information",note);
         if(event!=undefined)
         {
             event.stopPropagation();
@@ -413,15 +384,11 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
         document.addEventListener('change',function (event)
         {
-         console.log("event",event.target.files[0]);
             var form = new FormData();
             form.append("file",event.target.files[0]);
 
-            console.log("form",form);
             var url=baseUrl+"uploadFile";
-            console.log("url",url);
             noteService.postImage(url,form).then(function successCallback(response) {
-                console.log("Update Successfully in home controller",response);
                 console.log("message",response.data.message);
                 note.imageUrl=response.data.message;
 
@@ -450,17 +417,12 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
     function DialogCtrl($scope, $mdDialog,noteInfo)
     {
         $scope.noteInfo= noteInfo;
-
-
-        console.log("dialog note",$scope.noteInfo);
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
 
         $scope.removeImage=function(note)
         {
-
-            console.log("image link",note.imageUrl);
             note.imageUrl=null;
             updateNote(note);
 
@@ -472,7 +434,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         };
 
         $scope.showImageDialog = function(event,note) {
-            console.log("note",note);
             $mdDialog.show({
                 locals : {
                     noteInfo : note,
@@ -506,12 +467,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         {
             console.log("Get Label Successfully in Home",response);
             $scope.label_info=response.data;
-
-            //$scope.editableLabels = angular.copy(value.labelName);
-
-            // checkCurrentState($scope.label_info);
-            $scope.showLabel=true;
-
         },function errorCallback(response){
             console.log("Get Label failed in Home",response.data);
         });
@@ -611,22 +566,16 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         $scope.updateLabel=function(label)
         {
           var url=baseUrl+"updatelabel";
-          console.log("updated Name",label.labelName);
             labelService.putAPIWithHeader(url,label).then(function successCallback(response) {
                 getAllLabels();
                 console.log("Update Label Successfully in Note Controller",response);
-
             }, function errorCallback(response) {
                 console.log("Update Label Failed In Note Controller",response);
 
             });
-
-
         };
 
         $scope.deleteDialog = function(event,label) {
-
-            console.log("info",label);
 
             $mdDialog.show({
                 locals : {labelData : label},
@@ -651,8 +600,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         {
 
             $scope.labelInfo=labelData;
-
-            console.log("label data",$scope.labelInfo);
 
             $scope.cancel = function() {
                 $mdDialog.cancel();
@@ -684,7 +631,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
             var isOpen = $mdSidenav(componentId).isOpen();
             if (isOpen) {
 
-                console.log("url", $state.current.url);
                 if ($state.current.url === '/dashboard') {
                     document.getElementById('take-note-card').style.marginTop = '35px';
 
@@ -764,17 +710,15 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         {
             event.stopPropagation();
         }
-        console.log("reminder",new Date(note.reminderDate));
-
         note.reminderDate="";
 
         updateNote(note);
 
-
     };
 
-    function addRemoveLabel (label, note,event) {
-
+    function addRemoveLabel (label, note,event)
+    {
+        $scope.showLabel=true;
         if(event!==undefined)
         {
             event.stopPropagation();
@@ -782,8 +726,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
         var idx=note.listOfLabels.findIndex(x => x.labelName===label.labelName);
 
-        console.log("idx",idx);
-        console.log("Ranu Soni");
         if (idx > -1) {
             note.listOfLabels.splice(idx, 1);
         }
@@ -821,9 +763,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
             $scope.labelInfo= labelInfo;
             $scope.noteInfo=noteInfo;
-            console.log("in note labels",noteInfo.listOfLabels);
-            console.log("in click note ",noteInfo);
-
 
             $scope.labelModel=
                 {
@@ -855,12 +794,10 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
             $scope.addLabel=function(label)
             {
-                console.log("new label",label.labelName);
 
                 var url=baseUrl+"addlabel";
                 if(label.labelName !== "")
                 {
-                   console.log("label name",label.labelName);
                     labelService.postAPIWithHeader(url,label).then(function successCallback(response)
                     {
                         console.log("Add Label Successfully in Note Dialog",response);
@@ -908,13 +845,14 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
     {
         if(note.archived===false)
         {
-            $scope.showArchiveNote=true;
+            $scope.showArchivedNote=true;
             note.archived=true;
             note.pined=false;
         }
         else
         {
-            $scope.showArchiveNote=false;
+            $scope.showArchivedNote=false;
+
             note.archived=false;
             note.pined=false;
         }
@@ -1001,9 +939,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
        if(noteModel.title!=="" && noteModel.description!=="")
        {
-           console.log("tilte",noteModel.title);
-           console.log("dis", noteModel.description);
-
 
                noteService.postAPIWithHeader(url,noteModel).then(function successCallback(response)
                {
@@ -1049,7 +984,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
     $scope.getAllNotes = function()
     {
         var url=baseUrl+"note";
-        console.log("url",url);
         noteService.getAPIWithHeader(url).then(function successCallback(response)
         {
             console.log("Get Note Successfully",response);
@@ -1144,6 +1078,9 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
                 $scope.showLogo=false;
                 checkOtherNote($scope.note_info);
                 checkPinedNote($scope.note_info);
+                checkLabelNote($scope.note_info);
+                checkArchivedNote($scope.note_info);
+
 
             }
 
@@ -1154,15 +1091,47 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
 
     function checkOtherNote(notes)
     {
+        var keepGoing = true;
         angular.forEach(notes,function(value){
-            if(!value.pined && !value.archived && !value.trashed)
-            {
-                $scope.showOtherNote=true;
-                $scope.showPinedNote=false;
+           console.log("check other note value",value);
+            if(keepGoing) {
+                if (!value.pined && !value.archived && !value.trashed) {
+                    console.log("r1");
+                    $scope.showOtherNote = true;
+                    keepGoing=false;
+                }
             }
         })
+        console.log("showOtherNote",$scope.showOtherNote);
     };
 
+    $scope.showLabel = true;
+    function checkLabelNote(notes)
+    {
+        var keepGoing = true;
+
+
+        angular.forEach(notes,function(value)
+        {
+                if (value.listOfLabels !== null) {
+                       for (var i = 0; i < value.listOfLabels.length; i++) {
+
+                           if (keepGoing)
+                           {
+                            if (value.listOfLabels[i].labelName === $scope.pathParam) {
+                                $scope.showLabel = false;
+                                keepGoing = false;
+                            }
+                            else {
+                                $scope.showLabel = true;
+                            }
+                        }
+                    }
+                }
+              });
+
+
+    };
 
     function checkPinedNote(notes)
     {
@@ -1172,8 +1141,24 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
             {
                 if(value.pined)
                 {
-                    console.log("pin hua hey");
                     $scope.showPinedNote=true;
+                    keepGoing=false;
+                }
+            }
+        })
+    };
+
+
+    function checkArchivedNote(notes)
+    {
+        var keepGoing = true;
+        angular.forEach(notes,function(value)
+        {
+            if(keepGoing)
+            {
+                if(value.archived)
+                {
+                    $scope.showArchivedNote=true;
                     keepGoing=false;
                 }
             }
