@@ -1,20 +1,20 @@
 app.factory('userService',function($http)
 {
-    var postService={};
+    var userService={};
 
-        postService.postAPI=function(url,data)
+        userService.postAPI=function(url,data)
         {
             var request =
                 {
                     method: "POST",
                     url: url,
                     data: angular.toJson(data)
-                }
+                };
 
            return $http(request);
-        }
+        };
 
-    postService.postAPIWithHeader = function(url,data)
+    userService.postAPIWithHeader = function(url,data)
     {
         var request =
             {
@@ -25,12 +25,28 @@ app.factory('userService',function($http)
                     'tokenForgotPassword': localStorage.getItem("tokenForgotPassword")
                 },
                 data: angular.toJson(data)
-            }
+            };
 
         return $http(request);
     };
 
-     return postService;
+    userService.putAPIWithHeader = function(url,data)
+    {
+        var request =
+            {
+                method: "PUT",
+                url: url,
+                headers: {
+                    'userLoginToken': localStorage.getItem('tokenLogin')
+                },
+                data: angular.toJson(data)
+            };
+
+        return $http(request);
+    };
+
+
+     return userService;
 
 });
 

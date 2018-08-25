@@ -26,16 +26,16 @@
             <md-button class="md-icon-button md-icon-left"><md-icon><i class="material-icons">apps</i></md-icon></md-button>
             <md-button class="md-icon-button md-icon-right"><md-icon><i class="material-icons">notifications_none</i></md-icon></md-button>
         </div>
-        <a ng-click="clickProfile()"><img src="asset/profile.jpg" class="profile"></a>
+        <a ng-click="clickProfile()"><img src='{{value.sub.split(" ")[1]}}'  class="profile"></a>
         <div layout="row"  ng-show="isVisible"  layout-align="center end">
             <md-card  class="profile-card">
                 <md-content>
                     <md-list>
                         <md-list-item class="md-3-line">
-                            <img src="{{value.sub}}" ng-click="showProfileDialog($event)" class="profile-card-img" alt="profile" />
+                            <img src='{{value.sub.split(" ")[1]}}' ng-click="showProfileDialog($event)" class="profile-card-img" alt="profile" />
                             <div class="md-list-item-text"  layout="column" layout-align="space-around end">
                                 <div layout="row" class="profile-name">{{value.iss}}</div>
-                                <div layout="row" class="profile-email">{{value.sub}}</div>
+                                <div layout="row" class="profile-email">{{value.sub.split(" ")[0]}}</div>
 
                                 <div layout="row">
                                     <a ui-sref="google.com" class="google" target="_blank" style="margin-right: 5px">Google+ Profile</a>

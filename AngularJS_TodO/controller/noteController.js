@@ -1,4 +1,4 @@
-app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,noteService,labelService,$state,$window,$location,$filter)
+app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,userService,noteService,labelService,$state,$window,$location,$filter)
 {
 
     var path=$location.path();
@@ -246,6 +246,8 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,n
     {
         $scope.value=noteService.getUserFromToken();
         console.log("profile information",$scope.value);
+        console.log("xyz",$scope.value.sub.split(" ")[0]);
+        console.log("pqr",$scope.value.sub.split(" ")[1]);
     };
 
     $scope.isChangedView=false;
@@ -398,34 +400,72 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,n
         {
           console.log("crop image",img);
 
-          var count=0;
-          localStorage.setItem("count",count);
+           var form = new FormData();
+           var imagefile=dataURItoBlob(img);
 
-          console.log("counter",localStorage.getItem("count"))
+           console.log("blob",imagefile);
 
+           var image = new File([imagefile],'profile.png');
 
-            var form = new FormData();
-            var imagefile=dataURItoBlob(img);
-            console.log("blob",imagefile);
-            var image = new File([imagefile],'profile'+  +'.png');
-            console.log("original image",image);
+           console.log("original image",image);
 
-            form.append("file",image);
+           form.append("file",image);
 
             var url=baseUrl+"uploadFile";
-            noteService.postImage(url,form).then(function successCallback(response) {
-                console.log("message",response.data.message);
-               // note.imageUrl=response.data.message;
 
-                //updateNote(note);
-            }, function errorCallback(response) {
-                console.log(" Update failed",response);
+            noteService.postImage(url,form).then(function successCallback(response)
+            {
+                console.log("message",response.data.message);
+                uploadUserProfileImg(response.data.message);
+            }, function errorCallback(response)
+            {
+                console.log("Update failed",response);
             });
         };
 
         $scope.cancel = function() {
             console.log("hello cancel");
         };
+
+        var userInfo;
+
+        function getUser() {
+
+            var url = baseUrl + "getCurrentUser";
+            noteService.getAPIWithHeader(url).then(function successCallback(response)
+            {
+                console.log("Response profile api",response.data);
+                userInfo = response.data;
+                console.log("User Info",userInfo);
+
+
+            }, function errorCallback(response)
+            {
+               console.log(response, "user details cannot be displayed");
+            });
+
+            return userInfo;
+        }
+
+        getUser();
+
+        function  uploadUserProfileImg(img)
+        {
+         console.log("user profile img",img);
+            var user = getUser();
+            console.log('user is', user);
+            user.profilePic = img;
+
+
+            var url = baseUrl + 'updateUser';
+            userService.putAPIWithHeader(url, user).then(function successCallback(response)
+            {
+              console.log("response of user update api",response);
+              getUser();
+            }, function errorCallback(response) {
+                console.log("error" + response);
+            });
+        }
     }
 
     $scope.imageSelect=function(event,note)
