@@ -1,5 +1,30 @@
-<md-dialog aria-label="profileImage">
-    <md-dialog-content class="md-dialog-content" style="overflow-y: hidden;">
-        <input type="file" >
+<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools" style="background-color: white;">
+            <h2 class="profile-image-dialog">Select profile photo</h2>
+        </div>
+    </md-toolbar>
+    <md-divider></md-divider>
+    <md-dialog-content>
+        <div class="md-dialog-content" style="height:100%;width:100%;">
+            <input type="file" id="fileInput" />
+
+            <div class="cropArea">
+                <img-crop image="myImage" area-type="rectangle" area-init-size="{ w:cropper.cropWidth,h:cropper.cropHeight}" cropject="cropper" result-image="myCroppedImage"></img-crop>
+            </div>
+
+            <div>Cropped Image:</div>
+            <div><img ng-src="{{myCroppedImage}}" /></div>
+
+
+            <div layout="row" layout-align="start"  class="take-note-div3">
+                <md-button class="md-raised" id="clickme" style="background-color: #3366cc;color: white;text-transform:initial;"  ng-click="ok(myCroppedImage)">
+                    Set as profile photo
+                </md-button>
+                <md-button class="delete-label-button"  ng-click="cancel()">
+                    <strong>Cancel</strong>
+                </md-button>
+            </div>
+        </div>
     </md-dialog-content>
 </md-dialog>

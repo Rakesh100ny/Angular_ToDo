@@ -525,12 +525,37 @@ md-chips .md-chips
     color:rgba(0, 0, 0,0.87);
 
 }
+.cropArea {
+    background: #E4E4E4;
+    overflow: hidden;
+    width:500px;
+    height:350px;
+}
 
 #icon
 {
     cursor: pointer;
 }
-
+.profile-image-dialog
+{
+    line-height: normal;
+    vertical-align:top;
+    letter-spacing:normal;
+    word-spacing:0px;
+    font-weight:400;
+    font-style:normal;
+    font-variant: normal;
+    text-transform: none;
+    text-decoration: none solid rgb(0, 0, 0);
+    text-align:start;
+    text-indent: 0px;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 20px;
+    color: #000000;
+    color:rgb(0, 0, 0);
+    background-color:#000000;
+    background-color:rgba(0, 0, 0, 0);
+}
 
 .hide-file {
     position: absolute;

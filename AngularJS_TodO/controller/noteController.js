@@ -1,4 +1,4 @@
-app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteService,labelService,$state,$window,$location,$filter)
+app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,noteService,labelService,$state,$window,$location,$filter)
 {
 
     var path=$location.path();
@@ -97,30 +97,6 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         $state.go('home.label',{labelId:labelId});
     };
 
-/*
-    $scope.getAllLabelNotes = function(label)
-    {
-        var url=baseUrl+"labelNote/";
-        labelService.getAllLabelNotes(url,label.id).then(function successCallback(response)
-        {
-            console.log("Get Label Note Successfully",response.data);
-            $scope.label_note_info=response.data;
-
-           if($scope.label_note_info==="")
-            {
-                $scope.showNote=false;
-            }
-            else
-            {
-                $scope.showNote=true;
-                checkOtherNote($scope.label_note_info);
-                checkPinedNote($scope.label_note_info);
-            }
-
-        },function errorCallback(response){
-            console.log("Get Label Note failed",response);
-        })
-    };*/
 
     $scope.more=['Delete note','Add label','Make a copy','Show checkboxes','Copy to Google Docs'];
 
@@ -269,7 +245,8 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
     $scope.profileInfo=function()
     {
         $scope.value=noteService.getUserFromToken();
-    }
+        console.log("profile information",$scope.value);
+    };
 
     $scope.isChangedView=false;
 
@@ -370,9 +347,85 @@ app.controller('noteController', function($scope,$mdDialog,$mdSidenav,noteServic
         });
     };
 
-    function DialogProfileImageCtrl($scope, $mdDialog)
+    function DialogProfileImageCtrl($scope)
     {
+        $scope.myCroppedImage = '';
+        $scope.myImage = '';
 
+        $scope.rectangleWidth = 100;
+        $scope.rectangleHeight = 100;
+
+        $scope.cropper = {
+            cropWidth: $scope.rectangleWidth,
+            cropHeight: $scope.rectangleHeight
+        };
+
+        var handleFileSelect = function(evt) {
+            var file = evt.currentTarget.files[0];
+            var reader = new FileReader();
+            reader.onload = function(evt) {
+                $scope.$apply(function($scope) {
+                    $scope.myImage = evt.target.result;
+                });
+            };
+            reader.readAsDataURL(file);
+
+        };
+
+        $timeout(function()
+        {
+         angular.element(document.querySelector('#fileInput')).on('change', handleFileSelect);
+        },1000, false);
+
+
+       function dataURItoBlob(dataURI)
+       {
+        var byteString = atob(dataURI.toString().split(',')[1]);
+
+        //var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        var blob = new Blob([ab], {type: 'image/png'}); //or mimeString if you want
+        return blob;
+    }
+
+
+        $scope.ok = function(img)
+        {
+          console.log("crop image",img);
+
+          var count=0;
+          localStorage.setItem("count",count);
+
+          console.log("counter",localStorage.getItem("count"))
+
+
+            var form = new FormData();
+            var imagefile=dataURItoBlob(img);
+            console.log("blob",imagefile);
+            var image = new File([imagefile],'profile'+  +'.png');
+            console.log("original image",image);
+
+            form.append("file",image);
+
+            var url=baseUrl+"uploadFile";
+            noteService.postImage(url,form).then(function successCallback(response) {
+                console.log("message",response.data.message);
+               // note.imageUrl=response.data.message;
+
+                //updateNote(note);
+            }, function errorCallback(response) {
+                console.log(" Update failed",response);
+            });
+        };
+
+        $scope.cancel = function() {
+            console.log("hello cancel");
+        };
     }
 
     $scope.imageSelect=function(event,note)

@@ -1,4 +1,4 @@
-<div data-ng-init="profileInfo();changeColor();"  layout="column"  ng-cloak>
+<div data-ng-init="profileInfo();"  layout="column"  ng-cloak>
     <md-toolbar class="md-toolbar-tools" ng-style="colorValue" id="toolbar">
 
         <md-button flex-gt-md="5" ng-click="toggleLeft()" class="md-icon-button">
@@ -32,10 +32,11 @@
                 <md-content>
                     <md-list>
                         <md-list-item class="md-3-line">
-                            <img src="asset/profile.jpg" ng-click="showProfileDialog($event)" class="profile-card-img" alt="profile" />
+                            <img src="{{value.sub}}" ng-click="showProfileDialog($event)" class="profile-card-img" alt="profile" />
                             <div class="md-list-item-text"  layout="column" layout-align="space-around end">
                                 <div layout="row" class="profile-name">{{value.iss}}</div>
                                 <div layout="row" class="profile-email">{{value.sub}}</div>
+
                                 <div layout="row">
                                     <a ui-sref="google.com" class="google" target="_blank" style="margin-right: 5px">Google+ Profile</a>
                                     <span aria-hidden="true">–</span>
