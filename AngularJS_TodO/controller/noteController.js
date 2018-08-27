@@ -315,13 +315,15 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
     changeColor();
 
 
-    $scope.showCollaboatorsDialog = function(event)
+    $scope.showCollaboatorsDialog = function(event,note)
     {
         if(event!=undefined)
         {
          event.stopPropagation();
         }
+
         $mdDialog.show({
+            locals:{note : note},
             controller: DialogCollaboatorCtrl,
             templateUrl: 'template/collabotorDialog.html',
             parent: angular.element(document.body),
@@ -331,8 +333,121 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
         });
     };
 
-    function DialogCollaboatorCtrl($scope, $mdDialog)
+    $scope.getCollaborators=[];
+    $scope.getAllCollaborators =function() {
+
+        var url = baseUrl + "getAllCollaboratedNotes";
+
+        noteService.getAPIWithHeader(url).then(
+            function successCallback(response) {
+
+                $scope.getCollaborators=response.data;
+                console.log("Collaborator",$scope.getCollaborators);
+                return response.data;
+
+            }, function errorCallback(response) {
+                return response;
+
+            });
+    };
+
+    $scope.getAllCollaborators();
+
+    function DialogCollaboatorCtrl($scope, $mdDialog,note)
     {
+        console.log("ranu1111");
+        $scope.note = note;
+        console.log("Note",$scope.note);
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+
+        };
+
+        $scope.getUsers="";
+
+        $scope.getallUsers=function(){
+            var url = baseUrl + "getallUsers";
+            noteService.getAPIWithHeader(url).then(
+                function successCallback(response) {
+                    $scope.getUsers=response.data;
+                    return response.data;
+                }, function errorCallback(response) {
+                    return response;
+                });
+        };
+
+        $scope.userData ="";
+        $scope.getLoginUser=function()
+        {
+            console.log("hii");
+            var url = baseUrl + 'getCurrentUser';
+            noteService.getAPIWithHeader(url).then(function successCallback(response) {
+                console.log("getUser",response);
+                $scope.userData = response.data;
+            }, function errorCallback(response) {
+                return response;
+            })
+        };
+
+        $scope.getLoginUser();
+
+        $scope.getCollaborators=[];
+        $scope.getAllCollaborators =function() {
+
+            var url = baseUrl + "getAllCollaboratedNotes";
+
+            noteService.getAPIWithHeader(url).then(
+                function successCallback(response) {
+
+                    $scope.getCollaborators=response.data;
+
+                    return response.data;
+
+                }, function errorCallback(response) {
+                    return response;
+
+                });
+        };
+        $scope.getAllCollaborators();
+
+        $scope.addCollaboratorOnNote=function(email){
+
+            var userId =email[1];
+
+            var url = baseUrl + "addCollaboratorOnNote/"+userId+"/"+note.id;
+            noteService.postAPIWithOutHeader(url).then(
+                function successCallback(response) {
+
+                    $scope.getAllCollaborators();
+
+                    return response;
+
+                }, function errorCallback(response) {
+                    return response;
+
+                });
+
+        }
+
+        $scope.removeCollaboratoronNote=function(user){
+            console.log("User:",user.id);
+            console.log("note  in dashboard:",note);
+            console.log("noteid  in dashboard:",note.id);
+            var url = baseUrl + "removeCollaboratorOnNote/"+user.id+"/"+note.id;
+            console.log(url);
+            noteService.postAPIWithOutHeader(url).then(
+                function successCallback(response) {
+
+                    console.log("success", response);
+                    $scope.getAllCollaborators();
+                    return response;
+
+                }, function errorCallback(response) {
+                    console.log("Error occur", response);
+                    return response;
+
+                });
+        }
 
     }
 
@@ -349,6 +464,30 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
         });
     };
 
+
+    var userInfo="";
+    $scope.userInfo ="";
+
+    function getUser() {
+
+        var url = baseUrl + "getCurrentUser";
+        noteService.getAPIWithHeader(url).then(function successCallback(response)
+        {
+            console.log("Response profile api",response.data);
+            $scope.userInfo = response.data;
+            userInfo=$scope.userInfo;
+
+
+        }, function errorCallback(response)
+        {
+            console.log(response, "user details cannot be displayed");
+        });
+
+        return userInfo;
+    }
+
+    getUser();
+
     function DialogProfileImageCtrl($scope)
     {
         $scope.myCroppedImage = '';
@@ -364,6 +503,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
 
         var handleFileSelect = function(evt) {
             var file = evt.currentTarget.files[0];
+            $scope.filename = evt.target.files[0].name;
             var reader = new FileReader();
             reader.onload = function(evt) {
                 $scope.$apply(function($scope) {
@@ -380,78 +520,47 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
         },1000, false);
 
 
-       function dataURItoBlob(dataURI)
-       {
-        var byteString = atob(dataURI.toString().split(',')[1]);
-
-        //var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
-        var ab = new ArrayBuffer(byteString.length);
-        var ia = new Uint8Array(ab);
-        for (var i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
+        //function for converting base64 uri to form data....
+        const dataURLtoFile = (dataurl, filename) => {
+            const arr = dataurl.split(',')
+            const mime = arr[0].match(/:(.*?);/)[1]
+            const bstr = atob(arr[1])
+            let n = bstr.length
+            const u8arr = new Uint8Array(n)
+            while (n) {
+                u8arr[n - 1] = bstr.charCodeAt(n - 1);
+                n -= 1
+            }
+            return new File([u8arr], filename, {
+                type: mime
+            });
         }
-        var blob = new Blob([ab], {type: 'image/png'}); //or mimeString if you want
-        return blob;
-    }
 
 
         $scope.ok = function(img)
         {
-          console.log("crop image",img);
+            const file = dataURLtoFile(img,$scope.filename);
+            var form = new FormData();
+            form.append("file", file);
+           var url=baseUrl+"uploadFile";
 
-           var form = new FormData();
-           var imagefile=dataURItoBlob(img);
-
-           console.log("blob",imagefile);
-
-           var image = new File([imagefile],'profile.png');
-
-           console.log("original image",image);
-
-           form.append("file",image);
-
-            var url=baseUrl+"uploadFile";
-
-            noteService.postImage(url,form).then(function successCallback(response)
-            {
-                console.log("message",response.data.message);
-                uploadUserProfileImg(response.data.message);
-            }, function errorCallback(response)
-            {
+           noteService.postImage(url,form).then(function successCallback(response)
+           {
+               console.log("message",response.data.message);
+               uploadUserProfileImg(response.data.message);
+           }, function errorCallback(response)
+           {
                 console.log("Update failed",response);
-            });
+           });
         };
 
         $scope.cancel = function() {
             console.log("hello cancel");
+            $mdDialog.cancel();
         };
-
-        var userInfo;
-
-        function getUser() {
-
-            var url = baseUrl + "getCurrentUser";
-            noteService.getAPIWithHeader(url).then(function successCallback(response)
-            {
-                console.log("Response profile api",response.data);
-                userInfo = response.data;
-                console.log("User Info",userInfo);
-
-
-            }, function errorCallback(response)
-            {
-               console.log(response, "user details cannot be displayed");
-            });
-
-            return userInfo;
-        }
-
-        getUser();
 
         function  uploadUserProfileImg(img)
         {
-         console.log("user profile img",img);
             var user = getUser();
             console.log('user is', user);
             user.profilePic = img;
@@ -460,27 +569,30 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
             var url = baseUrl + 'updateUser';
             userService.putAPIWithHeader(url, user).then(function successCallback(response)
             {
-              console.log("response of user update api",response);
-              getUser();
+                console.log("successfully upload profile pic",response);
+                getUser();
             }, function errorCallback(response) {
                 console.log("error" + response);
             });
         }
     }
 
-    $scope.imageSelect=function(event,note)
+
+
+    $scope.imageSelect=function(ev,note)
      {
-        if(event!=undefined)
-        {
-            event.stopPropagation();
-        }
+         if(ev!==undefined)
+         {
+          ev.stopPropagation();
 
-        document.addEventListener('change',function (event)
-        {
-            var form = new FormData();
-            form.append("file",event.target.files[0]);
-
-            var url=baseUrl+"uploadFile";
+         }
+        console.log("Click note Info",note);
+         document.addEventListener('change', function(ev) {
+             console.log(ev.target.files[0]);
+             var url=baseUrl+"uploadFile";
+             console.log(ev.target.files[0]);
+             var form = new FormData();
+             form.append("file", ev.target.files[0]);
             noteService.postImage(url,form).then(function successCallback(response) {
                 console.log("message",response.data.message);
                 note.imageUrl=response.data.message;
@@ -1083,7 +1195,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
 
             $scope.note_info=response.data;
 
-
+            $scope.note_info = $scope.getCollaborators.concat($scope.note_info);
 
             for(var i=0;i<$scope.note_info.length;i++)
             {
@@ -1186,10 +1298,8 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
     {
         var keepGoing = true;
         angular.forEach(notes,function(value){
-           console.log("check other note value",value);
             if(keepGoing) {
                 if (!value.pined && !value.archived && !value.trashed) {
-                    console.log("r1");
                     $scope.showOtherNote = true;
                     keepGoing=false;
                 }
@@ -1203,10 +1313,10 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
     {
         var keepGoing = true;
 
-
         angular.forEach(notes,function(value)
         {
-                if (value.listOfLabels !== null) {
+                if (value.listOfLabels !== null && value!==null && value!=="")
+                {
                        for (var i = 0; i < value.listOfLabels.length; i++) {
 
                            if (keepGoing)

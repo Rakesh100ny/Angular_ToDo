@@ -56,7 +56,7 @@
         </md-menu-content>
     </md-menu>
 
-    <md-button aria-label="Collaboators" ng-click="showCollaboatorsDialog($event)" class="md-icon-button" style="padding: 0px;margin: 0 auto;">
+    <md-button aria-label="Collaboators" ng-click="showCollaboatorsDialog($event,note)" class="md-icon-button" style="padding: 0px;margin: 0 auto;">
         <md-icon><i class="material-icons">person_add</i></md-icon>
         <md-tooltip>Collaboators</md-tooltip>
     </md-button>
@@ -74,7 +74,7 @@
     </md-menu>
 
     <md-button class="md-icon-button" style="margin: 0 auto;padding: 0px;">
-        <input type="file"  class="hide-file"  ng-click="imageSelect($event,note)">
+        <input type="file"  class="hide-file"  ng-click="imageSelect($event,note);">
         <md-icon><i class="material-icons" id="icon">image</i></md-icon>
         <md-tooltip>Add image</md-tooltip>
     </md-button>

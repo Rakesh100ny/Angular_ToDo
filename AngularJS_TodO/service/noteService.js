@@ -18,18 +18,26 @@ app.factory('noteService', function($http,$location)
         return $http(request);
     };
 
+
+    factory.postAPIWithOutHeader = function(url)
+    {
+        var request =
+            {
+                method: "POST",
+                url: url,
+            };
+
+        return $http(request);
+    };
+
     factory.postImage = function(url,data)
     {
-        console.log("formData",data);
         var request =
             {
                 method: "POST",
                 url: url,
                 data: data,
-                headers: {
-                    'Content-Type': undefined,
-
-                }
+                headers: {'Content-Type': undefined}
              };
 
         return $http(request);
