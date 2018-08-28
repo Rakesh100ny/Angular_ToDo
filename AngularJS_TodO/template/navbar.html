@@ -26,13 +26,15 @@
             <md-button class="md-icon-button md-icon-left"><md-icon><i class="material-icons">apps</i></md-icon></md-button>
             <md-button class="md-icon-button md-icon-right"><md-icon><i class="material-icons">notifications_none</i></md-icon></md-button>
         </div>
-        <a ng-click="clickProfile()"><img src='{{userInfo.profilePic}}'  class="profile"></a>
+        <div class="profile" ng-click="clickProfile()"><img src='{{userInfo.profilePic}}' style="width: 40px;height: 72px;"></div>
         <div layout="row"  ng-show="isVisible"  layout-align="center end">
             <md-card  class="profile-card">
                 <md-content>
                     <md-list>
                         <md-list-item class="md-3-line">
-                            <img src='{{userInfo.profilePic}}' ng-click="showProfileDialog($event)" class="profile-card-img" alt="profile" />
+                            <div class="profile-card-img" ng-click="showProfileDialog($event)"><img ng-src='{{userInfo.profilePic}}' style="width: 100px;height: 145px;" />
+                             <span class="caption">Change</span>
+                            </div>
                             <div class="md-list-item-text"  layout="column" layout-align="space-around end">
                                 <div layout="row" class="profile-name">{{value.iss}}</div>
                                 <div layout="row" class="profile-email">{{value.sub.split(" ")[0]}}</div>

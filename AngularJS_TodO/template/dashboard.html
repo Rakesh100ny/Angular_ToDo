@@ -123,20 +123,20 @@
                 </md-card-content>
 
                 <div layout="row" layout-wrap layout-align="start space-around">
-                    <md-chips style="background-color: rgba(0,0,0,0.08);border-radius: 2px;opacity:.54;" ng-mouseover="enableEdit(note)"  ng-mouseleave="disableEdit(note)">
+                    <md-chips style="background-color: rgba(0,0,0,0.08);border-radius: 2px;" ng-mouseover="enableEdit(note)"  ng-mouseleave="disableEdit(note)">
                         <md-chip style="margin: 0px auto;padding: 0px;">
                             <span style="margin-left: 5px;">{{note.reminderDate | date : 'MMM dd,HH:mm a'}}</span>
-                             <md-button  ng-show="note.reminder && note.reminderDate!==null"  class="md-icon-button" ng-click="removeReminder(note,$event)" style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button>
+                            <md-button  ng-show="note.reminder && note.reminderDate!==null"  class="md-icon-button" ng-click="removeReminder(note,$event)" style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button>
                         </md-chip>
                     </md-chips>
 
                     <md-chips  ng-mouseover="enableEdit(label)"  ng-mouseleave="disableEdit(label)" ng-repeat="label in note.listOfLabels">
-                        <md-chip  style="margin:0px auto;padding: 0px;"><button ng-click="sendToLabel(label,$event)" style="border:none;outline:none;border-radius: 50px;margin-left: 5px;">{{label.labelName}}</button><md-button ng-show="label.editable" class="md-icon-button" ng-click="removeLabel(label,note,$event)"  style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button></md-chip>
+                        <md-chip  style="margin:0px auto;padding: 0px;"><button ng-click="sendToLabel(label,$event)" style="border:none;outline:none;border-radius: 50px;margin-left: 5px;">{{label.labelName}}</button><md-button ng-show="label.editable" class="md-icon-button" ng-click="removeLabel(label,note,$event)"  style=" margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button></md-chip>
                     </md-chips>
-                </div>
-                 <div layout="row" ng-if="note.collaboratedUser">
-                     <div ng-repeat="collaborator in note.collaboratedUser"  ng-click="showCollaboatorsDialog($event,note);" >
-                         <img style="opacity: 1;width:37px; height: 37px;border-radius: 50px;" ng-src="{{collaborator.profilePic}}" />
+                 </div>
+                 <div layout="row" layout-align="start space-between"  ng-if="note.collaboratedUser" class="md-padding">
+                     <div ng-repeat="collaborator in note.collaboratedUser" style="margin-left:2px;" ng-click="showCollaboatorsDialog($event,note);" >
+                         <div class="profile"><img  style="width: 40px;height: 72px;" ng-src="{{collaborator.profilePic}}" /></div>
                          <md-tooltip>{{collaborator.email}}</md-tooltip>
                      </div>
                  </div>
@@ -174,7 +174,7 @@
                 <p style="white-space: pre-wrap;word-wrap: break-word">{{note.description}}</p>
             </md-card-content>
             <div  layout="row" layout-wrap layout-align="start space-around">
-                <md-chips style="background-color: rgba(0,0,0,0.08);border-radius: 2px;opacity:.54;" ng-mouseover="enableEdit(note)"  ng-mouseleave="disableEdit(note)">
+                <md-chips style="background-color: rgba(0,0,0,0.08);border-radius: 2px;" ng-mouseover="enableEdit(note)"  ng-mouseleave="disableEdit(note)">
                     <md-chip style="margin: 0px auto;padding: 0px;"><span style="margin-left: 5px;">{{note.reminderDate | date : 'MMM dd,HH:mm a'}}</span><md-button  ng-show="note.reminder && note.reminderDate!==null"  class="md-icon-button" ng-click="removeReminder(note,$event)" style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button ></md-chip>
                 </md-chips>
 
@@ -182,11 +182,9 @@
                     <md-chip  style="margin:0px auto;padding: 0px;"><button ng-click="sendToLabel(label,$event)" style="border:none;outline:none;border-radius: 50px;margin-left: 5px;">{{label.labelName}}</button><md-button ng-show="label.editable" class="md-icon-button" ng-click="removeLabel(label,note,$event)"  style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button></md-chip>
                 </md-chips>
             </div>
-            <div layout="row" ng-if="note.collaboratedUser" class="md-margin">
-                <div ng-repeat="collaborator in note.collaboratedUser"  ng-click="" >
-
-                    <img style="opacity: 1;width:37px;border-radius: 50px;" ng-src="{{collaborator.profilePic}}" />
-
+            <div layout="row" layout-align="start space-between"  ng-if="note.collaboratedUser" class="md-padding">
+                <div ng-repeat="collaborator in note.collaboratedUser" style="margin-left:2px;" ng-click="showCollaboatorsDialog($event,note);" >
+                    <div class="profile"><img  style="width: 40px;height: 72px;" ng-src="{{collaborator.profilePic}}" /></div>
                     <md-tooltip>{{collaborator.email}}</md-tooltip>
                 </div>
             </div>

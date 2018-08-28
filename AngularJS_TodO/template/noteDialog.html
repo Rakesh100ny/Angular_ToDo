@@ -31,24 +31,28 @@
                 <div layout="row" class="take-note-div2"  layout-align="top center">
                     <div ng-model="noteInfo.description" class="description" placeholder="Note" contenteditable="true" only-text="true" convert-new-lines="true"></div>
                 </div>
-
+               <br>
                <div  layout="row" layout-wrap layout-align="start space-around">
-                   <md-chips style="background-color: rgba(0,0,0,0.08);border-radius: 2px;opacity:.54;" ng-mouseover="enableEdit(note)"  ng-mouseleave="disableEdit(note)">
+                   <md-chips style="background-color: rgba(0,0,0,0.08);border-radius: 2px;" ng-mouseover="enableEdit(noteInfo)"  ng-mouseleave="disableEdit(noteInfo)">
                        <md-chip style="margin: 0px auto;padding: 0px;"><span style="margin-left: 5px;">{{noteInfo.reminderDate | date : 'MMM dd,HH:mm a'}}</span><md-button  ng-show="note.reminder && note.reminderDate!==null"  class="md-icon-button" ng-click="removeReminder(note,$event)" style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button ></md-chip>
                    </md-chips>
 
                    <md-chips  ng-mouseover="enableEdit(label)"  ng-mouseleave="disableEdit(label)" ng-repeat="label in noteInfo.listOfLabels">
-                       <md-chip  style="margin:0px auto;padding: 0px;"><button ng-click="sendToLabel(label,$event)" style="border:none;outline:none;border-radius: 50px;margin-left: 5px;">{{label.labelName}}</button><md-button ng-show="label.editable" class="md-icon-button" ng-click="removeLabel(label,note,$event)"  style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button></md-chip>
+                       <md-chip  style="margin:0px auto;padding: 0px;">
+                           <button ng-click="sendToLabel(label,$event)" style=" border:none;outline:none;border-radius: 50%;">{{label.labelName}}</button>
+                           <md-button ng-show="label.editable" class="md-icon-button" ng-click="removeLabel(label,note,$event)" style="margin: 0px auto;padding: 0px;">
+                            <md-icon><i class="material-icons">close</i></md-icon>
+                           </md-button>
+                       </md-chip>
                    </md-chips>
                </div>
-               <div layout="row" ng-if="noteInfo.collaboratedUser">
-                   <div ng-repeat="collaborator in noteInfo.collaboratedUser"  ng-click="showCollaboatorsDialog($event,noteInfo);" >
-                       <img style="opacity: 1;width:37px; height: 37px;border-radius: 50px;" ng-src="{{collaborator.profilePic}}" />
+               <div layout="row" layout-align="start space-between"  ng-if="noteInfo.collaboratedUser">
+                   <div ng-repeat="collaborator in noteInfo.collaboratedUser" style="margin-left:2px;" ng-click="showCollaboatorsDialog($event,noteInfo);" >
+                       <div class="profile"><img  style="width: 40px;height: 72px;" ng-src="{{collaborator.profilePic}}" /></div>
                        <md-tooltip>{{collaborator.email}}</md-tooltip>
                    </div>
                </div>
-
-                <div layout="row" layout-align="space-between end"  class="take-note-div3">
+               <div layout="row" layout-align="space-between end"  class="take-note-div3">
                     <updatenoteicon></updatenoteicon>
                     <md-button class="take-note-button"  ng-click="cancel();updateNote(noteInfo);">
                         <strong>Close</strong>

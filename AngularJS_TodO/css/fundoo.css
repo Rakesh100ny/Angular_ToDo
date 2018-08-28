@@ -185,10 +185,27 @@ body{
 
 .profile-card-img
 {
-    width: 100px;
-    height: 100px;
-    border-radius: 60px;
-    box-sizing: border-box;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+.caption
+{
+    bottom: 0;
+    color: #fff;
+    font-size: 9px;
+    font-weight: bold;
+    left: 0;
+    line-height: 9px;
+    position: absolute;
+    padding: 7px 0;
+    text-align: center;
+    width: 96px;
+    margin-left: 4px;
+    background: rgba(0,0,0,.54);
 
 }
 
@@ -389,9 +406,16 @@ md-chips .md-chips
 }
 .profile
 {
- width: 35px;
- height: 35px;
- border-radius: 50px;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    display: block;
+    margin: 0;
+    overflow: hidden;
+    height: 42px;
+    width: 40px;
+    z-index: 0;
+    cursor: pointer;
+
 }
 
 
@@ -880,5 +904,28 @@ div[contenteditable]:focus {
     color:rgba(0, 0, 0, 0.87);
     background-color: #000000;
     background-color: rgba(0, 0, 0, 0);
+
+}
+
+.trashbtn
+{
+    line-height: normal;
+    vertical-align:baseline;
+    letter-spacing:normal;
+    word-spacing:0px;
+    font-weight:500;
+    font-style:normal;
+    font-variant: normal;
+    text-transform: uppercase;
+    text-decoration:none solid rgb(64, 129, 245);
+    text-align:center;
+    text-indent: 0px;
+    font-family: Roboto, arial, sans-serif;
+    font-size: 13px;
+    color: #4081f5;
+    color:rgb(64, 129, 245);
+    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.08);
+;
 
 }

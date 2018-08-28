@@ -427,7 +427,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
 
                 });
 
-        }
+        };
 
         $scope.removeCollaboratoronNote=function(user){
             console.log("User:",user.id);
@@ -451,6 +451,25 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
 
     }
 
+    $scope.removeCollaboratoronNote=function(user){
+        console.log("User:",user.id);
+        console.log("note  in dashboard:",note);
+        console.log("noteid  in dashboard:",note.id);
+        var url = baseUrl + "removeCollaboratorOnNote/"+user.id+"/"+note.id;
+        console.log(url);
+        noteService.postAPIWithOutHeader(url).then(
+            function successCallback(response) {
+
+                console.log("success", response);
+                $scope.getAllCollaborators();
+                return response;
+
+            }, function errorCallback(response) {
+                console.log("Error occur", response);
+                return response;
+
+            });
+    };
 
     $scope.showProfileDialog = function(event)
     {
@@ -586,8 +605,9 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
           ev.stopPropagation();
 
          }
+         console.log(ev.target);
         console.log("Click note Info",note);
-         document.addEventListener('change', function(ev) {
+         ev.target.addEventListener('change', function(ev) {
              console.log(ev.target.files[0]);
              var url=baseUrl+"uploadFile";
              console.log(ev.target.files[0]);
@@ -864,12 +884,15 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
 
 
 
-    $scope.isTrashedNote=function(note)
+    $scope.isTrashedNote=function(note,event)
     {
         if(note.trashed===false)
         {
             note.trashed=true;
             note.pined=false;
+            $scope.removeReminder(note,event);
+            console.log("User information in transhed",note.collaboratedUser);
+            $scope.removeCollaboratoronNote(note.collaboratedUser);
         }
         else
         {
@@ -884,7 +907,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
     {
         switch (task) {
             case 'Delete note':
-                $scope.isTrashedNote(note);
+                $scope.isTrashedNote(note,event);
                 break;
             case 'Add label': openDialogLabel(event,note);
 

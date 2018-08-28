@@ -1,8 +1,20 @@
 <div data-ng-init="getAllNotes()"  style="background-color: #e8e8e8;height: 200%;" id="archiveTrash" >
 
-    <div style="margin-top: 35px;" flex-offset="15">
-        <md-content  style="max-width: 800px;background-color: #e8e8e8;padding-top: 50px;margin-left: 180px;" layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center" >
+    <div layout="column" style="padding-top: 80px;" ng-if="noteArray.length>0" layout-align="center center" layout-xs="colum">
+        <div layout="column" layout-align="top center">
+            <span class="trash-text">Notes in Trash are deleted after 7 days.<md-button class="trashbtn">EMPTY TRASH</md-button> </span>
+
+        </div>
+    </div>
+    <div flex-offset="15">
+        <md-content  style="max-width: 800px;background-color: #e8e8e8;margin-left: 180px;" layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center" >
             <md-card ng-mouseover="enableEdit(note)"  ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}}"  ng-repeat="note in note_info | filter:{trashed:true} as noteArray">
+                <div class="container">
+                    <img  ng-src="{{note.imageUrl}}"  class="md-card-image">
+                    <md-button class="md-icon-button btn"  ng-if="note.imageUrl!==null && note.pined===false" ng-click="isPinnedNote(note);">
+                        <md-icon style="width: 5px;height: 5px;"  md-svg-icon="asset/pin.svg" ></md-icon>
+                    </md-button>
+                </div>
                 <md-card-title>
                     <md-card-title-text>
                         <div class="md-headline">{{note.title}} </div>
@@ -12,13 +24,20 @@
                 <md-card-content class="center">
                     <p>{{note.description}}</p>
                 </md-card-content>
+                <div layout="row" layout-wrap layout-align="start space-around">
+                    <md-chips  ng-mouseover="enableEdit(label)"  ng-mouseleave="disableEdit(label)" ng-repeat="label in note.listOfLabels">
+                        <md-chip  style="margin:0px auto;padding: 0px;"><button ng-click="sendToLabel(label,$event)" style="border:none;outline:none;border-radius: 50px;margin-left: 5px;">{{label.labelName}}</button><md-button ng-show="label.editable" class="md-icon-button" ng-click="removeLabel(label,note,$event)"  style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button></md-chip>
+                    </md-chips>
+                </div>
+
                 <div  layout="row" style="height: 50px;" layout-align="start">
                     <trashicon></trashicon>
                 </div>
             </md-card>
     </div>
 
-    <div layout="column"  ng-if="noteArray==0" layout-align="center center" layout-xs="colum">
+
+    <div layout="column" style="padding-top: 100px;" ng-if="noteArray.length==0" layout-align="center center" layout-xs="colum">
         <div layout="column" layout-align="top center">
             <span class="trash-text">Notes in Trash are deleted after 7 days.</span>
         </div>
