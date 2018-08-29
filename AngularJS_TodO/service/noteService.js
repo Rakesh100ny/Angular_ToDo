@@ -119,6 +119,17 @@ app.factory('noteService', function($http,$location)
         return $http(request);
     };
 
+    factory.getAPIWithOutHeader = function(url)
+    {
+        var request =
+            {
+                method: "GET",
+                url: url,
+            };
+
+        return $http(request);
+    };
+
     return factory;
 });
 

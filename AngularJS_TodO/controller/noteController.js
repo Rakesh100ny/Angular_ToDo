@@ -1,164 +1,153 @@
-app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,userService,noteService,labelService,$state,$window,$location,$filter)
-{
+app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,userService,noteService,labelService,$state,$window,$location,$filter) {
 
-    var path=$location.path();
-    $scope.pathParam=path.split('/')[3];
+    var path = $location.path();
+    $scope.pathParam = path.split('/')[3];
 
-    var baseUrl="http://localhost:8081/Fundo_Note/";
+    var baseUrl = "http://localhost:8081/Fundo_Note/";
 
-    $scope.removable=true;
+    $scope.removable = true;
 
     $scope.noteModel = {
-        title : "",
-        description : "",
-        color:"white",
-        isPined : "false",
-        isTrashed:"false",
-        isArchived:"false",
-        tempdate:'',
-        remindertime:''
+        title: "",
+        description: "",
+        color: "white",
+        isPined: "false",
+        isTrashed: "false",
+        isArchived: "false",
+        tempdate: '',
+        remindertime: ''
 
     };
 
-    $scope.initializeNote=function()
-    {
+    $scope.initializeNote = function () {
         $scope.noteModel = {
-            title : "",
-            description : "",
-            color:"white",
-            isPined : "false",
-            isTrashed:"false",
-            isArchived:"false"
+            title: "",
+            description: "",
+            color: "white",
+            isPined: "false",
+            isTrashed: "false",
+            isArchived: "false"
 
         };
     };
-    $scope.label_note_info=[];
+    $scope.label_note_info = [];
 
-    $scope.sendToReminders = function() {
+    $scope.sendToReminders = function () {
         $state.go('home.reminders');
     };
 
-    $scope.showCancelIcon=false;
+    $scope.showCancelIcon = false;
 
-    $scope.showCancel=function()
-    {
-     $state.go('home.search');
+    $scope.showCancel = function () {
+        $state.go('home.search');
 
-        $scope.showCancelIcon=true;
+        $scope.showCancelIcon = true;
 
     };
 
     //createEditableSelect(document.forms[0].myText);
 
-   $scope.sendToHome=function()
-   {
-       $state.go('home.dashboard');
-   };
-
-    $scope.sendToNotes = function() {
+    $scope.sendToHome = function () {
         $state.go('home.dashboard');
     };
 
-    $scope.sendToArchive = function() {
+    $scope.sendToNotes = function () {
+        $state.go('home.dashboard');
+    };
+
+    $scope.sendToArchive = function () {
         $state.go('home.archive');
 
     };
 
-    $scope.sendToTrash = function()
-    {
+    $scope.sendToTrash = function () {
         $state.go('home.trash');
     };
 
-    $scope.openMenu=function($mdMenu,event)
-    {
-     $mdMenu.open(event);
-     event.preventDefault();
-     event.stopPropagation();
+    $scope.openMenu = function ($mdMenu, event) {
+        $mdMenu.open(event);
+        event.preventDefault();
+        event.stopPropagation();
     };
 
-    $scope.closeMenu=function($mdMenu,event)
-    {
+    $scope.closeMenu = function ($mdMenu, event) {
         $mdMenu.close(event);
     };
 
-    $scope.sendToLogin = function() {
+    $scope.sendToLogin = function () {
         $window.localStorage.clear();
         $location.path('login');
     };
 
-    $scope.sendToLabel=function(label,event)
-    {
-        if(event!==undefined)
-        {
-         event.stopPropagation();
+    $scope.sendToLabel = function (label, event) {
+        if (event !== undefined) {
+            event.stopPropagation();
         }
 
-        labelId=label.labelName;
-        $state.go('home.label',{labelId:labelId});
+        labelId = label.labelName;
+        $state.go('home.label', {labelId: labelId});
     };
 
 
-    $scope.more=['Delete note','Add label','Make a copy','Show checkboxes','Copy to Google Docs'];
+    $scope.more = ['Delete note', 'Add label', 'Make a copy', 'Show checkboxes', 'Copy to Google Docs'];
 
-    $scope.takenotemore=['Add label','Show checkboxes'];
+    $scope.takenotemore = ['Add label', 'Show checkboxes'];
 
-    $scope.addTime= [
-        {'name':'Morning   8:00 AM','value':'8:00 AM'},
-        {'name':'Afternoon 1:00 PM','value':'1:00 PM'},
-        {'name':'Evening   6:00 PM','value':'6:00 PM'},
-        {'name':'Night     8:00 PM','value':'8:00 PM'},
-        {'name':'custom','value':''}
+    $scope.addTime = [
+        {'name': 'Morning   8:00 AM', 'value': '8:00 AM'},
+        {'name': 'Afternoon 1:00 PM', 'value': '1:00 PM'},
+        {'name': 'Evening   6:00 PM', 'value': '6:00 PM'},
+        {'name': 'Night     8:00 PM', 'value': '8:00 PM'},
+        {'name': 'custom', 'value': ''}
 
     ];
 
 
-    $scope.trashmore=['Delete forever','Restore'];
+    $scope.trashmore = ['Delete forever', 'Restore'];
 
-    $scope.reminders=[
-        [{'name':'Later today','value':'8:00 PM'}],
-        [{'name':'Tomorrow','value':'8:00 AM'}],
-        [{'name':'Next Week','value':'Mon,8:00 AM'}],
-        [{'name':'Home','value':'Jaitaran'}]
+    $scope.reminders = [
+        [{'name': 'Later today', 'value': '8:00 PM'}],
+        [{'name': 'Tomorrow', 'value': '8:00 AM'}],
+        [{'name': 'Next Week', 'value': 'Mon,8:00 AM'}],
+        [{'name': 'Home', 'value': 'Jaitaran'}]
     ];
 
-    $scope.colors=
+    $scope.colors =
         [
             [
-                {'name': 'White','value': 'white'},
-                {'name': 'Red','value': '#ff8a80'},
-                {'name': 'Orange','value': '#ffd180'},
-                {'name': 'Yellow','value': '#ffff8d'}
+                {'name': 'White', 'value': 'white'},
+                {'name': 'Red', 'value': '#ff8a80'},
+                {'name': 'Orange', 'value': '#ffd180'},
+                {'name': 'Yellow', 'value': '#ffff8d'}
             ]
             ,
             [
-                {'name': 'Green','value': '#ccff90'},
-                {'name': 'Teal','value': '#a7ffeb'},
-                {'name': 'Blue','value': '#80d8ff'},
-                {'name': 'Dark Blue','value': '#82b1ff'}
+                {'name': 'Green', 'value': '#ccff90'},
+                {'name': 'Teal', 'value': '#a7ffeb'},
+                {'name': 'Blue', 'value': '#80d8ff'},
+                {'name': 'Dark Blue', 'value': '#82b1ff'}
 
             ]
             ,
             [
-                {'name': 'Purple','value': '#b388ff'},
-                {'name': 'Pink','value': '#f8bbd0'},
-                {'name': 'Brown','value': '#d7ccc8'},
-                {'name': 'Gray','value': '#cfd8dc'}
+                {'name': 'Purple', 'value': '#b388ff'},
+                {'name': 'Pink', 'value': '#f8bbd0'},
+                {'name': 'Brown', 'value': '#d7ccc8'},
+                {'name': 'Gray', 'value': '#cfd8dc'}
             ]
 
         ];
 
-   $scope.today=new Date();
+    $scope.today = new Date();
 
-    $scope.ReminderDate=function(note)
-    {
+    $scope.ReminderDate = function (note) {
 
-      var myDate = new Date(note.tempdate);
+        var myDate = new Date(note.tempdate);
 
-        if(note.remindertime.split(':')[1].split(' ')[1]==='PM')
-        {
-            var a=note.remindertime.split(':')[0];
-            var b=12;
-            var time24=addTime(a,b);
+        if (note.remindertime.split(':')[1].split(' ')[1] === 'PM') {
+            var a = note.remindertime.split(':')[0];
+            var b = 12;
+            var time24 = addTime(a, b);
             myDate.setHours(time24);
             myDate.setMinutes(note.remindertime.split(':')[1].split(' ')[0]);
 
@@ -168,18 +157,16 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
             myDate.setMinutes(note.remindertime.split(':')[1].split(' ')[0]);
 
         }
-      note.reminderDate=myDate;
+        note.reminderDate = myDate;
 
-      updateNote(note)
+        updateNote(note)
 
     };
 
 
-    function addTime(a,b)
-    {
-        var count=0;
-        while (count<a)
-        {
+    function addTime(a, b) {
+        var count = 0;
+        while (count < a) {
             b++;
             count++;
 
@@ -187,89 +174,84 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
         return b;
     }
 
-    function todayDate(note)
-    {
-       $scope.today.setHours('20');
-       $scope.today.setMinutes('00');
-       note.reminderDate=$scope.today;
-       updateNote(note);
+    function todayDate(note) {
+        $scope.today.setHours('20');
+        $scope.today.setMinutes('00');
+        note.reminderDate = $scope.today;
+        updateNote(note);
     };
 
-    function tomorrowDate(note)
-    {
-        var DAYDATE= 24 * 60 * 60 * 1000;
-        var tomorrowDate=new Date($scope.today.getTime()+DAYDATE);
+    function tomorrowDate(note) {
+        var DAYDATE = 24 * 60 * 60 * 1000;
+        var tomorrowDate = new Date($scope.today.getTime() + DAYDATE);
         tomorrowDate.setHours(8);
         tomorrowDate.setMinutes('00');
-        note.reminderDate=tomorrowDate;
+        note.reminderDate = tomorrowDate;
         updateNote(note);
     };
 
 
-    function nextWeekDate(note)
-    {
-     var NEXTWEEKDATE=7* 24 * 60 * 60 * 1000;
+    function nextWeekDate(note) {
+        var NEXTWEEKDATE = 7 * 24 * 60 * 60 * 1000;
 
-     var nextDate=new Date($scope.today.getTime()+NEXTWEEKDATE);
-     nextDate.setHours('08');
-     nextDate.setMinutes('00');
-     note.reminderDate=nextDate;
+        var nextDate = new Date($scope.today.getTime() + NEXTWEEKDATE);
+        nextDate.setHours('08');
+        nextDate.setMinutes('00');
+        note.reminderDate = nextDate;
         updateNote(note);
     };
 
 
-    $scope.reminderAction=function(note,task)
-    {
+    $scope.reminderAction = function (note, task) {
         switch (task) {
-            case 'Later today': todayDate(note);
+            case 'Later today':
+                todayDate(note);
                 break;
-            case 'Tomorrow':  tomorrowDate(note);
+            case 'Tomorrow':
+                tomorrowDate(note);
                 break;
-            case 'Next Week': nextWeekDate(note);
+            case 'Next Week':
+                nextWeekDate(note);
                 break;
-           }
+        }
     };
 
     $scope.isVisible = false;
 
-     $scope.clickProfile = function() {
+    $scope.clickProfile = function () {
         $scope.isVisible = !$scope.isVisible;
     };
 
-    $scope.isReminderVisible=false;
-    $scope.clickReminder = function(note) {
+    $scope.isReminderVisible = false;
+    $scope.clickReminder = function (note) {
         $scope.isReminderVisible = !$scope.isReminderVisible;
-        note.editable=$scope.isReminderVisible;
+        note.editable = $scope.isReminderVisible;
     };
 
-    $scope.profileInfo=function()
-    {
-        $scope.value=noteService.getUserFromToken();
-        console.log("profile information",$scope.value);
-        console.log("xyz",$scope.value.sub.split(" ")[0]);
-        console.log("pqr",$scope.value.sub.split(" ")[1]);
+    $scope.profileInfo = function () {
+        $scope.value = noteService.getUserFromToken();
+        console.log("profile information", $scope.value);
+        console.log("xyz", $scope.value.sub.split(" ")[0]);
+        console.log("pqr", $scope.value.sub.split(" ")[1]);
     };
 
-    $scope.isChangedView=false;
+    $scope.isChangedView = false;
 
-    $scope.changeView=function()
-    {
+    $scope.changeView = function () {
         $scope.isChangedView = !$scope.isChangedView;
 
         var notes = document.getElementsByClassName("card");
 
-        if($scope.isChangedView)
-        {
-            for (i = 0; i < notes.length; i++) {
+        if ($scope.isChangedView) {
+            for (var i = 0; i < notes.length; i++) {
                 notes[i].style.width = "79%";
-                notes[i].style.marginLeft="10%";
+                notes[i].style.marginLeft = "10%";
             }
         }
-        else
-        {
-            for (i = 0; i < notes.length; i++) {
+        else {
+            for (var i = 0; i < notes.length; i++) {
                 notes[i].style.width = "30%";
-                notes[i].style.marginLeft="0%";
+                notes[i].style.marginLeft = "0%";
             }
         }
 
@@ -277,31 +259,34 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
     };
 
 
-    function changeColor()
-    {
-        $scope.colorValue={};
+    function changeColor() {
+        $scope.colorValue = {};
         $scope.current = $state.current;
 
         switch ($scope.current.name) {
-            case 'home.dashboard':  $scope.title = "fundoo Notes";
+            case 'home.dashboard':
+                $scope.title = "fundoo Notes";
                 $scope.customColor = {
                     'background-color': '#fb0',
                     'color': 'black'
                 };
                 break;
-            case 'home.reminders':  $scope.title = "Reminders";
+            case 'home.reminders':
+                $scope.title = "Reminders";
                 $scope.customColor = {
                     'background-color': '#607d8b',
                     'color': '#ffffff'
                 };
                 break;
-            case 'home.archive':    $scope.title = "Archive";
+            case 'home.archive':
+                $scope.title = "Archive";
                 $scope.customColor = {
                     'background-color': '#607d8b',
                     'color': '#ffffff'
                 };
                 break;
-            case 'home.trash'  :    $scope.title = "Trash";
+            case 'home.trash'  :
+                $scope.title = "Trash";
                 $scope.customColor = {
                     'background-color': '#636363',
                     'color': '#ffffff'
@@ -309,80 +294,58 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
                 break;
         }
 
-        $scope.colorValue=$scope.customColor;
+        $scope.colorValue = $scope.customColor;
     };
 
     changeColor();
 
 
-    $scope.showCollaboatorsDialog = function(event,note)
+    $scope.showCollaboatorsDialog = function (event, note)
     {
-        if(event!=undefined)
-        {
-         event.stopPropagation();
+        if (event != undefined) {
+            event.stopPropagation();
         }
 
         $mdDialog.show({
-            locals:{note : note},
+            locals: {
+                      note: note,
+                     },
             controller: DialogCollaboatorCtrl,
             templateUrl: 'template/collabotorDialog.html',
             parent: angular.element(document.body),
             targetEvent: event,
-            clickOutsideToClose:true,
+            clickOutsideToClose: true,
             fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
         });
     };
 
-    $scope.getCollaborators=[];
-    $scope.getAllCollaborators =function() {
-
-        var url = baseUrl + "getAllCollaboratedNotes";
-
-        noteService.getAPIWithHeader(url).then(
-            function successCallback(response) {
-
-                $scope.getCollaborators=response.data;
-                console.log("Collaborator",$scope.getCollaborators);
-                return response.data;
-
-            }, function errorCallback(response) {
-                return response;
-
-            });
-    };
-
-    $scope.getAllCollaborators();
-
-    function DialogCollaboatorCtrl($scope, $mdDialog,note)
+    function DialogCollaboatorCtrl($scope, $mdDialog, note)
     {
-        console.log("ranu1111");
         $scope.note = note;
-        console.log("Note",$scope.note);
-        $scope.cancel = function() {
-            $mdDialog.cancel();
 
+        var id=note.id;
+
+        $scope.cancel = function () {
+            $mdDialog.cancel();
         };
 
-        $scope.getUsers="";
+        $scope.getUsers = "";
 
-        $scope.getallUsers=function(){
-            var url = baseUrl + "getallUsers";
+        $scope.getallUsers = function () {
+            var url = baseUrl + "getAllUsers";
             noteService.getAPIWithHeader(url).then(
                 function successCallback(response) {
-                    $scope.getUsers=response.data;
-                    return response.data;
+                    $scope.getUsers = response.data;
                 }, function errorCallback(response) {
-                    return response;
+                   console.log("error in getAllUser",response);
                 });
         };
 
-        $scope.userData ="";
-        $scope.getLoginUser=function()
-        {
-            console.log("hii");
+        $scope.userData = "";
+        $scope.getLoginUser = function () {
             var url = baseUrl + 'getCurrentUser';
             noteService.getAPIWithHeader(url).then(function successCallback(response) {
-                console.log("getUser",response);
+                console.log("getUser", response);
                 $scope.userData = response.data;
             }, function errorCallback(response) {
                 return response;
@@ -391,84 +354,92 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
 
         $scope.getLoginUser();
 
-        $scope.getCollaborators=[];
-        $scope.getAllCollaborators =function() {
+        getAllCollaborators(id);
 
-            var url = baseUrl + "getAllCollaboratedNotes";
+        $scope.getCollaboratorUsers = [];
+        function getAllCollaborators(id)
+        {
 
-            noteService.getAPIWithHeader(url).then(
-                function successCallback(response) {
+           var url = baseUrl + "getAllCollaboratedNotes/"+id;
 
-                    $scope.getCollaborators=response.data;
-
-                    return response.data;
-
+            noteService.getAPIWithOutHeader(url).then(
+                function successCallback(response)
+                {
+                   console.log("respose get collaborator",response.data);
+                    $scope.getCollaboratorUsers = response.data;
                 }, function errorCallback(response) {
-                    return response;
-
+                  console.log("error",response);
                 });
         };
-        $scope.getAllCollaborators();
 
-        $scope.addCollaboratorOnNote=function(email){
+        $scope.addCollaboratorOnNote = function (email)
+        {
+            console.log("email in coll",email);
 
-            var userId =email[1];
+            var userId = email[1];
 
-            var url = baseUrl + "addCollaboratorOnNote/"+userId+"/"+note.id;
+            var url = baseUrl + "addCollaboratorOnNote/" + userId + "/" + note.id;
             noteService.postAPIWithOutHeader(url).then(
                 function successCallback(response) {
-
-                    $scope.getAllCollaborators();
-
-                    return response;
-
+                   console.log("successfully add coll",response);
+                    getAllCollaborators(response.data.message);
                 }, function errorCallback(response) {
-                    return response;
-
+                    console.log("error add coll",response);
                 });
 
         };
 
-        $scope.removeCollaboratoronNote=function(user){
-            console.log("User:",user.id);
-            console.log("note  in dashboard:",note);
-            console.log("noteid  in dashboard:",note.id);
-            var url = baseUrl + "removeCollaboratorOnNote/"+user.id+"/"+note.id;
-            console.log(url);
+        $scope.removeCollaboratoronNote = function (user) {
+            console.log("User:", user.id);
+            var url = baseUrl + "removeCollaboratorOnNote/" + user.id + "/" + note.id;
             noteService.postAPIWithOutHeader(url).then(
                 function successCallback(response) {
-
-                    console.log("success", response);
-                    $scope.getAllCollaborators();
-                    return response;
-
+                    console.log("successfully remove coll", response.data);
+                    getAllCollaborators(response.data.message);
                 }, function errorCallback(response) {
-                    console.log("Error occur", response);
-                    return response;
-
+                    console.log("Error remove coll", response);
                 });
         }
 
     }
 
-    $scope.removeCollaboratoronNote=function(user){
-        console.log("User:",user.id);
-        console.log("note  in dashboard:",note);
-        console.log("noteid  in dashboard:",note.id);
-        var url = baseUrl + "removeCollaboratorOnNote/"+user.id+"/"+note.id;
-        console.log(url);
-        noteService.postAPIWithOutHeader(url).then(
+/*
+
+    $scope.getCollaborators = [];
+    $scope.getAllCollaborators = function () {
+
+        var url = baseUrl + "getAllCollaboratedNotes";
+
+        noteService.getAPIWithHeader(url).then(
             function successCallback(response) {
 
-                console.log("success", response);
-                $scope.getAllCollaborators();
-                return response;
-
+                console.log("successfully Collaborator", response);
+                $scope.getCollaborators = response.data;
             }, function errorCallback(response) {
-                console.log("Error occur", response);
                 return response;
 
             });
+    };
+
+    $scope.getAllCollaborators();
+*/
+
+
+    $scope.removeCollaboratoronNote = function (user, note) {
+        var arr = [];
+        angular.forEach(user, function (value) {
+            arr.push(value.id);
+            for (var i = 0; i < arr.length; i++) {
+                var url = baseUrl + "removeCollaboratorOnNote/" + arr[i] + "/" + note.id;
+                noteService.postAPIWithOutHeader(url).then(
+                    function successCallback(response) {
+                        console.log("success ", response);
+                    }, function errorCallback(response) {
+                        console.log("Error occur", response);
+                    });
+            }
+
+        });
     };
 
     $scope.showProfileDialog = function(event)
@@ -535,17 +506,19 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
 
         $timeout(function()
         {
-         angular.element(document.querySelector('#fileInput')).on('change', handleFileSelect);
+         angular.element(document.querySelector('#fileInput1')).on('change', handleFileSelect);
+            angular.element(document.querySelector('#fileInput2')).on('change', handleFileSelect);
         },1000, false);
 
 
         //function for converting base64 uri to form data....
         const dataURLtoFile = (dataurl, filename) => {
-            const arr = dataurl.split(',')
-            const mime = arr[0].match(/:(.*?);/)[1]
-            const bstr = atob(arr[1])
-            let n = bstr.length
-            const u8arr = new Uint8Array(n)
+            const arr = dataurl.split(',');
+            console.log("arr",arr);
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
             while (n) {
                 u8arr[n - 1] = bstr.charCodeAt(n - 1);
                 n -= 1
@@ -553,8 +526,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
             return new File([u8arr], filename, {
                 type: mime
             });
-        }
-
+        };
 
         $scope.ok = function(img)
         {
@@ -891,8 +863,9 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
             note.trashed=true;
             note.pined=false;
             $scope.removeReminder(note,event);
-            console.log("User information in transhed",note.collaboratedUser);
-            $scope.removeCollaboratoronNote(note.collaboratedUser);
+            var user=note.collaboratedUser;
+            console.log("User information in transhed",user);
+            $scope.removeCollaboratoronNote(user,note);
         }
         else
         {
@@ -1209,6 +1182,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
     }
 
     $scope.note_info=[];
+
     $scope.getAllNotes = function()
     {
         var url=baseUrl+"note";
@@ -1218,7 +1192,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
 
             $scope.note_info=response.data;
 
-            $scope.note_info = $scope.getCollaborators.concat($scope.note_info);
+            //$scope.note_info = $scope.getCollaborators.concat($scope.note_info);
 
             for(var i=0;i<$scope.note_info.length;i++)
             {
@@ -1327,7 +1301,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
                     keepGoing=false;
                 }
             }
-        })
+        });
         console.log("showOtherNote",$scope.showOtherNote);
     };
 

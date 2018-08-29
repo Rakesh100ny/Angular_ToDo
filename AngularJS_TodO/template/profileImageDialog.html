@@ -5,15 +5,31 @@
         </div>
     </md-toolbar>
     <md-divider></md-divider>
-    <md-dialog-content>
-        <div class="md-dialog-content" style="height:100%;width:100%;">
-            <input type="file" id="fileInput" />
+    <md-dialog-content style="height:600px;width:800px;">
+        <div class="md-dialog-content">
 
-            <div class="cropArea">
-                <img-crop image="myImage" area-type="rectangle" area-init-size="{ w:cropper.cropWidth,h:cropper.cropHeight}" cropject="cropper" result-image="myCroppedImage"></img-crop>
+            <div layout="column"  layout-align="center center">
+                <div layout="row"  layout-align="center center">
+                    <img src=../asset/drag&drop.png>
+                </div>
+                <div layout="row" class="profileDaiogText" layout-align="center center">
+                   Drag a profile photo here
+                </div>
+                <div layout="row" layout-align="center center">
+                    -or-
+                </div>
+                <div layout="row" layout-align="center center">
+                 <md-button class="profile-btn">
+                     <input type="file" class="hide-file" id="fileInput2">Select a photo from your computer
+                 </md-button>
+                </div>
             </div>
 
-            <div layout="row" layout-align="start"  class="take-note-div3">
+            <div layout="row" style="margin:20px 0px 20px 130px;" layout-align="center" class="cropArea">
+                <img-crop  image="myImage" area-type="rectangle" area-init-size="{ w:cropper.cropWidth,h:cropper.cropHeight}" cropject="cropper" result-image="myCroppedImage"></img-crop>
+            </div>
+
+            <div layout="row"   class="take-note-div3">
                 <md-button class="md-raised" id="clickme" style="background-color: #3366cc;color: white;text-transform:initial;"  ng-click="ok(myCroppedImage)">
                     Set as profile photo
                 </md-button>
