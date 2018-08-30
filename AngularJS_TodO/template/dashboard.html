@@ -2,7 +2,6 @@
 <div data-ng-init="getAllNotes()"  style="background-color: #e8e8e8;" id="dashboard">
     <div class="dashboard" layout="row"  layout-xs="column" layout-align="center center">
 
-
         <md-card class="md-whiteframe-z2" id="take-note-card"  layout="row" layout-align="top center" ng-show="!showCard">
             <md-card-header>
                 <md-card-header-text>
@@ -135,9 +134,12 @@
                         <md-chip  style="margin:0px auto;padding: 0px;"><button ng-click="sendToLabel(label,$event)" style="border:none;outline:none;border-radius: 50px;margin-left: 5px;">{{label.labelName}}</button><md-button ng-show="label.editable" class="md-icon-button" ng-click="removeLabel(label,note,$event)"  style=" margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button></md-chip>
                     </md-chips>
                  </div>
-                 <div layout="row" layout-align="start space-between"  ng-if="note.collaboratedUser" class="md-padding">
-                     <div ng-repeat="collaborator in note.collaboratedUser" style="margin-left:2px;" ng-click="showCollaboatorsDialog($event,note);" >
-                         <div class="profile"><img  style="width: 40px;height: 72px;" ng-src="{{collaborator.profilePic}}" /></div>
+
+                 {{userInfo.email}}
+                 <div layout="row" layout-align="start space-between" ng-repeat="collaborator in note.collaboratedUser" class="md-padding">
+                     <div ng-if="collaborator.email!==userInfo.email"  style="margin-left:2px;" ng-click="showCollaboatorsDialog($event,note);">
+                         {{collaborator.email}}
+                           <div class="profile"><img  style="width: 40px;height: 72px;" ng-src="{{collaborator.profilePic}}" /></div>
                          <md-tooltip>{{collaborator.email}}</md-tooltip>
                      </div>
                  </div>
@@ -183,7 +185,9 @@
                     <md-chip  style="margin:0px auto;padding: 0px;"><button ng-click="sendToLabel(label,$event)" style="border:none;outline:none;border-radius: 50px;margin-left: 5px;">{{label.labelName}}</button><md-button ng-show="label.editable" class="md-icon-button" ng-click="removeLabel(label,note,$event)"  style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button></md-chip>
                 </md-chips>
             </div>
-            <div layout="row" layout-align="start space-between"  ng-if="note.collaboratedUser" class="md-padding">
+            {{note.collaboratedUser.email}}
+            {{userInfo.email}}
+            <div layout="row" layout-align="start space-between"  ng-if="note.collaboratedUser.email===userInfo.email" class="md-padding">
                 <div ng-repeat="collaborator in note.collaboratedUser" style="margin-left:2px;" ng-click="showCollaboatorsDialog($event,note);" >
                     <div class="profile"><img  style="width: 40px;height: 72px;" ng-src="{{collaborator.profilePic}}" /></div>
                     <md-tooltip>{{collaborator.email}}</md-tooltip>
@@ -191,6 +195,21 @@
             </div>
             <div  layout="row" style="height: 50px;" layout-align="space-around center">
               <noteicon></noteicon>
+            </div>
+            <div ng-if="note.links" ng-repeat="url in note.links" layout="row" style="position:relative; background-color:white;">
+                <a ng-href="{{url.url}}" target="_blank">
+                    <div style="position:absolute; right: 0;">
+                        <img src="asset/icons8-external-link.svg" style="width:14px; height:14px; opacity: 0.5">
+                    </div>
+                </a>
+
+                <div style="width: 50px; height: 50px;">
+                    <img ng-src="{{url.urlImage}}" style="width: 100%; height: 100%; ">
+                </div>
+                <div flex style="padding: 8px 10px; background-color: rgba(250,250,250,0.8);">
+                    <p class="md-truncate" style="font-size: 14px; margin: 0px;">{{url.urlTitle}}</p>
+                    <p style="font-size: 12px; margin: 0">{{url.urlDescription}}</p>
+                </div>
             </div>
         </md-card>
         </md-content>

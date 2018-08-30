@@ -354,13 +354,13 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
 
         $scope.getLoginUser();
 
-        getAllCollaborators(id);
+        getAllCollaboratorUsers(id);
 
         $scope.getCollaboratorUsers = [];
-        function getAllCollaborators(id)
+        function getAllCollaboratorUsers(id)
         {
 
-           var url = baseUrl + "getAllCollaboratedNotes/"+id;
+           var url = baseUrl + "getAllCollaboratedUsers/"+id;
 
             noteService.getAPIWithOutHeader(url).then(
                 function successCallback(response)
@@ -382,7 +382,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
             noteService.postAPIWithOutHeader(url).then(
                 function successCallback(response) {
                    console.log("successfully add coll",response);
-                    getAllCollaborators(response.data.message);
+                    getAllCollaboratorUsers(response.data.message);
                 }, function errorCallback(response) {
                     console.log("error add coll",response);
                 });
@@ -395,7 +395,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
             noteService.postAPIWithOutHeader(url).then(
                 function successCallback(response) {
                     console.log("successfully remove coll", response.data);
-                    getAllCollaborators(response.data.message);
+                    getAllCollaboratorUsers(response.data.message);
                 }, function errorCallback(response) {
                     console.log("Error remove coll", response);
                 });
@@ -403,29 +403,11 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
 
     }
 
-/*
-
-    $scope.getCollaborators = [];
-    $scope.getAllCollaborators = function () {
-
-        var url = baseUrl + "getAllCollaboratedNotes";
-
-        noteService.getAPIWithHeader(url).then(
-            function successCallback(response) {
-
-                console.log("successfully Collaborator", response);
-                $scope.getCollaborators = response.data;
-            }, function errorCallback(response) {
-                return response;
-
-            });
-    };
-
-    $scope.getAllCollaborators();
-*/
 
 
-    $scope.removeCollaboratoronNote = function (user, note) {
+
+
+    $scope.removeCollaboratoronWhenUserClickTranshed = function (user, note) {
         var arr = [];
         angular.forEach(user, function (value) {
             arr.push(value.id);
@@ -463,7 +445,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
         var url = baseUrl + "getCurrentUser";
         noteService.getAPIWithHeader(url).then(function successCallback(response)
         {
-            console.log("Response profile api",response.data);
+
             $scope.userInfo = response.data;
             userInfo=$scope.userInfo;
 
@@ -865,7 +847,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
             $scope.removeReminder(note,event);
             var user=note.collaboratedUser;
             console.log("User information in transhed",user);
-            $scope.removeCollaboratoronNote(user,note);
+            $scope.removeCollaboratoronWhenUserClickTranshed(user,note);
         }
         else
         {
@@ -1181,6 +1163,28 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
         });
     }
 
+    getAllCollaboratorNotes();
+
+
+
+    $scope.getCollaborators = [];
+    function getAllCollaboratorNotes()
+    {
+
+        var url = baseUrl + "getAllCollaboratedNotes";
+
+        noteService.getAPIWithHeader(url).then(
+            function successCallback(response
+            ) {
+                console.log("successfully Collaborator", response.data);
+                $scope.getCollaborators = response.data;
+
+            }, function errorCallback(response) {
+                return response;
+
+            });
+    };
+
     $scope.note_info=[];
 
     $scope.getAllNotes = function()
@@ -1188,11 +1192,14 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
         var url=baseUrl+"note";
         noteService.getAPIWithHeader(url).then(function successCallback(response)
         {
-            console.log("Get Note Successfully",response);
+            console.log("Get Note Successfully",response.data);
 
             $scope.note_info=response.data;
 
-            //$scope.note_info = $scope.getCollaborators.concat($scope.note_info);
+
+            $scope.note_info = $scope.getCollaborators.concat($scope.note_info);
+
+            console.log("Concat  With Coll Data",$scope.note_info);
 
             for(var i=0;i<$scope.note_info.length;i++)
             {
@@ -1280,7 +1287,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
                 $scope.showLogo=false;
                 checkOtherNote($scope.note_info);
                 checkPinedNote($scope.note_info);
-                checkLabelNote($scope.note_info);
+             checkLabelNote($scope.note_info);
                 checkArchivedNote($scope.note_info);
 
 
@@ -1312,6 +1319,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
 
         angular.forEach(notes,function(value)
         {
+            console.log("Check Label Note",value);
                 if (value.listOfLabels !== null && value!==null && value!=="")
                 {
                        for (var i = 0; i < value.listOfLabels.length; i++) {

@@ -1,4 +1,4 @@
-<div data-ng-init="getAllNotes()"  style="background-color: #e8e8e8;height: 400%" id="dashboard">
+<div  style="background-color: #e8e8e8;height: 400%" id="dashboard">
     <div class="dashboard" layout="row"  layout-xs="column" layout-align="center center">
 
 
@@ -103,7 +103,7 @@
         <md-subheader  style="background-color: #e8e8e8;margin-left: 90px;">Pinned</md-subheader>
         <md-content  style="max-width: 800px;background-color: #e8e8e8;margin-left: 100px;overflow: hidden;" layout="row"  ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center" >
              <div ng-repeat="note in note_info | filter:{pined:true,trashed:false,archived:false}">
-                 <md-card ng-if="label.labelName==pathParam" ng-repeat="label in note.listOfLabels" ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card"  ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}};">
+                 <md-card ng-if="label.labelName==pathParam" ng-repeat="label in note.listOfLabels track by $index" ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card"  ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}};">
                      <div class="container">
                          <img  ng-src="{{note.imageUrl}}"  class="md-card-image">
                          <md-button class="md-icon-button btn"  ng-if="note.imageUrl!==null && note.pined===false" ng-click="isPinnedNote(note);">
@@ -137,7 +137,7 @@
                              </md-chip>
                          </md-chips>
 
-                         <md-chips  ng-mouseover="enableEdit(label)"  ng-mouseleave="disableEdit(label)" ng-repeat="label in note.listOfLabels">
+                         <md-chips  ng-mouseover="enableEdit(label)"  ng-mouseleave="disableEdit(label)">
                              <md-chip  style="margin:0px auto;padding: 0px;"><button ng-click="sendToLabel(label,$event)" style="border:none;outline:none;border-radius: 50px;margin-left: 5px;">{{label.labelName}}</button><md-button ng-show="label.editable" class="md-icon-button" ng-click="removeLabel(label,note,$event)"  style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button></md-chip>
                          </md-chips>
                      </div>
@@ -154,7 +154,7 @@
         <md-subheader ng-if="note.pined===false && note.archived===false && note.trashed===false;" style="background-color: #e8e8e8;margin-left: 90px;">Other</md-subheader>
         <md-content  ng-show="showNote"  style="max-width: 800px;background-color: #e8e8e8;margin-left: 100px;overflow: hidden;" layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center">
             <div ng-repeat="note in note_info | filter:{pined:false,trashed:false,archived:false} | orderBy: 'note.id':true">
-                <md-card ng-if="label.labelName==pathParam" ng-repeat="label in note.listOfLabels" ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card" ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}}">
+                <md-card ng-if="label.labelName==pathParam" ng-repeat="label in note.listOfLabels track by $index" ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card" ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}}">
 
                     <div class="container">
                         <img  ng-src="{{note.imageUrl}}"  class="md-card-image">
@@ -182,7 +182,7 @@
                             <md-chip style="margin: 0px auto;padding: 0px;"><span style="margin-left: 5px;">{{note.reminderDate | date : 'MMM dd,HH:mm a'}}</span><md-button  ng-show="note.reminder && note.reminderDate!==null"  class="md-icon-button" ng-click="removeReminder(note,$event)" style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button ></md-chip>
                         </md-chips>
 
-                        <md-chips  ng-mouseover="enableEdit(label)"  ng-mouseleave="disableEdit(label)" ng-repeat="label in note.listOfLabels">
+                        <md-chips  ng-mouseover="enableEdit(label)"  ng-mouseleave="disableEdit(label)">
                             <md-chip  style="margin:0px auto;padding: 0px;"><button ng-click="sendToLabel(label,$event)" style="border:none;outline:none;border-radius: 50px;margin-left: 5px;">{{label.labelName}}</button><md-button ng-show="label.editable" class="md-icon-button" ng-click="removeLabel(label,note,$event)"  style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button></md-chip>
                         </md-chips>
                     </div>
@@ -199,7 +199,7 @@
         <md-subheader  style="background-color: #e8e8e8;margin-left: 90px;">Archive</md-subheader>
         <md-content  style="max-width: 800px;background-color: #e8e8e8;margin-left: 100px;overflow: hidden;" layout="row"  ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center" >
             <div ng-repeat="note in note_info | filter:{pined:false,trashed:false,archived:true}">
-                <md-card ng-if="label.labelName==pathParam" ng-repeat="label in note.listOfLabels as labelArray" ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card"  ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}};">
+                <md-card ng-if="label.labelName==pathParam" ng-repeat="label in note.listOfLabels track by $index" ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card"  ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}};">
                     <div class="container">
                         <img  ng-src="{{note.imageUrl}}"  class="md-card-image">
                         <md-button class="md-icon-button btn"  ng-if="note.imageUrl!==null && note.pined===false" ng-click="isPinnedNote(note);">
@@ -233,7 +233,7 @@
                             </md-chip>
                         </md-chips>
 
-                        <md-chips  ng-mouseover="enableEdit(label)"  ng-mouseleave="disableEdit(label)" ng-repeat="label in note.listOfLabels">
+                        <md-chips  ng-mouseover="enableEdit(label)"  ng-mouseleave="disableEdit(label)">
                             <md-chip  style="margin:0px auto;padding: 0px;"><button ng-click="sendToLabel(label,$event)" style="border:none;outline:none;border-radius: 50px;margin-left: 5px;">{{label.labelName}}</button><md-button ng-show="label.editable" class="md-icon-button" ng-click="removeLabel(label,note,$event)"  style="margin: 0px auto;padding: 0px;"><md-icon><i class="material-icons">close</i></md-icon></md-button></md-chip>
                         </md-chips>
                     </div>
