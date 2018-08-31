@@ -3,6 +3,8 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
     var path = $location.path();
     $scope.pathParam = path.split('/')[3];
 
+    console.log("param",$scope.pathParam );
+
     var baseUrl = "http://localhost:8081/Fundo_Note/";
 
     $scope.removable = true;
@@ -334,7 +336,9 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
         $scope.getallUsers = function () {
             var url = baseUrl + "getAllUsers";
             noteService.getAPIWithHeader(url).then(
-                function successCallback(response) {
+                function successCallback(response)
+                {
+                    console.log("success in getAllUser",response.data);
                     $scope.getUsers = response.data;
                 }, function errorCallback(response) {
                    console.log("error in getAllUser",response);
@@ -1371,6 +1375,37 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
                 }
             }
         })
+    };
+});
+
+app.filter('myFilter', function() {
+    return function(getUsers,getCollaboratorUsers)
+    {
+        var displayData = [];
+
+        if (getCollaboratorUsers.length > 0 || getUsers.length > 0)
+        {
+            if (getUsers.length > 0)
+            {
+                for(var i=0;i<getUsers.length;i++)
+                {
+                   console.log("All Users",getUsers[i][1]);
+                    for(var j=0;j<getCollaboratorUsers.length;j++)
+                    {
+                        console.log("All CollaboratorUsers",getCollaboratorUsers[j].id);
+
+                        if(getUsers[i][1]!==getCollaboratorUsers[j].id)
+                        {
+                            displayData.push(value);
+                        }
+                    }
+                }
+                //console.log("Filter Data",displayData);
+            }
+        }
+
+        return displayData;
+
     };
 });
 

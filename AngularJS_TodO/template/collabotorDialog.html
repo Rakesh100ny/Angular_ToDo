@@ -10,10 +10,10 @@
             <md-list>
                 <md-list-item class="md-2-line">
                     <div layout="row" class="">
-                        <div class="profile"><img  style="width: 40px;height: 72px;" ng-src="{{userData.profilePic}}" /></div>
+                        <div class="profile"><img  style="width: 40px;height: 72px;" ng-src="{{note.user.profilePic}}" /></div>
                          <div class="md-list-item-text" style="margin-left: 10px;" layout="column">
-                            <h4> {{userDate.firstName}} {{userDate.lastName}}(Owner)</h4>
-                            <h4> {{userData.email}}</h4>
+                            <h4> {{note.user.firstName}} {{note.user.lastName}}(Owner)</h4>
+                            <h4> {{note.user.email}}</h4>
                         </div>
                     </div>
                 </md-list-item>
@@ -43,7 +43,7 @@
                                     aria-label="Person or email to share with" ng-model="email"
                                         role="combobox" aria-autocomplete="list"
                                     aria-haspopup="false" aria-expanded="false">
-                                    <md-option ng-repeat="email in getUsers" ng-value="email">{{email[0]}}</md-option>
+                                    <md-option ng-repeat="email in (getUsers | myFilter:getCollaboratorUsers) track by $index" ng-value="email">{{email[0]}}</md-option>
                             </md-input-container>
                             <md-button class="md-icon-button" ng-click="addCollaboratorOnNote(email)"><md-icon style="margin:2px 0px 0px 5px;"><i class="material-icons">done</i></md-icon></md-button>
                         </div>

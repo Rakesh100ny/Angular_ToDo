@@ -135,13 +135,18 @@
                     </md-chips>
                  </div>
 
-                 {{userInfo.email}}
-                 <div layout="row" layout-align="start space-between" ng-repeat="collaborator in note.collaboratedUser" class="md-padding">
-                     <div ng-if="collaborator.email!==userInfo.email"  style="margin-left:2px;" ng-click="showCollaboatorsDialog($event,note);">
-                         {{collaborator.email}}
+                 <div layout="row" layout-align="start space-between" layout-wrap class="md-padding">
+
+                     <div ng-if="collaborator.email===userInfo.email" ng-repeat="collaborator in note.collaboratedUser" style="margin-left:2px;" ng-click="showCollaboatorsDialog($event,note);">
+                         <div class="profile"><img  style="width: 40px;height: 72px;" ng-src="{{note.user.profilePic}}" /></div>
+                         <md-tooltip>{{note.user.email}}</md-tooltip>
+                     </div>
+                     
+                     <div ng-if="collaborator.email!==userInfo.email" ng-repeat="collaborator in note.collaboratedUser" style="margin-left:2px;" ng-click="showCollaboatorsDialog($event,note);">
                            <div class="profile"><img  style="width: 40px;height: 72px;" ng-src="{{collaborator.profilePic}}" /></div>
                          <md-tooltip>{{collaborator.email}}</md-tooltip>
                      </div>
+
                  </div>
                  <div layout="row" style="height: 50px;" layout-align="space-around center">
                     <noteicon></noteicon>
