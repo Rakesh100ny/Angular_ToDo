@@ -318,6 +318,14 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
             targetEvent: event,
             clickOutsideToClose: true,
             fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+        }).then(function successCallback(response)
+        {
+            console.log("Successfully in Coll Dialog",response);
+             getAllCollaboratorNotes();
+             $scope.getAllNotes();
+
+        },function errorCallback(response){
+            console.log("failed in Coll Dialog",response);
         });
     };
 
@@ -331,7 +339,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
             $mdDialog.cancel();
         };
 
-        $scope.getUsers = "";
+        $scope.getUsers = [];
 
         $scope.getallUsers = function () {
             var url = baseUrl + "getAllUsers";
@@ -344,7 +352,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
                    console.log("error in getAllUser",response);
                 });
         };
-
+        $scope.getallUsers();
         $scope.userData = "";
         $scope.getLoginUser = function () {
             var url = baseUrl + 'getCurrentUser';
@@ -387,6 +395,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
                 function successCallback(response) {
                    console.log("successfully add coll",response);
                     getAllCollaboratorUsers(response.data.message);
+                    $mdDialog.hide(response.data.message);
                 }, function errorCallback(response) {
                     console.log("error add coll",response);
                 });
@@ -1167,14 +1176,12 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
         });
     }
 
-    getAllCollaboratorNotes();
-
-
+    $scope.AllNoteWithCollbs=[];
 
     $scope.getCollaborators = [];
+
     function getAllCollaboratorNotes()
     {
-
         var url = baseUrl + "getAllCollaboratedNotes";
 
         noteService.getAPIWithHeader(url).then(
@@ -1182,10 +1189,28 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
             ) {
                 console.log("successfully Collaborator", response.data);
                 $scope.getCollaborators = response.data;
+                $scope.AllNoteWithCollbs = $scope.getCollaborators.concat($scope.note_info);
 
+                console.log("All Data In this Array",$scope.AllNoteWithCollbs);
+
+                if($scope.AllNoteWithCollbs.length === 0)
+                {
+                    $scope.showNote=false;
+                    $scope.showLogo=true;
+                }
+                else
+                {
+                    $scope.showNote=true;
+                    $scope.showLogo=false;
+                    checkOtherNote($scope.AllNoteWithCollbs);
+                    checkPinedNote($scope.AllNoteWithCollbs);
+                    checkLabelNote($scope.AllNoteWithCollbs);
+                    checkArchivedNote($scope.AllNoteWithCollbs);
+
+
+                }
             }, function errorCallback(response) {
                 return response;
-
             });
     };
 
@@ -1200,8 +1225,8 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
 
             $scope.note_info=response.data;
 
+            getAllCollaboratorNotes();
 
-            $scope.note_info = $scope.getCollaborators.concat($scope.note_info);
 
             console.log("Concat  With Coll Data",$scope.note_info);
 
@@ -1277,24 +1302,6 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
 
                     }
                 }
-            }
-
-
-            if($scope.note_info==="")
-            {
-                $scope.showNote=false;
-                $scope.showLogo=true;
-            }
-            else
-            {
-                $scope.showNote=true;
-                $scope.showLogo=false;
-                checkOtherNote($scope.note_info);
-                checkPinedNote($scope.note_info);
-             checkLabelNote($scope.note_info);
-                checkArchivedNote($scope.note_info);
-
-
             }
 
         },function errorCallback(response){
@@ -1381,7 +1388,7 @@ app.controller('noteController', function($scope,$mdDialog,$timeout,$mdSidenav,u
 app.filter('myFilter', function() {
     return function(getUsers,getCollaboratorUsers)
     {
-        var displayData = [];
+        var displayData = getUsers;
 
         if (getCollaboratorUsers.length > 0 || getUsers.length > 0)
         {
@@ -1394,13 +1401,14 @@ app.filter('myFilter', function() {
                     {
                         console.log("All CollaboratorUsers",getCollaboratorUsers[j].id);
 
-                        if(getUsers[i][1]!==getCollaboratorUsers[j].id)
+                        if(getUsers[i][1]===getCollaboratorUsers[j].id)
                         {
-                            displayData.push(value);
+                            var index=displayData.indexOf(getUsers[i]);
+                            displayData.splice(index,1);
                         }
                     }
                 }
-                //console.log("Filter Data",displayData);
+
             }
         }
 

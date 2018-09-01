@@ -1,4 +1,4 @@
-<div  style="background-color: #e8e8e8;height: 400%" id="dashboard">
+<div ng-init="getAllNotes()" style="background-color: #e8e8e8;height: 400%" id="dashboard">
     <div class="dashboard" layout="row"  layout-xs="column" layout-align="center center">
 
 
@@ -53,6 +53,7 @@
 
 
 
+<!--
     <md-card  class="md-whiteframe-z2 collaborator md-padding" ng-show="showCollaboators">
 
         <div layout="row"  class="collaborator-header md-no-sticky"  layout-align="top center">
@@ -98,12 +99,13 @@
         </div>
 
     </md-card>
+-->
+
 
     <div ng-if="showPinedNote"  style="margin-top: 35px;" flex-offset="15">
         <md-subheader  style="background-color: #e8e8e8;margin-left: 90px;">Pinned</md-subheader>
         <md-content  style="max-width: 800px;background-color: #e8e8e8;margin-left: 100px;overflow: hidden;" layout="row"  ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center" >
              <div ng-repeat="note in note_info | filter:{pined:true,trashed:false,archived:false}">
-                 {{note.listOfLabels}}
                  <md-card ng-if="label.labelName==pathParam" ng-repeat="label in note.listOfLabels" ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card"  ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}};">
                      <div class="container">
                          <img  ng-src="{{note.imageUrl}}"  class="md-card-image">

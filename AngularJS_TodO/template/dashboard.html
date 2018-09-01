@@ -1,5 +1,5 @@
 
-<div data-ng-init="getAllNotes()"  style="background-color: #e8e8e8;" id="dashboard">
+<div ng-init="getAllNotes()"  style="background-color: #e8e8e8;" id="dashboard">
     <div class="dashboard" layout="row"  layout-xs="column" layout-align="center center">
 
         <md-card class="md-whiteframe-z2" id="take-note-card"  layout="row" layout-align="top center" ng-show="!showCard">
@@ -46,7 +46,7 @@
 
 
 
-    <md-card  class="md-whiteframe-z2 collaborator md-padding" ng-show="showCollaboators">
+ <!--   <md-card  class="md-whiteframe-z2 collaborator md-padding" ng-show="showCollaboators">
 
         <div layout="row"  class="collaborator-header md-no-sticky"  layout-align="top center">
            Collaborators
@@ -89,12 +89,12 @@
                 <strong>Save</strong>
             </md-button>
         </div>
-
     </md-card>
-    <div   ng-show="showPinedNote"  style="margin-top: 35px;" flex-offset="15">
+ -->
+    <div ng-show="showPinedNote"  style="margin-top: 35px;" flex-offset="15">
         <md-subheader  style="background-color: #e8e8e8;margin-left: 90px;">Pinned</md-subheader>
-        <md-content  style="max-width: 800px;background-color: #e8e8e8;margin-left: 100px;overflow: hidden;" layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center" >
-             <md-card ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card"  ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}};"  ng-repeat="note in note_info | filter:{pined:true,trashed:false,archived:false}">
+        <md-content  style="max-width: 800px;background-color: #e8e8e8;margin-left: 100px;overflow: hidden;" layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center">
+             <md-card ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card"  ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}};"  ng-repeat="note in AllNoteWithCollbs | filter:{pined:true,trashed:false,archived:false}">
 
                  <div class="container">
                      <img  ng-src="{{note.imageUrl}}"  class="md-card-image">
@@ -158,7 +158,7 @@
     <div style="margin-top: 35px;" flex-offset="15">
         <md-subheader ng-if="showPinedNote && showOtherNote" style="background-color: #e8e8e8;margin-left: 90px;">Other</md-subheader>
         <md-content  ng-show="showNote"  style="max-width: 800px;background-color: #e8e8e8;margin-left: 100px;overflow: hidden;" layout="row" ng-cloak layout-xs="column" layout-wrap layout-align-gt-md="start center" layout-align-md="space-around center" layout-align-sm="space-around center">
-        <md-card ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card" ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}}"  ng-repeat="note in note_info | filter:{pined:false,trashed:false,archived:false} | orderBy: 'note.id':true">
+        <md-card ng-click="showDialog($event,note)" ng-mouseover="enableEdit(note)" class="card" ng-mouseleave="disableEdit(note)" style="width: 250px;background-color:{{note.color}}"  ng-repeat="note in AllNoteWithCollbs | filter:{pined:false,trashed:false,archived:false} | orderBy: 'note.id':true">
 
             <div class="container">
                 <img  ng-src="{{note.imageUrl}}"  class="md-card-image">

@@ -37,13 +37,13 @@
                         <div style="height: 35px;width: 35px;border: 1px solid rgba(0, 0, 0, 0.87);border-radius: 50%">
                             <md-icon style="margin:2px 0px 0px 5px;"><i class="material-icons">person_add</i></md-icon>
                         </div>
-                        <div ng-init="getallUsers()">
+                        <div>
                             <md-input-container md-no-float style="margin: 0px auto;padding: 0px;">
                                 <md-select style="outline:none;border:none;background-color: white;width: 355px;" type="text" placeholder="Person or email to share with"
                                     aria-label="Person or email to share with" ng-model="email"
                                         role="combobox" aria-autocomplete="list"
                                     aria-haspopup="false" aria-expanded="false">
-                                    <md-option ng-repeat="email in (getUsers | myFilter:getCollaboratorUsers) track by $index" ng-value="email">{{email[0]}}</md-option>
+                                    <md-option ng-repeat="email in (getUsers | myFilter:getCollaboratorUsers)" ng-value="email">{{email[0]}}</md-option>
                             </md-input-container>
                             <md-button class="md-icon-button" ng-click="addCollaboratorOnNote(email)"><md-icon style="margin:2px 0px 0px 5px;"><i class="material-icons">done</i></md-icon></md-button>
                         </div>
